@@ -1,0 +1,11 @@
+.bundle
+.idea
+.project
+.rvmrc
+bin
+config/database.yml
+config/email.yml
+config/ldap.yml
+vendor/assets
+vendor/bundle
+vendor/plugins

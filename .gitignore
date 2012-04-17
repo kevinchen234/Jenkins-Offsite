@@ -1,0 +1,12 @@
+*~
+.idea
+.bundle
+/bin/*
+/config/databse.yml
+/config/ldap.yml
+/db/*.sqlite3
+/log/*.log
+/tmp
+/vendor/assets/
+/vendor/bundle/
+/vendor/plugins/

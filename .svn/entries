@@ -1,0 +1,154 @@
+10
+
+dir
+1
+svn+ssh://svn@code.berkeley.edu/istcts/offsite_v3/trunk
+svn+ssh://svn@code.berkeley.edu/istcts/offsite_v3
+
+
+
+2012-04-17T00:19:32.289877Z
+1
+app_code
+has-props
+has-prop-mods
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+08f60cee-26c5-4d95-bd4d-90821f7c72d7
+
+.gitignore
+file
+0
+
+
+add
+
+.svnignore
+file
+0
+
+
+add
+
+Gemfile
+file
+0
+
+
+add
+
+Gemfile.lock
+file
+0
+
+
+add
+
+README.md
+file
+0
+
+
+add
+
+Rakefile
+file
+0
+
+
+add
+
+app
+dir
+
+
+
+add
+
+bin
+dir
+
+
+
+add
+
+config
+dir
+
+
+
+add
+
+config.ru
+file
+0
+
+
+add
+
+db
+dir
+
+
+
+add
+
+doc
+dir
+
+
+
+add
+
+lib
+dir
+
+
+
+add
+
+log
+dir
+
+
+
+add
+
+public
+dir
+
+
+
+add
+
+script
+dir
+
+
+
+add
+
+tmp
+dir
+
+
+
+add
+
+vendor
+dir
+
+
+
+add
+
