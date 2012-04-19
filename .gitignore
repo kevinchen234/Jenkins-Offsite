@@ -5,7 +5,7 @@
 .idea
 .svn
 /bin/*
-/config/databse.yml
+/config/database.yml
 /config/ldap.yml
 /db/*.sqlite3
 /log/*.log
