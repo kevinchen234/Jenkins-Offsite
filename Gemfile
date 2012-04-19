@@ -22,6 +22,13 @@ gem 'rubycas-client', '= 2.0.1'  # Client library for Central Authentication Ser
 gem 'ucb_ldap', '=1.3.2'  # Convenience classes for interacing with UCB's LDAP directory.
 gem 'ucb_rails_security', '=2.1.1', :require => 'action_pack'  # Simplifies CAS auth and ldap authz within your rails application.
 
+group :development, :test do
+  gem 'rspec'  # Behavior Driven Development (BDD) for Ruby
+  gem 'rspec-core'  #  RSpec runner and example groups.
+  gem 'rspec-expectations'  # RSpec matchers for should and should_not.
+  gem 'rspec-mocks'  # RSpec test double framework with stubbing and mocking.
+  gem 'rspec-rails'  # RSpec version 2.x for Rails version 3.x
+end
 group :debugging do
   #gem 'ruby-debug19', :require => 'ruby-debug'  # Command line interface for ruby-debug.
 end
