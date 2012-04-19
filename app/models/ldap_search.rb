@@ -66,11 +66,16 @@ class LdapSearch
     def create_filter(params = {})
       filter = {}
       case params[:search_by]
-      when 'ldap_uid' : filter[:uid] = params[:search_value]
-      when 'last_first_name' : filter[:sn], filter[:givenname] = params[:search_value].split(/,\s*/, 2)
-      when 'last_name' : filter[:sn] = params[:search_value]
-      when 'first_name' : filter[:givenname] = params[:search_value]
-      when 'email' : filter[:mail] = params[:search_value]
+        when 'ldap_uid'
+          filter[:uid] = params[:search_value]
+        when 'last_first_name'
+          filter[:sn], filter[:givenname] = params[:search_value].split(/,\s*/, 2)
+        when 'last_name'
+          filter[:sn] = params[:search_value]
+        when 'first_name'
+          filter[:givenname] = params[:search_value]
+        when 'email'
+          filter[:mail] = params[:search_value]
       end
       filter
     end
