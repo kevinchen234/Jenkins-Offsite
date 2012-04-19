@@ -87,7 +87,7 @@ ActiveRecord::Schema.define(:version => 20100906210716) do
 
   create_table "users", :force => true do |t|
     t.integer  "ldap_uid"
-    t.string   "first_n  ame"
+    t.string   "first_name"
     t.string   "last_name"
     t.string   "email"
     t.string   "phone"
