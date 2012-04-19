@@ -1,6 +1,9 @@
 *~
-.idea
+#*
+.#.*
 .bundle
+.idea
+.svn
 /bin/*
 /config/databse.yml
 /config/ldap.yml
