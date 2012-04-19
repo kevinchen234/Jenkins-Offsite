@@ -62,7 +62,7 @@ describe "User" do
 
         it "succeeds with a unique email" do
           user = User.new
-          user.email = "asdfasdfasd@example.com" #TODO this magic constant is any value we know is not in the fixtures
+          user.email = "asdfasdfasd@example.com" #TODO: this magic constant is any value we know is not in the fixtures
           user.should have(0).error_on(:email)
         end
 
@@ -80,7 +80,7 @@ describe "User" do
 
       it "succeeds with a unique ldap_uid" do
         user = User.new
-        user.ldap_uid = 346 #TODO this magic constant is any value we know is not in the fixtures
+        user.ldap_uid = 346 #TODO: this magic constant is any value we know is not in the fixtures
         user.should have(0).error_on(:ldap_uid)
       end
 
@@ -93,7 +93,122 @@ describe "User" do
     end
 
   end
+
+  describe "#protected_attributes" do
+
+    it "enabled" do
+      user = User.new
+      user.protected_attributes={:enabled => true}
+      user.enabled.should == true
+      user.protected_attributes={:enabled => false}
+      user.enabled.should == false
+    end
+
+    it "ldap_uid" do
+      user = User.new
+      user.protected_attributes={:ldap_uid => 12345}
+      user.ldap_uid.should == 12345
+      user.protected_attributes={:ldap_uid => nil}
+      user.ldap_uid.should == nil
+    end
+
+    #TODO Deprecated
+    #it "role_id" do
+    #  user = User.new
+    #  user.protected_attributes={:role_ids => 1}
+    #  user.role_ids.should == 1
+    #end
+
+    #TODO Deprecated
+    #it "should assign accessible attributes" do
+    #  user = users(:minimal_for_validation)
+    #  attrs = @admin.attributes.keep_if { |k, v| accessible_attributes.include?(k) }
+    #  user.protected_attributes = attrs
+    #  attrs.each { |k, v| user.send(k).should == v }
+    #end
+
+  end
+
+  describe "#find_from_filter" do
+
+    it "disabled" do
+      User.should_receive(:disabled)
+      User.find_from_filter("disabled")
+    end
+
+    it "buyers" do
+      User.should_receive(:campus_buyers)
+      User.find_from_filter("buyers")
+    end
+
+    it "admins" do
+      User.should_receive(:admins)
+      User.find_from_filter("admins")
+    end
+
+  end
 end
+
+
+=begin
+
+  end
+
+
+  it "should find by filter when snt #find_from_filter(filter)" do
+    # disabled filter
+    disabled = User.find_from_filter("disabled")
+    disabled.should have(1).user
+    disabled[0].email.should == "disabled@berkeley.edu"
+
+    # buyer filter
+    buyers = User.find_from_filter("buyers")
+    buyers.should have(2).users
+    buyers.each { |p| p.roles.map(&:name).include?("buyer").should be_true }
+
+    # admin filter
+    admins = User.find_from_filter("admins")
+    admins.should have(2).users
+    admins.each { |p| p.roles.map(&:name).include?("admin").should be_true }
+
+    # Any filter where FILTER !IN FILTER_BY_OPTIONS returns all users
+    all = User.find_from_filter("")
+    all.should have(7).users
+
+    all = User.find_from_filter(nil)
+    all.should have(7).users
+
+    all = User.find_from_filter("invalid filter")
+    all.should have(7).users
+  end
+
+  it "should instantiate new user when sent #new_from_ldap_uid" do
+    # user if found, copy attributes over
+    user = User.new_from_ldap_uid(@admin.ldap_uid)
+    user.new_record?.should be_true
+    user.ldap_uid.should == @admin.ldap_uid
+
+    # user is not found, return new untainted user
+    user = User.new_from_ldap_uid(nil)
+    user.new_record?.should be_true
+    user.ldap_uid.should be_nil
+  end
+
+  it "should not allow a user to be deleted if it is referenced by other records" do
+    runner = users(:runner)
+    runner.off_site_requests.should have(2).records
+    runner.destroy.should be_false
+  end
+
+  it "should allow a user to be deleted if it is not referenced by other records" do
+    runner = users(:runner)
+    runner.off_site_requests.clear
+    runner.save!
+    runner.off_site_requests.should be_empty
+    runner.destroy.should be_true
+  end
+=end
+#-------------------
 
 
 __END__

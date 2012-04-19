@@ -28,15 +28,40 @@ class User < ActiveRecord::Base
       false
     end
   end
-  
+
   def protected_attributes=(params = {})
     if !params.is_a?(::HashWithIndifferentAccess)
       params = ::HashWithIndifferentAccess.new.merge(params)
     end
-    self.attributes = params
-    self.role_ids = params[:role_ids]
-    self.ldap_uid = params[:ldap_uid]
+
+    #TODO: refac to remove this -- ideally this method will only assign protected attrs.
+    #
+    # The old code:
+    #    self.attributes = params
+    #
+    # We don't want to assign mass-assignable params here because it's mixing purposes.
+    # So during the upgrade to Rails 2.3, we will check for any unexpected input,
+    # and raise a warning; this will give us some detection during the upgrade.
+    # After the upgrade, please remove this entire block.
+    unknown_params = params.reject {|key, value| ["enabled", "ldap_uid", "role_ids"].include?(key) }
+    if !unknown_params.empty? then raise "Deprecated #{params}" end
+    ###
+
     self.enabled = params[:enabled]
+    self.ldap_uid = params[:ldap_uid]
+
+    #TODO: remove role_ids from this method because it's not really an attribute, it's an association
+    #
+    # The old code:
+    #    self.role_ids = params[:role_ids]
+    #
+    # We don't want to assign association ids here because it's mixing purposes.
+    # So during the upgrade to Rails 2.3, we will check for any use of the old code
+    # and raise a warning; this will give us some detection during the upgrade.
+    # After the upgrade, please remove this entire block.
+    if params[:role_ids] then raise "Deprecated" end
+    ###
+
   end
   
   def to_s
