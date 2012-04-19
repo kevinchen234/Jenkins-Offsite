@@ -1,0 +1,58 @@
+jack_request_1:
+  submitter: jack
+  hostname: jack.berkeley.edu
+  hostname_in_use: true
+  arachne_or_socrates: true
+  sponsoring_department: ARCH Computing - (DBCOM)
+  campus_official: campus_official
+  off_site_service: slicehost.com
+  for_department_sponsor: true
+  name_of_group:
+  relationship_of_group:
+  confirmed_service_qualifications: true
+  sla_reviewed_by: <%= OffSiteRequest::CAMPUS_BUYER %>
+  campus_buyer: campus_buyer1
+  cns_trk_number: 1
+  off_site_ip: 123.123.123.123
+  status: not_approved
+  meets_ctc_criteria: true
+
+runner_request_1:
+  submitter: runner
+  hostname: runner.berkeley.edu
+  hostname_in_use: true
+  arachne_or_socrates: true
+  sponsoring_department: Enterprise Application Service - (JKASD)
+  campus_official: campus_official
+  off_site_service: slicehost.com
+  for_department_sponsor: true
+  name_of_group:
+  relationship_of_group:
+  confirmed_service_qualifications: true
+  sla_reviewed_by: <%= OffSiteRequest::CAMPUS_BUYER %>
+  campus_buyer: campus_buyer1
+  cns_trk_number: 2
+  off_site_ip: 123.123.123.777
+  status: not_approved
+  meets_ctc_criteria: true
+  ext_circumstances: ext_one
+
+runner_request_2:
+  submitter: runner
+  hostname: poop.berkeley.edu
+  hostname_in_use: true
+  arachne_or_socrates: true
+  sponsoring_department: Enterprise Application Service - (JKASD)
+  campus_official: campus_official
+  off_site_service: slicehost.com
+  for_department_sponsor: true
+  name_of_group:
+  relationship_of_group:
+  confirmed_service_qualifications: true
+  sla_reviewed_by: <%= OffSiteRequest::CAMPUS_BUYER %>
+  campus_buyer: campus_buyer1
+  cns_trk_number: 3
+  off_site_ip: 123.123.123.666
+  status: approved
+  meets_ctc_criteria: true
+  ext_circumstances: ext_one

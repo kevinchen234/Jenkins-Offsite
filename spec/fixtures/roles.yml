@@ -1,0 +1,12 @@
+
+admin_role:
+  name: admin
+  description: admin description
+
+buyer_role:
+  name: buyer
+  description: buyer description
+
+deletable_role:
+  name: deletable
+  description: deletable description

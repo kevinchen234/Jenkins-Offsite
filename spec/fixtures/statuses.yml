@@ -1,0 +1,8 @@
+
+not_approved:
+  name: Not Approved
+  enabled: true
+
+approved:
+  name: Approved
+  enabled: true

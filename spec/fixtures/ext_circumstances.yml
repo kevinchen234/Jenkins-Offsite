@@ -1,0 +1,12 @@
+ext_one:
+  description: IST is too expensive
+  enabled: true
+
+ext_two:
+  description: IST is too slow
+  enabled: true
+
+ext_three:
+  description: IST is too ugly
+  enabled: true
+
