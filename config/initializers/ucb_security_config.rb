@@ -1,3 +1,5 @@
+require 'ucb_rails_security'
+
 # Uncomment this if your Application uses a user table
 #
 UCB::Rails::Security::using_user_table = true
@@ -30,3 +32,5 @@ UCB::Rails::Security::CASAuthentication.home_url = ''
 #
 # Use bind info from RAILS_ROOT/config/ldap.yml
 # UCB::LDAP.bind_for_rails()
+
+
