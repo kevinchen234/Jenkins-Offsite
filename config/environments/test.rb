@@ -34,4 +34,10 @@ OffsiteV3::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+
+  #TODO explain this
+  config.after_initialize do
+    UCB::LDAP::Person.include_test_entries = true
+  end
+
 end
