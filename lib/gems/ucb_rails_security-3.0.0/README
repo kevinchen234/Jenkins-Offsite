@@ -1,0 +1,226 @@
+= UC Berkeley Rails Security
+UCB::Rails::Security simplifies CAS auth and ldap authz within your rails application by adding
+custom filters to your rails controllers.  
+
+This gem works with <b>Rails 2.x.x</b>
+
+
+== Description
+This plugin adds authentication/authorization to your rails application.  Currently
+CAS is the only supported authentication scheme.  Authorization is handled by
+various filters that this plugin provides.  The filters can utilize: values from
+a users and or roles table  as well as ldap attributes of the authenticated user.
+These filters are typically added to your application controller by including 
+the ucb_rs_controller_methods module.  Example:
+
+  class ApplicationController < ActionController::Base
+    include UCB::Rails::Security::ControllerMethods
+    
+    before_filter :filter_logged_in
+  end
+
+This would allow access to the ApplicationController, and all controllers that extend
+the ApplicationController, only if the user has CAS authenticated.
+
+
+
+== Installation
+These installation instructions assume that you already have a database 
+configured for your rails application and that you have already run the 
+initial <tt>rake db:migrate</tt> command to setup your <tt>schema_info</tt> table.
+
+=== Get the GEM
+  sudo gem install ucb_rails_security
+
+=== Post Installation
+==== Rails >= 2.1.1
+Make sure your +environment.rb+ file adds the gem in the initializer block:
+  Rails::Initializer.run do |config|
+    # A few configs appear above this
+
+    config.gem "ucb_rails_security"
+
+    # Tons of other configs appear below this
+  end
+
+
+====  2.0.x =< Rails < 2.1.1
+Add the following to the bottom of your +environment.rb+ file
+
+  require 'ucb_rails_security'
+
+
+==== All Rails (2.x.x) Versions 
+From Rails.root run:
+
+  script/generate ucb_security_initializer
+
+This will create the file <tt>Rails.root/config/initializers/ucb_security_config.rb</tt>  This file
+allows you to configure various aspects of the gems behavior.  See the file for all the
+options.
+
+Now add the following to your application controller:
+
+  class ApplicationController < ActionController::Base
+    include UCB::Rails::Security::ControllerMethods
+    
+    before_filter :filter_logged_in
+  end
+
+This will allow access to the ApplicationController, and all controllers that extend
+the ApplicationController, only if the user has CAS authenticated.  See 
+UCB::Rails::Security::ControllerMethods for other filter options.
+
+
+==== Install Scaffolding (Optional but Possible Useful)
+You can optionally generate scaffolding for a rudimentary administrative interface 
+to manage users and roles within your rails application. To install the scaffolding:
+
+  script/generate ucb_rails_security
+
+With the exception of the model classes (user, roles, ldap_search, user_roles),
+scaffolding is installed under the namespace ucb_rails_security:
+
+  Rails.root/apps/controller/ucb_rails_security
+  Rails.root/apps/views/ucb_rails_security
+  Rails.root/apps/helpers/ucb_rails_security
+  Rails.root/public/stylesheets/ucb_rails_security.css
+  Rails.root/apps/models/{user.rb,role.rb,ldap_search.rb,user_roles.rb}
+
+
+The scaffolding also installs a db:migration: <tt>xxx_create_ucb_rails_security_tables.rb</tt>, 
+where xxx is the next highest available migration number.  After the scaffolding has
+been generated, run the migration:
+
+  rake db:migrate
+
+Finally, the ucb_rails_security scaffolding adds custom routes to the top of 
+your route file.  See <tt>Rails.root/config/routes.rb</tt> for more info on this.
+
+
+===== Configure Scaffolding
+You need to uncomment the first config option in <tt>Rails.root/config/initializers/ucb_security_config.rb</tt>
+so your application can use the users table.  The file itself has comments explaining the options:
+
+  # Uncomment this if your Application uses a user table
+  #
+  UCB::Rails::Security::using_user_table = true
+
+
+To use the users table, you must create a security user. Run the following from Rails.root:
+
+  rake ucb:create_security_user UID=#{your_uid}
+
+This adds you to the users table and gives you the 'Security' role.  
+By default, you must have the 'Security' role to access the administrative 
+interface.  Now start your application server and point your browser to:
+
+  localhost:3000/ucb_security/
+
+You should be redirected to CAS.  CAS authenticate and you should now 
+have access to the ucb_security administrator pages.
+
+
+
+== Usage
+=== Authentication
+The simplest use of this module is to require that users be authenticated
+by CAS, i.e., they have entered a valid CalNet id and passphrase.
+
+The following controller requires a user be authenticated:
+
+  class MyController < ApplicationController
+    before_filter :filter_logged_in
+  end
+  
+If the user is already logged in (has been CAS authenticated) then
+the user can access the controller.  
+
+If not logged in the user will be redirected to the CAS
+authentication service.  Upon successful authentication
+the user will be redirected to the originally requested url.  
+
+==== Authentication Methods
+The only authentication method supported is CAS [https://auth.berkeley.edu/cas/login].
+
+More info about CAS[http://en.wikipedia.org/wiki/Single_sign_on].
+
+
+=== Authorization
+
+==== LDAP Filters
+UCB::Rails::Security is closely integrated with, and in fact depends 
+on UCB::LDAP. Authenticated users are looked up in the LDAP directory and the
+corresponding UCB::LDAP::Person instance is stored in the Rails session.
+
+Applications have easy access to a logged in user's LDAP attributes
+for general purposes, but more importantly these attributes can be
+used in controller filters with minimal effort (next section).
+Applications can manage access to controllers based on LDAP attributes.
+
+This controller can only be accessed by UCB employees:
+
+  class MyController < ApplicationController
+    before_filter :filter_ldap_employee?
+  end
+  
+Note that this filter is dynamically created and queries the <tt>employee?</tt>
+method of the user's UCB::LDAP::Person entry to do its work.
+
+See UCB::Rails::Security::ControllerMethods for more information.
+
+
+==== User and Role Filters
+If an application has +User+ and +Role+ tables, they can be used to control authorization.
+
+===== User Filters
+This controller is restricted to users in the user table:
+
+  class MyController < ApplicationController
+    before_filter :filter_in_user_table
+  end
+
+This controller is restricted to users that can update:
+
+  class MyController < ApplicationController
+    before_filter :filter_user_can_update?
+  end
+
+Note that this filter is dynamically created by sending the <tt>can_update?</tt>
+message to the user instance.
+
+Any filter of the form ":filter_user_method" will return <tt>true</tt> if the
+user instance returns <tt>true</tt> when sent <tt>method</tt>.
+
+===== Role Filters
+This controller is restricted to users who have the admin role:
+
+  class MyController < ApplicationController
+    before_filter :filter_role_admin
+  end
+  
+Note that this filter is dynamically created and queries the roles
+for the user to see if "admin" is one of the roles.
+
+See UCB::Rails::Security::ControllerMethods for more information.
+
+
+
+== More Information
+* UCB::Rails::Security for configuration
+* UCB::Rails::Security::ControllerMethods for filters, form helpers, etc.
+
+
+== Version
+:include: ./version.yml
+
+
+
+== Author
+Steven Hansen (runner@berkeley.edu)
+Steve Downey
+
+
+
+  
+  

@@ -1,0 +1,9 @@
+= UCB Rails Security - Todo
+
+* Add ability for admin/security users to login as other users.
+* Not everyone want to install the security scaffolding by default.  However, currently
+the ucb_security_config.rb file is grouped in with the scaffold generator.  This file should
+have it's own generator so the user isn't forced to install a bunch of scaffolding if all they
+want is to use the ldap and login filters
+* Documentation needs to be reorganized.  Assume that initially people don't want to use the
+scaffolding.  Scaffolding should be discussed in its own section.

@@ -1,0 +1,2 @@
+module UcbSecurity::UsersHelper
+end

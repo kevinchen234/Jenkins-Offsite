@@ -1,0 +1,43 @@
+<h1>View User</h1>
+
+<div class="ucb_rails_security_form">
+<fieldset>
+  <legend>User Details</legend>
+  <% fields_for(@user, :builder => UcbSecurity::Builder) do |f| %>
+    <%= f.text_field('LDAP Uid:', :ldap_uid, {:required => true}, {:readonly => true}) %>
+    <%= f.text_field('First Name:', :first_name, {:required => true}, {:readonly => true}) %>  
+    <%= f.text_field('Last Name:', :last_name, {:required => true}, {:readonly => true}) %>
+    <%= f.text_field('Email:', :email, {}, {:readonly => true}) %>
+    <%= f.text_field('Phone:', :phone, {}, {:readonly => true}) %>
+    <%= f.text_field('Department:', :department, {}, {:readonly => true}) %>
+
+    <p>
+      <div class="button_widget">
+        <%= button_to("Edit", edit_ucb_security_user_path(@user), :method => :get) %> | 
+        <%= link_to("List Users", ucb_security_users_path()) %>
+      </div>
+    </p>
+  <% end %>
+</fieldset>
+</div>
+
+<br/>
+
+<div class="ucb_rails_security_form">
+<fieldset>
+  <legend>User Roles</legend>
+    <% if @user.roles.empty? %>
+      <p>This user has no roles</p>
+    <% else %>
+    <ul>
+      <% @user.roles.each do |r| %>
+        <li><%= link_to(r.name, ucb_security_role_path(r)) %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <div class="button_widget">
+    <%= button_to("Edit", edit_ucb_security_user_roles_path(@user), :method => :get) %>
+  </div>
+</fieldset>
+</div>

@@ -1,0 +1,8 @@
+= UCB Rails Security - Changelog
+
+rel-3.0.0 Upgrade for Ruby 1.9.3 and Rails 3.2.3
+
+rel-2.1.0 Revamped Rdoc.  Added 2 new generators: ucb_security_initializer and ucb_security_models.  
+ucb_security_initializer generates the rails initializer without all the scaffolding.  ucb_security_models
+generates just the models.  Changed default log level to LOGGER::INFO.
+

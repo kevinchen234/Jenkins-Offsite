@@ -1,0 +1,17 @@
+<h1>Roles for: <%= h @user.full_name %></h1>
+
+<% form_for([:ucb_security, @user], :url => ucb_security_user_roles_path(@user), :html => {:method => :put}) do %>
+  <ul style="display: inline; list-style-type: none;">
+  <% @roles.each do |role| %>
+      <li><%= check_box_tag('user[role_ids][]', role.id, @user.roles.include?(role)) %>
+      <%= role.name %></li>
+  <% end %>
+  </ul>
+
+  <br/><br/>
+
+  <div class="record_widget">
+    <%= submit_tag("Update") %> |
+    <%= link_to("Done", ucb_security_user_path(@user)) %>
+  </div>
+<% end %>

@@ -131,68 +131,75 @@ describe "User" do
 
   describe "#find_from_filter" do
 
-    it "disabled" do
-      User.should_receive(:disabled)
-      User.find_from_filter("disabled")
+    context "with recognized param" do
+
+      it "disabled returns User.disabled" do
+        User.should_receive(:disabled)
+        User.find_from_filter("disabled")
+      end
+
+      it "buyers returns User.campus_buyers" do
+        User.should_receive(:campus_buyers)
+        User.find_from_filter("buyers")
+      end
+
+      it "admins returns User.admins" do
+        User.should_receive(:admins)
+        User.find_from_filter("admins")
+      end
+
     end
 
-    it "buyers" do
-      User.should_receive(:campus_buyers)
-      User.find_from_filter("buyers")
+    context "without recognized param" do
+
+      it "blank returns User.all" do
+        User.should_receive(:all)
+        User.find_from_filter("")
+      end
+
+      it "nil returns User.all" do
+        User.should_receive(:all)
+        User.find_from_filter(nil)
+      end
+
+      it "any filter string that is not in FILTER_BY_OPTIONS returns User.all" do
+        User.should_receive(:all)
+        User.find_from_filter("foobar")
+      end
+
     end
 
-    it "admins" do
-      User.should_receive(:admins)
-      User.find_from_filter("admins")
+  end
+
+  describe "#new_from_ldap_uid" do
+
+    context "with a ldap_uid that is found in ldap" do
+
+      it "finds the ldap record and returns a new user with the ldap_uid set" do
+        ldap_uid = 114027 # users(:minimal_for_validation).ldap_uid
+        #ldap = double("UCB::LDAP::Person")
+        #ldap.stub(:find_by_uid).with(:ldap_uid)
+        user = User.new_from_ldap_uid(ldap_uid)
+        user.new_record?.should be_true
+        user.ldap_uid.should == ldap_uid
+      end
+
     end
 
+    context "with nil" do
+
+      it "returns new untainted user" do
+        user = User.new_from_ldap_uid(nil)
+        user.new_record?.should be_true
+        user.ldap_uid.should be_nil
+      end
+
+    end
   end
 end
 
-
 =begin
 
-  end
-
-
-  it "should find by filter when snt #find_from_filter(filter)" do
-    # disabled filter
-    disabled = User.find_from_filter("disabled")
-    disabled.should have(1).user
-    disabled[0].email.should == "disabled@berkeley.edu"
-
-    # buyer filter
-    buyers = User.find_from_filter("buyers")
-    buyers.should have(2).users
-    buyers.each { |p| p.roles.map(&:name).include?("buyer").should be_true }
-
-    # admin filter
-    admins = User.find_from_filter("admins")
-    admins.should have(2).users
-    admins.each { |p| p.roles.map(&:name).include?("admin").should be_true }
-
-    # Any filter where FILTER !IN FILTER_BY_OPTIONS returns all users
-    all = User.find_from_filter("")
-    all.should have(7).users
-
-    all = User.find_from_filter(nil)
-    all.should have(7).users
-
-    all = User.find_from_filter("invalid filter")
-    all.should have(7).users
-  end
-
-  it "should instantiate new user when sent #new_from_ldap_uid" do
-    # user if found, copy attributes over
-    user = User.new_from_ldap_uid(@admin.ldap_uid)
-    user.new_record?.should be_true
-    user.ldap_uid.should == @admin.ldap_uid
-
-    # user is not found, return new untainted user
-    user = User.new_from_ldap_uid(nil)
-    user.new_record?.should be_true
-    user.ldap_uid.should be_nil
-  end
 
   it "should not allow a user to be deleted if it is referenced by other records" do
     runner = users(:runner)

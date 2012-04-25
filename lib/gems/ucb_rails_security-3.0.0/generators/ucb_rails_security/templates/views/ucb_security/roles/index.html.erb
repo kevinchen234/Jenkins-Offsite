@@ -1,0 +1,34 @@
+<h1>Listing Roles</h1>
+
+<div class="new_record_widget">
+  <%= link_to('New Role', new_ucb_security_role_path()) %>
+</div>
+
+
+<table class="horizontal mid_width">
+  <tr>
+    <th colspan="3" width="1%"></th>
+    <th>Name</th>
+    <th>Description</th>
+  </tr>
+
+<% for role in @roles %>
+  <tbody class="highlight">
+  <tr>
+    <td><%= link_to('View', ucb_security_role_path(role)) %></td>
+    <td><%= link_to('Edit', edit_ucb_security_role_path(role)) %></td>
+    <td><%= link_to('Delete', ucb_security_role_path(role), :confirm => 'Are you sure?', :method => :delete) %></td>
+    <td><%=h role.name %></td>
+    <td><%=h role.description %></td>
+  </tr>
+  </tbody>
+<% end %>
+</table>
+
+<br />
+
+<% if @roles.size > 15 %>
+    <div class="new_record_widget">
+      <%= link_to('New Role', new_ucb_security_role_path()) %>
+    </div>
+<% end %>

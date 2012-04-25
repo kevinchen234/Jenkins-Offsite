@@ -1,0 +1,29 @@
+<h1>New User</h1>
+
+<p>
+  <%= link_to("Search Ldap for New User", ucb_security_ldap_search_url()) %>
+</p>
+
+
+<div class="ucb_rails_security_form">
+  <fieldset>
+    <legend>User Details</legend>
+    <% form_for([:ucb_security, @user], :builder => UcbSecurity::Builder) do |f| %>
+  
+      <%= f.text_field('LDAP Uid:', :ldap_uid, :required => true) %>
+      <%= f.text_field('First Name:', :first_name, :required => true) %>  
+      <%= f.text_field('Last Name:', :last_name, :required => true) %>
+      <%= f.text_field('Email:', :email) %>
+      <%= f.text_field('Phone:', :phone) %>
+      <%= f.text_field('Department:', :department) %>
+  
+      <p>
+        <div class="button_widget">
+          <%= f.submit("Create") %> | 
+          <%= link_to("Back", ucb_security_users_path) %>
+        </div>
+      </p>
+    <% end %>
+  </fieldset>
+</div>
+  

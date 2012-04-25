@@ -1,0 +1,14 @@
+
+<% if @role.users.size > 0 %>
+<ul>
+<% @role.users.each do |user| %>
+  <li><%= link_to(user.display_name, ucb_security_user_url(user), :id => "user_#{user.id}") %></li>
+<% end %>
+</ul>
+<% else %>
+  <p>No uses are associated with this role</p>
+<% end %>
+
+<div class="button_widget">
+    <%= button_to("Edit", edit_ucb_security_role_users_url(@role), :method => :get) %>
+</div>

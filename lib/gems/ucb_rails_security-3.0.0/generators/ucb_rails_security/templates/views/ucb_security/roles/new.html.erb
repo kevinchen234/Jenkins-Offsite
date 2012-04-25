@@ -1,0 +1,19 @@
+<h1>New Role</h1>
+
+<div class="ucb_rails_security_form">
+<fieldset>
+  <legend>Role Details</legend>
+  <% form_for([:ucb_security, @role], :builder => UcbSecurity::Builder) do |f| %>
+
+    <%= f.text_field('Name:', :name, :required => true) %>
+    <%= f.text_area('Description:', :description, {}, {:rows => 6}) %>  
+
+    <p>
+      <div class="button_widget">
+        <%= f.submit("Create") %> | 
+        <%= link_to("Back", ucb_security_roles_path) %>
+      </div>
+    </p>
+  <% end %>
+</fieldset>
+</div>

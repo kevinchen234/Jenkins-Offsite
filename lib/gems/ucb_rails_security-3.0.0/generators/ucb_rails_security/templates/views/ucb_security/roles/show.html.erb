@@ -1,0 +1,27 @@
+<h1>View Role</h1>
+
+<div class="ucb_rails_security_form">
+  <fieldset>
+    <legend>Role Details</legend>
+    <% fields_for(@role, :builder => UcbSecurity::Builder) do |f| %>
+      <%= f.text_field('Name:', :name, {:required => true}, {:readonly => true}) %>
+      <%= f.text_area('Description:', :description, {}, {:readonly => true, :rows => 6}) %>  
+  
+      <p>
+        <div class="button_widget">
+          <%= button_to("Edit", edit_ucb_security_role_path(@role), :method => :get) %> | 
+          <%= link_to("List Roles", ucb_security_roles_path()) %>
+        </div>
+      </p>
+    <% end %>
+  </fieldset>
+</div>
+
+<br/>
+
+<div class="ucb_rails_security_form">
+  <fieldset>
+    <legend>Role Users</legend>
+    <%= render(:partial => 'users') %>
+  </fielset>
+</div>

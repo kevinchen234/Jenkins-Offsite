@@ -1,0 +1,10 @@
+<div id="navbar">
+  <ul>
+    <% users_class = params[:controller] =~ /users/ ? "class='current'" : "" %>
+    <% roles_class = params[:controller] =~ /roles/ ? "class='current'" : "" %>
+    <% help_class = params[:controller] =~ /help/ ? "class='current'" : "" %>
+    <li <%= users_class %>><%= link_to('Users', ucb_security_users_path()) %></li>
+    <li <%= roles_class %>><%= link_to('Roles', ucb_security_roles_path()) %></li>
+  </ul>
+</div>
+<div id="navbar_footer"><hr style="display:none;"></div>

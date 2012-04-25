@@ -1,0 +1,23 @@
+<h1>Edit user</h1>
+
+<div class="ucb_rails_security_form">
+<fieldset>
+  <legend>User Details</legend>
+  <% form_for([:ucb_security, @user], :builder => UcbSecurity::Builder) do |f| %>
+
+    <%= f.text_field('LDAP Uid:', :ldap_uid, :required => true) %>
+    <%= f.text_field('First Name:', :first_name, :required => true) %>  
+    <%= f.text_field('Last Name:', :last_name, :required => true) %>
+    <%= f.text_field('Email:', :email) %>
+    <%= f.text_field('Phone:', :phone) %>
+    <%= f.text_field('Department:', :department) %>
+
+    <p>
+      <div class="button_widget">
+        <%= f.submit("Update") %> | 
+        <%= link_to("Done", ucb_security_user_path(@user)) %>
+      </div>
+    </p>
+  <% end %>
+</fieldset>
+</div>

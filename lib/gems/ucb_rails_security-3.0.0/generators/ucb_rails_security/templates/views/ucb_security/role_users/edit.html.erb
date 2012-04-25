@@ -1,0 +1,37 @@
+<h1>Role: <i><%= h @role.name.capitalize %></i></h1>
+
+
+<% form_for([:ucb_security, @user, @role], :url => ucb_security_role_users_path(@role), :html => {:method => :put}) do %>
+  <table class="doubleSelectList">
+    <tr>
+      <td width="40%">
+        <label>Users without Role: <i><%= @role.name.capitalize %></i></label><br/>
+        <%= select_tag("", options_for_select(@unassociated_users), 
+                       :id => 'users_wo_role', :multiple => true, :size => 10) %>
+      </td>
+      <td width="20%" class="buttons">
+        <label>Move Selected</label><br/>
+        <%= button_to_function(">", "DoubleSelectList.moveSelected('users_wo_role', 'users_w_role')") %><br/>
+        <%= button_to_function("<", "DoubleSelectList.moveSelected('users_w_role', 'users_wo_role')") %><br/>
+        <br/>
+  
+        <label>Move All</label><br/>
+        <%= button_to_function(">>", "DoubleSelectList.moveAll('users_wo_role', 'users_w_role')") %><br/>
+        <%= button_to_function("<<", "DoubleSelectList.moveAll('users_w_role', 'users_wo_role')") %><br/>
+      </td>
+      <td width="40%">
+        <label>Users with Role: <i><%= @role.name.capitalize %></i></label><br/>
+        <%= select_tag("user_ids[]", options_for_select(@associated_users), 
+                       :id => 'users_w_role', :multiple => true, :size => 10) %>
+      </td>
+    </tr>
+  </table>
+  
+  <div class="button_widget">
+    <%= submit_tag("Update", :id => 'update_button') %> | <%= link_to("Done", ucb_security_role_path(@role)) %>
+  </div>
+<% end %>
+
+<%= javascript_tag("DoubleSelectList.initSubmitCallback('update_button', 'users_wo_role', 'users_w_role')") %>
+
+

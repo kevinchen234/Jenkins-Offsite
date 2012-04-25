@@ -1,0 +1,11 @@
+<% if @unassociated_users.empty? %>
+  <p>There are no unassociated users</p>
+<% else %>
+  <% form_tag(role_users_path(:role_id => @role), :method => :put) do %>
+    <%= select_tag('role[user_ids][]', options_for_select(@unassociated_users), :multiple => 'true', :size => 13) %>
+    <% @role_users .each do |ru| %>
+      <%= hidden_field_tag('role[user_ids][]', ru.id ) %>
+    <% end %>
+    <%= submit_tag('Add') %>
+  <% end %>
+<% end %>

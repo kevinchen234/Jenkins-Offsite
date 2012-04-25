@@ -1,0 +1,9 @@
+
+You also neet to <tt>include<tt> UCB::Rails::Security::ControllerMethods</tt>
+in your controller class.  This can be done in each controller, but should probably be done in <tt>application.rb</tt>:
+
+  # ../app/controllers/application.rb
+  
+  class ApplicationController < ActionController::Base
+    include UCB::Rails::Security::ControllerMethods
+  end

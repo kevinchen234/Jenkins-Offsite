@@ -1,0 +1,62 @@
+<h1>Ldap Search</h1>
+
+<br/>
+
+<div class="ucb_rails_security_form">
+    <% form_tag(ucb_security_ldap_search_path, :method => :get) do %>
+      <p>
+        <%= label('search_term', 'Search Term') %>
+        <%= select_tag('search_term', options_for_select(@select_options, @search_term)) %>
+      </p>
+
+      <p>
+        <%= label('search_value', 'Search Value') %>
+        <%= text_field_tag('search_value', params[:search_value], :size => 30) %>
+      </p>
+   
+      <p>
+        <div class="button_widget">
+          <%= submit_tag("Search") %> | 
+          <%= link_to('Clear', ucb_security_ldap_search_path()) %>
+        </div>
+      </p>
+    <% end %>
+</div>
+
+<br/>
+
+<% if @search_initiated && @ldap_people.empty? %>
+
+  <p class="empty_search_results">Your search did not match any people in the directory.</p>
+
+<% elsif !@ldap_people.empty? %>
+
+  <h2>LDAP Search Results</h2>
+  <p>Click on the person's LDAP UID to populate a form with their LDAP data</p>
+
+   <table class='horizontal max_width'>
+      <tr>
+         <th width="1%">LDAP UID</th>
+         <th>First</th>
+         <th>Last</th>
+         <th>Dept Code</th>
+         <th>Department</th>
+         <th>Phone</th>
+         <th>Email</th>
+      </tr>
+      <tbody class="highlight">
+      <% @ldap_people.each do |p| %>
+         <tr>
+           <td><%= link_to(p.uid, new_ucb_security_user_path(:ldap_uid => p.uid, :givenname => params[:givenname], :sn => params[:sn])) %></td>
+           <td><%=h p.first_name %></td>
+           <td><%=h p.last_name %></td>
+           <td><%=h p.dept_code %></td>
+           <td><%=h p.dept_name %></td>
+           <td><%=h p.phone %></td>
+           <td><%=h p.email %></td>
+        </tr>
+      <% end %>
+      </tbody>
+   </table>
+
+<% end %>

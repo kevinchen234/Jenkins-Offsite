@@ -1,0 +1,347 @@
+#container {
+  width: 100%;
+  background-color: #fff;
+  color: #333;
+  line-height: 160%;
+  vertical-align: top;
+}
+
+#main {
+  padding: 1.5em;
+  overflow: clip; 
+  vertical-align: top;
+}
+
+#site_header {
+  color: #02305c;
+  font-weight: bold;
+  font-size: 1.8em;
+  padding: .5em;
+  background-color: #fff;
+}
+
+#site_header div {
+  font-size: .4em;
+  float: right;
+}
+
+#site_header div strong {
+  color: black;
+  font-style: oblique;
+}
+/* Start General Element Styles */
+html { 
+  padding: 0em;
+}
+
+body { 
+  margin: 0em;
+  background-color: white;
+}
+
+a, a:visited, a:hover { 
+  color: #0058c4;
+  text-decoration: underline;
+}
+
+/*p {
+  margin: 0px 1em;
+  line-height: 1.5em;
+  color: black;
+}*/
+
+h1 {
+  font-size: 150%;
+  color: black;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 120%;
+  color: black;
+}
+/* End General Element Styles */
+
+.max_width {
+  width: 100%;
+}
+
+.mid_width {
+  width: 75%;
+}
+
+.min_width {
+  width: 40%;
+}
+
+.align_right {
+  text-align: right;
+}
+
+.align_left {
+  text-align: left;
+}
+
+.align_center {
+  text-align: center;
+}
+
+.red_text p { 
+  text-align: center; 
+  font-size: 100%;
+  color: red;
+}
+
+/* End General Element Styles */
+
+
+.note {
+  color: red;
+  font-weight: bold;
+}
+
+.error {
+  margin-bottom: 2em;
+  background-color: #c40d0d;
+  text-align: center;
+  font-size: 110%;
+  padding: 1px;
+  border: 1px solid gray;
+  color: white;
+}
+
+.notice {
+  margin-bottom: 2em;
+  background-color: #dbffb4;
+  text-align: center;
+  font-family: arial;
+  padding: 1px;
+  border: 1px solid gray;
+  color: black;
+}
+
+#footer {
+  margin: 1em;
+  text-align: center;
+  margin: 1em;
+}
+
+div.button_widget {
+  margin: .2em 0em .4em 0em;
+}
+
+.button_widget form, .button_widget div {
+  display: inline;
+}
+
+div.new_record_widget a {
+  color: #fe7600;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+div.button_widget a, div.button_widget {
+  font-size: 14px;
+}
+
+#logout_link {
+  color: #fe7600;
+}
+
+
+/********* tables *********/
+
+input[readonly], textarea[readonly] {
+  border: 1px dotted #bcbcbc;
+  padding: 2px;
+}
+
+table {
+  vertical-align: top;
+  border: 1px solid black;
+  border-collapse: collapse;
+  margin: 0 0 1.5em 0;
+}
+
+table td {
+  border: 1px solid black;
+  padding: 0px 5px;
+  color: black;
+}
+
+table th {
+  border: 1px solid black;
+  color: black;
+  background-color: #ccc;
+  white-space: nowrap;
+  padding: 0px 5px;
+  text-align: left;
+}
+
+table.vertical th {
+  background-color: #eee;
+  white-space: nowrap;
+  text-align: right;
+}
+
+caption {
+  font-weight: bold;
+  color: white;
+  background-color: #26A;
+  border: 1px solid black;
+  text-align: center;
+  padding: 4px;
+  font-size: 110%;
+}
+
+table.horizontal th {
+  background-color: #fff;
+  text-align: left;
+  font-size: 90%;
+}
+
+table tbody.highlight tr:hover {
+  background-color: #ffd;
+}
+
+.blue {
+  padding: 2px 5px;
+  border: 1px solid black;
+  border-bottom: 0px;
+  color: white;
+  background-color: #58B;
+  font-size: 110%;
+  font-weight: bold;
+  text-align: left;
+  margin: 0px;
+}
+
+.empty_result_set {
+  font-weight: bold;
+  text-align: center;
+  border: 1px solid black;
+}
+
+/** tabbed navigation **/
+
+#navbar_footer {
+  clear: both;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  /* sync these values, line-height is needed for IE */
+  height: 4px;
+  line-height: 4px;
+  border-bottom: 1px solid #9C9C9C;
+  background: #81BBF2;
+}
+
+#navbar ul {
+  clear: both;
+  display: block;
+  margin: 0;
+  background-color: gray;
+  font-size: 15px;
+}
+
+#navbar li {
+  float: left;
+  display: block;
+  margin: 0 2px;
+  padding: 0px 5px;
+  border: 1px solid #9C9C9C;
+  background-color: #ffffff;
+  border-bottom: none;
+  white-space: nowrap;
+}
+
+#navbar li a, #navbar li a:visited {
+  color: black;
+  text-decoration: none;    
+}
+
+#navbar li.current a {
+  font-weight: bold;
+}
+
+#navbar li:hover {
+  background: #CCCCCC;
+}
+
+#navbar li.current, #navbar li.current:hover {
+  background-color: #81bbf2;
+}
+
+.ucb_rails_security_form label {
+  width: 8em;
+  float: left;
+  text-align: right;
+  margin-right: 0.5em;
+  display: block;
+  font-size: 1em;
+  padding-right: 2px;
+  font-weight: bold;
+}
+
+.ucb_rails_security_form input[type=text] {
+  font-size: .9em;
+}
+
+.ucb_rails_security_form select[multiple] {
+  font-size: .8em;
+  padding: .5em;
+  margin-top: 0px;
+  width: 350px;
+}
+
+
+.ucb_rails_security_form fieldset {
+  width: 65%;
+  overflow: visible;
+  border: 1px solid #999999;
+}
+
+.ucb_rails_security_form legend {
+  background-color: #efefef;
+  font-family: sans-serif;
+  padding: 0em .5em;
+  border: 1px solid black;
+  font-size: .8em;
+  font-weight: bold;
+}
+
+div.button_widget {
+  margin-left: 6em;
+}
+
+.fieldWithErrors {
+  padding: 2px;
+  background-color: red;
+  display: table;
+}
+
+
+
+table.doubleSelectList {
+  border: 0px solid white;
+}
+
+table.doubleSelectList td {
+  text-align: center; 
+  vertical-align: top; 
+  border: 0px solid white;
+}
+
+table.doubleSelectList td.buttons {
+  text-align: center; 
+  vertical-align: middle;
+  color: gray; 
+  border: 0px solid white;
+}
+
+.doubleSelectList select[multiple] {
+  font-size: .8em;
+  padding: .5em;
+  margin-top: 0px;
+  width: 350px;
+}

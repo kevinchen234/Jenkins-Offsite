@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+    <head>
+        <title>UCB Rails Security - <%= @title %></title>
+        <%= stylesheet_link_tag 'ucb_security' %>
+        <%= javascript_include_tag :defaults, 'ucb_security' %>
+    </head>
+    
+    <body>
+        <div id="site_header">
+            UCB Rails Security
+        </div>
+
+        <div id="container">
+            <%= render :partial => 'layouts/ucb_security/main_navigation' %>
+
+            <div id="main">
+              <div id="message"><%= display_message() %></div>
+              <h1><%= @title %></h1>
+              <%= yield %>
+            </div>
+        </div>
+    </body>
+</html>
