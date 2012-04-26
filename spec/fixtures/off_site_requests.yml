@@ -1,3 +1,14 @@
+minimal_for_validation:
+  created_at: "2000-12-31 12:12:59Z"
+  updated_at: "2000-12-31 12:12:59Z"
+  hostname: asdfasdfds.berkeley.edu
+  name_of_group:
+  relationship_of_group:
+  hostname_in_use: false
+  confirmed_service_qualifications: false
+  for_department_sponsor: false
+  meets_ctc_criteria: false
+
 jack_request_1:
   submitter: jack
   hostname: jack.berkeley.edu
