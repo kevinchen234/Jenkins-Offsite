@@ -36,7 +36,7 @@ class OffSiteRequest < ActiveRecord::Base
   validates_presence_of :relationship_of_group, :if => lambda { |r| r.for_department_sponsor? === false }
   validates_inclusion_of :hostname_in_use, :in => [true, false], :message => REQ_MSG
   validates_inclusion_of :confirmed_by_campus_official, :in => [true, false], :message => REQ_MSG,
-    :if => lambda { |r| !r.confirmed_by_campus_official.blank? }
+    :if => lambda { |r| r.confirmed_by_campus_official.present? }
   validates_inclusion_of :arachne_or_socrates, :in => [true, false], :if => lambda { |r| r.hostname_in_use? },
     :message => REQ_MSG
   validates_inclusion_of :confirmed_service_qualifications, :in => [true, false], :message => REQ_MSG
