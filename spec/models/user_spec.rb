@@ -202,7 +202,7 @@ describe "User" do
       user.off_site_requests << osr
       user.save!
       user.off_site_requests.should have(1).records
-      lambda {user.destroy}.should raise_error
+      lambda {user.destroy}.should raise_error DestroyWithReferencesError
      end
 
     it "should allow a user to be deleted if it is not referenced by other records" do
