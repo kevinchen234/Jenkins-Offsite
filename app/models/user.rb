@@ -22,11 +22,11 @@ class User < ActiveRecord::Base
   ##
   # Make sure we can't delete this record if other records depend on it.
   #
-  def before_destroy
-    if !off_site_requests.empty?
-      errors.add_to_base("Unable to delete:  record is referenced by #{off_site_requests.length} Off-site Request records")
-      false
+  def destroy
+    if off_site_requests.present?
+      raise "Unable to delete: record is referenced by #{off_site_requests.length} Off-site Request records"
     end
+    super
   end
 
   def protected_attributes=(params = {})
