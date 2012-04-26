@@ -1,3 +1,4 @@
+require File.dirname(__FILE__) + '/../environment.rb'
 require 'ucb_rails_security'
 
 # Uncomment this if your Application uses a user table
