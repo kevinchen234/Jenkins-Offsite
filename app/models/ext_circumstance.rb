@@ -7,16 +7,14 @@ class ExtCircumstance < ActiveRecord::Base
   validates_presence_of :description
   validates_uniqueness_of :description
   validates_inclusion_of :enabled, :in => [true, false]
-  
-  ##
-  # Make sure we can't delete this record if other records depend on it.
-  #
-  def before_destroy
+
+  def destroy
     if off_site_requests.present?
-      errors.add_to_base("Unable to delete:  record is referenced by #{off_site_requests.length} User records")
-      false
+      raise DestroyWithReferencesError.new("Off-site Request", off_site_requests.length)
     end
+    super
   end
+
   
   def self.select_list
     self.enabled.map { |ext| [ext.description, ext.id] }

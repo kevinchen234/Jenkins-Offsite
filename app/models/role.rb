@@ -7,14 +7,11 @@ class Role < ActiveRecord::Base
   
   ADMIN = 'admin'
   BUYER = 'buyer'
-  
-  ##
-  # Make sure we can't delete this record if other records depend on it.
-  #
-  def before_destroy
-    if !users.empty?
-      errors.add_to_base("Unable to delete:  record is referenced by #{users.length} User records.")
-      false
+
+  def destroy
+    if users.present?
+      raise DestroyWithReferencesError.new("User", users.length)
     end
+    super
   end
 end

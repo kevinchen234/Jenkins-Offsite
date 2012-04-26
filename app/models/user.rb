@@ -19,12 +19,9 @@ class User < ActiveRecord::Base
   scope :campus_buyers, joins(:roles).where("roles.name = '#{Role::BUYER}'")
   scope :admins, joins(:roles).where("roles.name = '#{Role::ADMIN}'")
 
-  ##
-  # Make sure we can't delete this record if other records depend on it.
-  #
   def destroy
     if off_site_requests.present?
-      raise "Unable to delete: record is referenced by #{off_site_requests.length} Off-site Request records"
+      raise DestroyWithReferencesError.new("Off-site Request", off_site_requests.length)
     end
     super
   end
