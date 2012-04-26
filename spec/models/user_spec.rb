@@ -5,6 +5,7 @@ include RspecIntegrationHelpers
 describe "User" do
 
   fixtures :users
+  fixtures :off_site_requests
 
   #before(:each) do
   #  @user = users(:runner)
@@ -196,16 +197,32 @@ describe "User" do
 
     end
   end
+
+  describe "#destroy has referential integrity" do
+
+    it "should not allow a user to be deleted if it is referenced by other records" do
+      user = users(:minimal_for_validation)
+      osr = off_site_requests(:minimal_for_validation)
+      user.off_site_requests << osr
+      user.save!
+      user.off_site_requests.should have(1).records
+      lambda {user.destroy}.should raise_error
+     end
+
+    it "should allow a user to be deleted if it is not referenced by other records" do
+      user = users(:minimal_for_validation)
+      user.off_site_requests.clear
+      user.save!
+      user.off_site_requests.should be_empty
+      user.destroy.should be_true
+    end
+  end
+
 end
 
 =begin
 
 
-  it "should not allow a user to be deleted if it is referenced by other records" do
-    runner = users(:runner)
-    runner.off_site_requests.should have(2).records
-    runner.destroy.should be_false
-  end
 
   it "should allow a user to be deleted if it is not referenced by other records" do
     runner = users(:runner)
