@@ -12,7 +12,7 @@ class ExtCircumstance < ActiveRecord::Base
   # Make sure we can't delete this record if other records depend on it.
   #
   def before_destroy
-    if !off_site_requests.empty?
+    if off_site_requests.present?
       errors.add_to_base("Unable to delete:  record is referenced by #{off_site_requests.length} User records")
       false
     end
