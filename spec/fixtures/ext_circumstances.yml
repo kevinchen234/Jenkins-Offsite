@@ -1,4 +1,4 @@
-ext_one:
+minimal_for_validation:
   description: IST is too expensive
   enabled: true
 
