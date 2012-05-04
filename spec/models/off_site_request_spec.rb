@@ -1,223 +1,343 @@
 require 'spec_helper'
 
 describe "OffSiteRequest validation" do
-  fixtures :statuses, :roles, :users
-  
+  fixtures :off_site_requests, :statuses, :roles, :users
+
+  LDAP_UID_NOT_IN_DB = 212372
+
+  let(:valid) {
+    osr = off_site_requests(:minimal_for_validation)
+    osr.submitter_id = 1
+    osr.campus_official_id = 1
+    osr
+  }
+
+=begin
   before(:each) do
 
+    #attrs = {
+    #  :hostname => "host.berkeley.edu",
+    #  :hostname_in_use => true,
+    #  :arachne_or_socrates => true,
+    #  :sponsoring_department => "EECS",
+    #  :campus_official_id => 1,
+    #  :off_site_service => "stop.berkeley.edu",
+    #  :for_department_sponsor => true,
+    #  :name_of_group => nil,
+    #  :relationship_of_group => nil,
+    #  :confirmed_service_qualifications => true,
+    #  :cns_trk_number => "1234",
+    #  :off_site_ip => "123.123.123.123",
+    #  :meets_ctc_criteria => true
+    #}
+
     attrs = {
-      :hostname => "host.berkeley.edu",
-      :hostname_in_use => true,
       :arachne_or_socrates => true,
       :sponsoring_department => "EECS",
       :campus_official_id => 1,
       :off_site_service => "stop.berkeley.edu",
-      :for_department_sponsor => true,
-      :name_of_group => nil,
-      :relationship_of_group => nil,
-      :confirmed_service_qualifications => true,
       :cns_trk_number => "1234",
       :off_site_ip => "123.123.123.123",
-      :meets_ctc_criteria => true
     }
-    
-    @os_req = OffSiteRequest.new(attrs)
-    @os_req.submitter_id = 1
-    @os_req.campus_official_id = 1
-    @os_req.save!
+
+    minimal_for_validation:
+    osr = OffSiteRequest.new(attrs)
+
+    osr.save!
   end
+=end
 
   it "should be valid" do
-    @os_req.should be_valid
+    valid.should be_valid
   end
-  
+
   it "should require a submitter" do
-    @os_req.submitter_id = nil
-    @os_req.should_not be_valid
-    @os_req.should have(1).error_on(:submitter_id)
+    osr = valid
+    osr.submitter_id = nil
+    osr.should_not be_valid
+    osr.should have(1).error_on(:submitter_id)
   end
-  
+
   it "should require a hostname" do
-    @os_req.hostname = nil
-    @os_req.should_not be_valid
-    @os_req.should have(1).error_on(:hostname)
+    osr = valid
+    osr.hostname = nil
+    osr.should_not be_valid
+    osr.should have(1).error_on(:hostname)
   end
-  
+
   it "should require a unique hostname" do
-    new_req = OffSiteRequest.new()
-    new_req.hostname = "off.berkeley.edu"
-    new_req.valid?
-    new_req.should have(0).error_on(:hostname)
+    osr = OffSiteRequest.new()
+    osr.hostname = "off.berkeley.edu"
+    osr.valid?
+    osr.should have(0).error_on(:hostname)
 
-    new_req.hostname = @os_req.hostname
-    new_req.should_not be_valid
-    new_req.should have(1).error_on(:hostname)
-  end  
-  
+    osr.hostname = valid.hostname
+    osr.should_not be_valid
+    osr.should have(1).error_on(:hostname)
+  end
+
   it "should require hostname to end with .berkeley.edu" do
-    func = lambda { |obj, name|
-      obj.send(:hostname=, name)
-      obj.send(:should_not, be_valid)
-      obj.send(:should, have(1).error_on(:hostname))
-    }
+    osr = valid
 
-    [".edu", ".berkeley" ".berkeleyedu", ".com", ".berkeley.edu.com"].each do |n|
-      func.call(@os_req, "site#{n}")
+    [".edu", ".berkeley" ".berkeleyedu", ".com", ".berkeley.edu.com"].each do |hostname|
+      osr.hostname = hostname
+      osr.should_not be_valid
+      osr.should have(1).error_on(:hostname)
     end
 
-    @os_req.hostname = "site.berkeley.edu"
-    @os_req.should be_valid
-    @os_req.should have(0).errors_on(:hostname)
-  end  
-  
+    osr.hostname = "site.berkeley.edu"
+    osr.should be_valid
+    osr.should have(0).errors_on(:hostname)
+  end
+
+
   it "should require hostname_in_use" do
-    @os_req.hostname_in_use = nil
-    @os_req.should_not be_valid
-    @os_req.should have(1).error_on(:hostname_in_use)
+    osr = valid
+    osr.hostname_in_use = nil
+    osr.should_not be_valid
+    osr.should have(1).error_on(:hostname_in_use)
   end
-  
+
   it "should require sponsoring_department" do
-    @os_req.sponsoring_department = nil
-    @os_req.should_not be_valid
-    @os_req.should have(1).error_on(:sponsoring_department)
+    osr = valid
+    osr.sponsoring_department = nil
+    osr.should_not be_valid
+    osr.should have(1).error_on(:sponsoring_department)
   end
-  
+
   it "should require for_department_sponsor" do
-    @os_req.for_department_sponsor = nil
-    @os_req.should_not be_valid
-    @os_req.should have(1).error_on(:for_department_sponsor)
+    osr = valid
+    osr.for_department_sponsor = nil
+    osr.should_not be_valid
+    osr.should have(1).error_on(:for_department_sponsor)
   end
-  
+
   it "should require off_site_service" do
-    @os_req.off_site_service = nil
-    @os_req.should_not be_valid
-    @os_req.should have(1).error_on(:off_site_service)
+    osr = valid
+    osr.off_site_service = nil
+    osr.should_not be_valid
+    osr.should have(1).error_on(:off_site_service)
   end
-  
+
   it "should require confirmed_service_qualifications" do
-    @os_req.confirmed_service_qualifications = nil
-    @os_req.should_not be_valid
-    @os_req.should have(1).error_on(:confirmed_service_qualifications)
+    osr = valid
+    osr.confirmed_service_qualifications = nil
+    osr.should_not be_valid
+    osr.should have(1).error_on(:confirmed_service_qualifications)
   end
-  
+
   it "should require campus_official" do
-    @os_req.campus_official_id = nil
-    @os_req.should_not be_valid
-    @os_req.should have(1).error_on(:campus_official_id)
+    osr = valid
+    osr.campus_official_id = nil
+    osr.should_not be_valid
+    osr.should have(1).error_on(:campus_official_id)
   end
 
   it "should require meets_ctc_criteria" do
-    @os_req.meets_ctc_criteria = nil
-    @os_req.should_not be_valid
-    @os_req.should have(1).error_on(:meets_ctc_criteria)
-  end  
-  
-  
-  it "should conditionally require name_of_group" do
-    # required  only if for_department_sponsor === false
-    @os_req.for_department_sponsor = false
-    @os_req.name_of_group = nil
-    @os_req.should_not be_valid
-    @os_req.should have(1).error_on(:name_of_group)
-
-    @os_req.for_department_sponsor = true
-    @os_req.name_of_group = nil
-    @os_req.should be_valid
-    @os_req.should have(0).error_on(:name_of_group)
-  end
-  
-  it "should conditionally require relationship_of_group" do
-    # required  only if for_department_sponsor === false
-    @os_req.for_department_sponsor = false
-    @os_req.relationship_of_group = nil
-    @os_req.should_not be_valid
-    @os_req.should have(1).error_on(:relationship_of_group)
-
-    @os_req.for_department_sponsor = true
-    @os_req.relationship_of_group = nil
-    @os_req.should be_valid
-    @os_req.should have(0).error_on(:relationship_of_group)
-  end
-  
-  it "should conditionally require arachne_or_socrates" do
-    # required only if hostname_in_use == true
-    @os_req.hostname_in_use = true
-    @os_req.arachne_or_socrates = nil
-    @os_req.should_not be_valid
-    @os_req.should have(1).error_on(:arachne_or_socrates)
-
-    @os_req.hostname_in_use = false
-    @os_req.arachne_or_socrates = nil
-    @os_req.should be_valid
-    @os_req.should have(0).error_on(:arachne_or_socrates)
+    osr = valid
+    osr.meets_ctc_criteria = nil
+    osr.should_not be_valid
+    osr.should have(1).error_on(:meets_ctc_criteria)
   end
 
-  
+  describe ":name_of_group" do
+
+    it "with department sponsor, does not require name_of_group" do
+      osr = valid
+      osr.for_department_sponsor = true
+      osr.name_of_group = nil
+      osr.should be_valid
+      osr.should have(0).error_on(:name_of_group)
+    end
+
+    it "without department sponsor, does require name_of_group" do
+      osr = valid
+      osr.for_department_sponsor = false
+      osr.name_of_group = nil
+      osr.should_not be_valid
+      osr.should have(1).error_on(:name_of_group)
+    end
+
+  end
+
+  describe ":relationship_of_group" do
+
+    it "without department_sponsor, does require relationship_of_group" do
+      osr = valid
+      osr.for_department_sponsor = false
+      osr.relationship_of_group = nil
+      osr.should_not be_valid
+      osr.should have(1).error_on(:relationship_of_group)
+    end
+
+    it "with department sponsor, does not require relationship_of_group" do
+      osr = valid
+      osr.for_department_sponsor = true
+      osr.relationship_of_group = nil
+      osr.should be_valid
+      osr.should have(0).error_on(:relationship_of_group)
+    end
+
+  end
+
+  describe ":arachne_or_socrates" do
+
+    it "with hostname_in_use, does require arachne_or_socrates" do
+      osr = valid
+      osr.hostname_in_use = true
+      osr.arachne_or_socrates = nil
+      osr.should_not be_valid
+      osr.should have(1).error_on(:arachne_or_socrates)
+    end
+
+    it "without hostname_in_use, does not require arachne_or_socrates" do
+      osr = valid
+      osr.hostname_in_use = false
+      osr.arachne_or_socrates = nil
+      osr.should be_valid
+      osr.should have(0).error_on(:arachne_or_socrates)
+    end
+
+  end
+
   it "should not require off_site_ip" do
-    @os_req.off_site_ip = nil
-    @os_req.should be_valid
-    @os_req.should have(0).error_on(:off_site_ip)
-  end
-  
-  it "should not require cns_trk_number" do
-    @os_req.cns_trk_number = nil
-    @os_req.should be_valid
-    @os_req.should have(0).error_on(:cns_trk_number)
+    osr = valid
+    osr.off_site_ip = nil
+    osr.should be_valid
+    osr.should have(0).error_on(:off_site_ip)
   end
 
+  it "should not require cns_trk_number" do
+    osr = valid
+    osr.cns_trk_number = nil
+    osr.should be_valid
+    osr.should have(0).error_on(:cns_trk_number)
+  end
 
   it "should enforce correct formatting off_site_ip" do
+    osr = valid
     mal_ips = ["123", "123.123", "123.123.123.123.123", "hi"]
     mal_ips.each do |ip|
-      @os_req.off_site_ip = ip
-      @os_req.should_not be_valid
-      @os_req.should have(1).error_on(:off_site_ip)
+      osr.off_site_ip = ip
+      osr.should_not be_valid
+      osr.should have(1).error_on(:off_site_ip)
+    end
+  end
+end
+
+__END__
+
+describe "#campus_official_ldap_uid" do
+
+  context "with ldap_uid that does exist" do
+    before do
+      @uid = LDAP_UID_IN_DB
+      User.find_by_ldap_uid(@uid) or raise "Test setup error: the ldap_uid #{uid} was not found in the db"
+    end
+
+    it "assigns the uid and sets the campus official" do
+      osr = valid
+      osr.campus_official_ldap_uid = @uid
+      osr.campus_official_ldap_uid.should == @uid
+      osr.campus_official.should eql User.find_by_ldap_uid(@uid)
+    end
+
+  end
+
+  context "with ldap_uid that does not exist" do
+
+    before do
+      @uid = LDAP_UID_NOT_IN_DB
+      User.find_by_ldap_uid(@uid) and raise "Test setup error: the ldap_uid #{uid} was found in the db"
+    end
+
+    it "assigns the uid and creates a campus official with the same uid" do
+      osr = valid
+      # Assigns the uid
+      osr.campus_official_ldap_uid = @uid
+      osr.campus_official_ldap_uid.should == @uid
+      # And has created the new uyser with the ldap uid""
+      osr.campus_official.should eql User.find_by_ldap_uid(@uid)
+      osr.campus_official.ldap_uid.should == @uid
     end
   end
 
-  it "should require eligible Campus Official" do
-    ### Ineligible Campus Official: 212372 => AFFILIATE-Normal ###
-    affilate_ldap_uid = 212372
-    User.find_by_ldap_uid(affilate_ldap_uid).should be_nil
-    @os_req.campus_official_ldap_uid = affilate_ldap_uid
-    # Record was created in Users table
-    campus_official = User.find_by_ldap_uid(affilate_ldap_uid)
-    campus_official.should_not be_nil
-    campus_official.ldap_uid.should eql(affilate_ldap_uid)
-    # Not valid Campus Official
-    @os_req.should_not be_valid
-    @os_req.should have(1).errors_on(:campus_official_id)
+end
 
-    
-    ### Eligible Campus Official 322585 => EMPLOYEE-Staff ###
-    staff_ldap_uid = 322585
-    p = UCB::LDAP::Person.find_by_uid(staff_ldap_uid)
-    # test ids currently always return expired status so we stub valid affiliations
-    p.stub!(:affiliations).and_return(["EMPLOYEE-TYPE-STAFF"])
-    UCB::LDAP::Person.stub!(:find_by_uid).and_return(p)
-    User.find_by_ldap_uid(staff_ldap_uid).should be_nil
-    @os_req.campus_official_ldap_uid = staff_ldap_uid
-    # Record was created in Users table
-    campus_official = User.find_by_ldap_uid(staff_ldap_uid)
-    campus_official.should_not be_nil
-    campus_official.ldap_uid.should eql(staff_ldap_uid)
-    # Valid Campus Official    
-    @os_req.should be_valid
-    @os_req.should have(0).errors_on(:campus_official_id)
+describe "should require eligible Campus Official" do
+
+  context "with Ineligible Campus Official: 212372 => AFFILIATE-Normal ###" do
+
+    it "errors" do
+      affilate_ldap_uid = 212372 # bogus number guaranteed not to be in db
+      if User.find_by_ldap_uid(affilate_ldap_uid)
+        raise "Test setup error: the ldap_uid #{affilate_ldap_uid} was found in the db"
+      end
+      osr.campus_official_ldap_uid = affilate_ldap_uid
+                                 # Record was created in Users table
+      campus_official = User.find_by_ldap_uid(affilate_ldap_uid)
+      campus_official.should_not be_nil
+      campus_official.ldap_uid.should eql(affilate_ldap_uid)
+                                 # Not valid Campus Official
+      osr.should_not be_valid
+      osr.should have(1).errors_on(:campus_official_id)
+    end
   end
+
+
+  ### Eligible Campus Official 322585 => EMPLOYEE-Staff ###
+  staff_ldap_uid = 322585
+  p = UCB::LDAP::Person.find_by_uid(staff_ldap_uid)
+  # test ids currently always return expired status so we stub valid affiliations
+  p.stub!(:affiliations).and_return(["EMPLOYEE-TYPE-STAFF"])
+  UCB::LDAP::Person.stub!(:find_by_uid).and_return(p)
+  User.find_by_ldap_uid(staff_ldap_uid).should be_nil
+  osr.campus_official_ldap_uid = staff_ldap_uid
+  # Record was created in Users table
+  campus_official = User.find_by_ldap_uid(staff_ldap_uid)
+  campus_official.should_not be_nil
+  campus_official.ldap_uid.should eql(staff_ldap_uid)
+  # Valid Campus Official
+  osr.should be_valid
+  osr.should have(0).errors_on(:campus_official_id)
+end
+
+
+end
+
+
+__END__
+
+  
+
+  
+  
+
+  
+
+  
+
+
+  
+
+
+
+
+
+
 
   it "should require eligible Submitter" do
     ### Ineligible Submitter: 212372 => AFFILIATE-Normal ###
     affilate_ldap_uid = 212372
     User.find_by_ldap_uid(affilate_ldap_uid).should be_nil
-    @os_req.submitter_ldap_uid = affilate_ldap_uid
+    osr.submitter_ldap_uid = affilate_ldap_uid
     # Record was created in Users table
     submitter = User.find_by_ldap_uid(affilate_ldap_uid)
     submitter.should_not be_nil
     submitter.ldap_uid.should eql(affilate_ldap_uid)
     # Not valid Campus Official
-    @os_req.should_not be_valid
-    @os_req.should have(1).errors_on(:submitter_id)
+    osr.should_not be_valid
+    osr.should have(1).errors_on(:submitter_id)
 
     
     ### Eligible Submitter 322585 => EMPLOYEE-Staff ###
@@ -227,14 +347,14 @@ describe "OffSiteRequest validation" do
     p.stub!(:affiliations).and_return(["EMPLOYEE-TYPE-STAFF"])
     UCB::LDAP::Person.stub!(:find_by_uid).and_return(p)
     User.find_by_ldap_uid(staff_ldap_uid).should be_nil
-    @os_req.submitter_ldap_uid = staff_ldap_uid
+    osr.submitter_ldap_uid = staff_ldap_uid
     # Record was created in Users table
     submitter = User.find_by_ldap_uid(staff_ldap_uid)
     submitter.should_not be_nil
     submitter.ldap_uid.should eql(staff_ldap_uid)
     # Valid Campus Official    
-    @os_req.should be_valid
-    @os_req.should have(0).errors_on(:submitter_id)
+    osr.should be_valid
+    osr.should have(0).errors_on(:submitter_id)
   end
 end
 
@@ -243,11 +363,11 @@ describe "An OffSiteRequest" do
   fixtures :statuses
   
   before(:each) do
-    @os_req = OffSiteRequest.new()
+    osr = OffSiteRequest.new()
   end
 
   it "should default status to [Not Approved]" do
-    @os_req.status.should eql(statuses(:not_approved))
+    osr.status.should eql(statuses(:not_approved))
   end
 
   it "should create Campus Official when setting campus_official_ldap_uid" do
@@ -259,7 +379,7 @@ describe "An OffSiteRequest" do
     UCB::LDAP::Person.stub!(:find_by_uid).and_return(p)
     
     User.find_by_ldap_uid(staff_ldap_uid).should be_nil
-    @os_req.campus_official_ldap_uid = staff_ldap_uid
+    osr.campus_official_ldap_uid = staff_ldap_uid
 
     campus_official = User.find_by_ldap_uid(staff_ldap_uid)
     campus_official.ldap_uid.should eql(staff_ldap_uid)
@@ -274,7 +394,7 @@ describe "An OffSiteRequest" do
     UCB::LDAP::Person.stub!(:find_by_uid).and_return(p)
     
     User.find_by_ldap_uid(staff_ldap_uid).should be_nil
-    @os_req.submitter_ldap_uid = staff_ldap_uid
+    osr.submitter_ldap_uid = staff_ldap_uid
 
     submitter = User.find_by_ldap_uid(staff_ldap_uid)
     submitter.ldap_uid.should eql(staff_ldap_uid)
@@ -298,11 +418,11 @@ describe "OffSiteRequest CSV Export" do
   fixtures :statuses, :off_site_requests
   
   before(:each) do
-    @os_req = off_site_requests(:runner_request_1)
+    osr = off_site_requests(:runner_request_1)
   end
 
   it "should have same header cols as attributes csv col header" do
-    @os_req.class.csv_header_cols.should == @os_req.csv_attributes.keys.sort
+    osr.class.csv_header_cols.should == osr.csv_attributes.keys.sort
   end
 end
 
