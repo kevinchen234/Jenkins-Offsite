@@ -1,4 +1,8 @@
 class Status < ActiveRecord::Base
+
+  APPROVED = Status.find_by_name("Approved")
+  NOT_APPROVED = Status.find_by_name("Not Approved")
+
   attr_accessible(:name, :enabled)
   
   has_many :off_site_reqs

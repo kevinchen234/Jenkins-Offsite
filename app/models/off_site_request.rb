@@ -68,11 +68,21 @@ class OffSiteRequest < ActiveRecord::Base
   validates_format_of :off_site_ip, :with => IP_REGEXP, :unless => lambda { |r| r.off_site_ip.blank? }
   validate :validate_campus_official, :validate_submitter, :validate_status
 
-  def before_destroy
+  after_initialize :set_default_status
+
+  #def before_destroy
+  #  if status.approved?
+  #    errors.add_to_base("Really, delete an APPROVED request?!! If you really want to delete it, update its status then delete.")
+  #    false
+  #  end
+  #end
+
+  def destroy
     if status.approved?
-      errors.add_to_base("Really, delete an APPROVED request?!! If you really want to delete it, update its status then delete.")
-      false
+      errors[:base] << "Really, delete an APPROVED request?!! If you really want to delete it, update its status then delete."
+      return false
     end
+    super
   end
 
   def validate_campus_official
@@ -99,9 +109,9 @@ class OffSiteRequest < ActiveRecord::Base
     end
   end
 
-  def after_initialize
+  def set_default_status
     if read_attribute(:status_id).nil?
-      self.status_id = Status.find_by_name("Not Approved").id
+      self.status = Status::NOT_APPROVED
     end
   end
 

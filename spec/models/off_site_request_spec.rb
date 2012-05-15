@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "OffSiteRequest validation" do
+describe "OffSiteRequest" do
   fixtures :off_site_requests, :statuses, :roles, :users
 
   LDAP_UID_NOT_IN_DB = 212372
@@ -47,183 +47,219 @@ describe "OffSiteRequest validation" do
   end
 =end
 
-  it "should be valid" do
-    valid.should be_valid
-  end
+  describe "validation" do
 
-  it "should require a submitter" do
-    osr = valid
-    osr.submitter_id = nil
-    osr.should_not be_valid
-    osr.should have(1).error_on(:submitter_id)
-  end
+    it "should be valid" do
+      valid.should be_valid
+    end
 
-  it "should require a hostname" do
-    osr = valid
-    osr.hostname = nil
-    osr.should_not be_valid
-    osr.should have(1).error_on(:hostname)
-  end
+    it "should require a submitter" do
+      osr = valid
+      osr.submitter_id = nil
+      osr.should_not be_valid
+      osr.should have(1).error_on(:submitter_id)
+    end
 
-  it "should require a unique hostname" do
-    osr = OffSiteRequest.new()
-    osr.hostname = "off.berkeley.edu"
-    osr.valid?
-    osr.should have(0).error_on(:hostname)
-
-    osr.hostname = valid.hostname
-    osr.should_not be_valid
-    osr.should have(1).error_on(:hostname)
-  end
-
-  it "should require hostname to end with .berkeley.edu" do
-    osr = valid
-
-    [".edu", ".berkeley" ".berkeleyedu", ".com", ".berkeley.edu.com"].each do |hostname|
-      osr.hostname = hostname
+    it "should require a hostname" do
+      osr = valid
+      osr.hostname = nil
       osr.should_not be_valid
       osr.should have(1).error_on(:hostname)
     end
 
-    osr.hostname = "site.berkeley.edu"
-    osr.should be_valid
-    osr.should have(0).errors_on(:hostname)
-  end
+    it "should require a unique hostname" do
+      osr = OffSiteRequest.new()
+      osr.hostname = "off.berkeley.edu"
+      osr.valid?
+      osr.should have(0).error_on(:hostname)
 
+      osr.hostname = valid.hostname
+      osr.should_not be_valid
+      osr.should have(1).error_on(:hostname)
+    end
 
-  it "should require hostname_in_use" do
-    osr = valid
-    osr.hostname_in_use = nil
-    osr.should_not be_valid
-    osr.should have(1).error_on(:hostname_in_use)
-  end
-
-  it "should require sponsoring_department" do
-    osr = valid
-    osr.sponsoring_department = nil
-    osr.should_not be_valid
-    osr.should have(1).error_on(:sponsoring_department)
-  end
-
-  it "should require for_department_sponsor" do
-    osr = valid
-    osr.for_department_sponsor = nil
-    osr.should_not be_valid
-    osr.should have(1).error_on(:for_department_sponsor)
-  end
-
-  it "should require off_site_service" do
-    osr = valid
-    osr.off_site_service = nil
-    osr.should_not be_valid
-    osr.should have(1).error_on(:off_site_service)
-  end
-
-  it "should require confirmed_service_qualifications" do
-    osr = valid
-    osr.confirmed_service_qualifications = nil
-    osr.should_not be_valid
-    osr.should have(1).error_on(:confirmed_service_qualifications)
-  end
-
-  it "should require campus_official" do
-    osr = valid
-    osr.campus_official_id = nil
-    osr.should_not be_valid
-    osr.should have(1).error_on(:campus_official_id)
-  end
-
-  it "should require meets_ctc_criteria" do
-    osr = valid
-    osr.meets_ctc_criteria = nil
-    osr.should_not be_valid
-    osr.should have(1).error_on(:meets_ctc_criteria)
-  end
-
-  describe ":name_of_group" do
-
-    it "with department sponsor, does not require name_of_group" do
+    it "should require hostname to end with .berkeley.edu" do
       osr = valid
-      osr.for_department_sponsor = true
-      osr.name_of_group = nil
+
+      [".edu", ".berkeley" ".berkeleyedu", ".com", ".berkeley.edu.com"].each do |hostname|
+        osr.hostname = hostname
+        osr.should_not be_valid
+        osr.should have(1).error_on(:hostname)
+      end
+
+      osr.hostname = "site.berkeley.edu"
       osr.should be_valid
-      osr.should have(0).error_on(:name_of_group)
+      osr.should have(0).errors_on(:hostname)
     end
 
-    it "without department sponsor, does require name_of_group" do
+
+    it "should require hostname_in_use" do
       osr = valid
-      osr.for_department_sponsor = false
-      osr.name_of_group = nil
+      osr.hostname_in_use = nil
       osr.should_not be_valid
-      osr.should have(1).error_on(:name_of_group)
+      osr.should have(1).error_on(:hostname_in_use)
     end
 
-  end
-
-  describe ":relationship_of_group" do
-
-    it "without department_sponsor, does require relationship_of_group" do
+    it "should require sponsoring_department" do
       osr = valid
-      osr.for_department_sponsor = false
-      osr.relationship_of_group = nil
+      osr.sponsoring_department = nil
       osr.should_not be_valid
-      osr.should have(1).error_on(:relationship_of_group)
+      osr.should have(1).error_on(:sponsoring_department)
     end
 
-    it "with department sponsor, does not require relationship_of_group" do
+    it "should require for_department_sponsor" do
       osr = valid
-      osr.for_department_sponsor = true
-      osr.relationship_of_group = nil
+      osr.for_department_sponsor = nil
+      osr.should_not be_valid
+      osr.should have(1).error_on(:for_department_sponsor)
+    end
+
+    it "should require off_site_service" do
+      osr = valid
+      osr.off_site_service = nil
+      osr.should_not be_valid
+      osr.should have(1).error_on(:off_site_service)
+    end
+
+    it "should require confirmed_service_qualifications" do
+      osr = valid
+      osr.confirmed_service_qualifications = nil
+      osr.should_not be_valid
+      osr.should have(1).error_on(:confirmed_service_qualifications)
+    end
+
+    it "should require campus_official" do
+      osr = valid
+      osr.campus_official_id = nil
+      osr.should_not be_valid
+      osr.should have(1).error_on(:campus_official_id)
+    end
+
+    it "should require meets_ctc_criteria" do
+      osr = valid
+      osr.meets_ctc_criteria = nil
+      osr.should_not be_valid
+      osr.should have(1).error_on(:meets_ctc_criteria)
+    end
+
+    describe ":name_of_group" do
+
+      it "with department sponsor, does not require name_of_group" do
+        osr = valid
+        osr.for_department_sponsor = true
+        osr.name_of_group = nil
+        osr.should be_valid
+        osr.should have(0).error_on(:name_of_group)
+      end
+
+      it "without department sponsor, does require name_of_group" do
+        osr = valid
+        osr.for_department_sponsor = false
+        osr.name_of_group = nil
+        osr.should_not be_valid
+        osr.should have(1).error_on(:name_of_group)
+      end
+
+    end
+
+    describe ":relationship_of_group" do
+
+      it "without department_sponsor, does require relationship_of_group" do
+        osr = valid
+        osr.for_department_sponsor = false
+        osr.relationship_of_group = nil
+        osr.should_not be_valid
+        osr.should have(1).error_on(:relationship_of_group)
+      end
+
+      it "with department sponsor, does not require relationship_of_group" do
+        osr = valid
+        osr.for_department_sponsor = true
+        osr.relationship_of_group = nil
+        osr.should be_valid
+        osr.should have(0).error_on(:relationship_of_group)
+      end
+
+    end
+
+    describe ":arachne_or_socrates" do
+
+      it "with hostname_in_use, does require arachne_or_socrates" do
+        osr = valid
+        osr.hostname_in_use = true
+        osr.arachne_or_socrates = nil
+        osr.should_not be_valid
+        osr.should have(1).error_on(:arachne_or_socrates)
+      end
+
+      it "without hostname_in_use, does not require arachne_or_socrates" do
+        osr = valid
+        osr.hostname_in_use = false
+        osr.arachne_or_socrates = nil
+        osr.should be_valid
+        osr.should have(0).error_on(:arachne_or_socrates)
+      end
+
+    end
+
+    it "should not require off_site_ip" do
+      osr = valid
+      osr.off_site_ip = nil
       osr.should be_valid
-      osr.should have(0).error_on(:relationship_of_group)
+      osr.should have(0).error_on(:off_site_ip)
     end
 
-  end
-
-  describe ":arachne_or_socrates" do
-
-    it "with hostname_in_use, does require arachne_or_socrates" do
+    it "should not require cns_trk_number" do
       osr = valid
-      osr.hostname_in_use = true
-      osr.arachne_or_socrates = nil
-      osr.should_not be_valid
-      osr.should have(1).error_on(:arachne_or_socrates)
-    end
-
-    it "without hostname_in_use, does not require arachne_or_socrates" do
-      osr = valid
-      osr.hostname_in_use = false
-      osr.arachne_or_socrates = nil
+      osr.cns_trk_number = nil
       osr.should be_valid
-      osr.should have(0).error_on(:arachne_or_socrates)
+      osr.should have(0).error_on(:cns_trk_number)
+    end
+
+    it "should enforce correct formatting off_site_ip" do
+      osr = valid
+      mal_ips = ["123", "123.123", "123.123.123.123.123", "hi"]
+      mal_ips.each do |ip|
+        osr.off_site_ip = ip
+        osr.should_not be_valid
+        osr.should have(1).error_on(:off_site_ip)
+      end
+    end
+
+    it "should not be deleted if it is approved" do
+      osr = valid
+      osr.status = Status::APPROVED
+      osr.destroy.should be_false
+      osr.errors.should_not be_empty
+    end
+
+    it "should be deleted if it is not approved" do
+      osr = valid
+      osr.status = Status::NOT_APPROVED
+      osr.destroy.should be_true
+      osr.errors.should be_empty
     end
 
   end
 
-  it "should not require off_site_ip" do
-    osr = valid
-    osr.off_site_ip = nil
-    osr.should be_valid
-    osr.should have(0).error_on(:off_site_ip)
-  end
+  describe "CSV Export" do
 
-  it "should not require cns_trk_number" do
-    osr = valid
-    osr.cns_trk_number = nil
-    osr.should be_valid
-    osr.should have(0).error_on(:cns_trk_number)
-  end
-
-  it "should enforce correct formatting off_site_ip" do
-    osr = valid
-    mal_ips = ["123", "123.123", "123.123.123.123.123", "hi"]
-    mal_ips.each do |ip|
-      osr.off_site_ip = ip
-      osr.should_not be_valid
-      osr.should have(1).error_on(:off_site_ip)
+    it "should have same header cols as attributes csv col header" do
+      osr = valid
+      osr.class.csv_header_cols.should == osr.csv_attributes.keys.sort
     end
   end
+
+  describe "default values" do
+    it "should default status to [Not Approved]" do
+      osr = OffSiteRequest.new
+      osr.status.should eql(Status::NOT_APPROVED)
+    end
+
+  end
+
 end
+
 
 __END__
 
@@ -303,29 +339,6 @@ describe "should require eligible Campus Official" do
 end
 
 
-end
-
-
-__END__
-
-  
-
-  
-  
-
-  
-
-  
-
-
-  
-
-
-
-
-
-
-
   it "should require eligible Submitter" do
     ### Ineligible Submitter: 212372 => AFFILIATE-Normal ###
     affilate_ldap_uid = 212372
@@ -366,9 +379,7 @@ describe "An OffSiteRequest" do
     osr = OffSiteRequest.new()
   end
 
-  it "should default status to [Not Approved]" do
-    osr.status.should eql(statuses(:not_approved))
-  end
+
 
   it "should create Campus Official when setting campus_official_ldap_uid" do
     ### Eligible Campus Official 322585 => EMPLOYEE-Staff ###
@@ -400,29 +411,8 @@ describe "An OffSiteRequest" do
     submitter.ldap_uid.should eql(staff_ldap_uid)
   end
 
-  it "should not be deleted if it is approved" do
-    @runner_req2 = OffSiteRequest.find(Fixtures.identify(:runner_request_2))
-    @runner_req2.status.approved?.should be_true
-    @runner_req2.destroy.should be_false
-    @runner_req2.errors.should_not be_empty
 
-    # change status then we can delete
-    @runner_req2.status = Status.find(Fixtures.identify(:not_approved))
-    @runner_req2.save!
-    @runner_req2.destroy.should be_true
-  end
 end
 
 
-describe "OffSiteRequest CSV Export" do
-  fixtures :statuses, :off_site_requests
-  
-  before(:each) do
-    osr = off_site_requests(:runner_request_1)
-  end
-
-  it "should have same header cols as attributes csv col header" do
-    osr.class.csv_header_cols.should == osr.csv_attributes.keys.sort
-  end
-end
 
