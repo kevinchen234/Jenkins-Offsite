@@ -178,10 +178,8 @@ class OffSiteRequest < ActiveRecord::Base
 
   def campus_official_ldap_uid=(ldap_uid)
     co = User.find_by_ldap_uid(ldap_uid)
-    if !co
-      co = User.new(:ldap_uid => ldap_uid)
-      co.save!
-    end
+    raise ArgumentError if !co
+
     @campus_official_ldap_uid = ldap_uid.to_i
     self.campus_official = co
   end

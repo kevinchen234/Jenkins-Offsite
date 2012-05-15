@@ -12,6 +12,8 @@ describe "OffSiteRequest" do
     osr
   }
 
+  let(:valid_user) { users(:minimal_for_validation) }
+
 =begin
   before(:each) do
 
@@ -258,47 +260,48 @@ describe "OffSiteRequest" do
 
   end
 
+  describe "#campus_official_ldap_uid" do
+
+    context "with ldap_uid that does exist" do
+      before do
+        @uid = rand(8888)
+        user = User.new
+        user.ldap_uid = @uid
+        User.stub(:find_by_ldap_uid) { user }
+      end
+
+      it "assigns the uid and sets the campus official" do
+        osr = valid
+        osr.campus_official_ldap_uid = @uid
+        osr.campus_official_ldap_uid.should == @uid
+        osr.campus_official.should_not be_nil
+        osr.campus_official.should eql User.find_by_ldap_uid(@uid)
+      end
+
+    end
+
+    context "with ldap_uid that does not exist" do
+
+      before do
+        @uid = rand(8888)
+      end
+
+      it "throw an error" do
+        osr = valid
+        User.stub(:find_by_ldap_uid) { nil }
+        expect { osr.campus_official_ldap_uid = @uid }.to raise_error(ArgumentError)
+      end
+    end
+
+
+  end
+
 end
 
 
 __END__
 
-describe "#campus_official_ldap_uid" do
 
-  context "with ldap_uid that does exist" do
-    before do
-      @uid = LDAP_UID_IN_DB
-      User.find_by_ldap_uid(@uid) or raise "Test setup error: the ldap_uid #{uid} was not found in the db"
-    end
-
-    it "assigns the uid and sets the campus official" do
-      osr = valid
-      osr.campus_official_ldap_uid = @uid
-      osr.campus_official_ldap_uid.should == @uid
-      osr.campus_official.should eql User.find_by_ldap_uid(@uid)
-    end
-
-  end
-
-  context "with ldap_uid that does not exist" do
-
-    before do
-      @uid = LDAP_UID_NOT_IN_DB
-      User.find_by_ldap_uid(@uid) and raise "Test setup error: the ldap_uid #{uid} was found in the db"
-    end
-
-    it "assigns the uid and creates a campus official with the same uid" do
-      osr = valid
-      # Assigns the uid
-      osr.campus_official_ldap_uid = @uid
-      osr.campus_official_ldap_uid.should == @uid
-      # And has created the new uyser with the ldap uid""
-      osr.campus_official.should eql User.find_by_ldap_uid(@uid)
-      osr.campus_official.ldap_uid.should == @uid
-    end
-  end
-
-end
 
 describe "should require eligible Campus Official" do
 
