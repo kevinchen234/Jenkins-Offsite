@@ -18,6 +18,7 @@ gem 'i18n'
 
 gem 'formtastic', '= 0.9.7', :require => 'action_pack'  # Rails form builder with semantic accessible markup.
 gem 'rubycas-client'  # Offsite v2 was '= 2.0.1'; current is 2.3.8.  # Client library for Central Authentication Service protocol.
+gem 'validates_existence', ">= 0.4"
 
 #TODO experimental - the mainline ucb_ldap gem is v 1.4.2 which depends on ruby-net-ldap 0.0.4 which is five years old,
 # and during our initial testing it seems to have problems connecting; Steven and Igor advise it may be that the gem

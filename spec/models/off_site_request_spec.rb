@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 class << Rails.logger
-  def flush_error( message )
+  def flush_error(message)
     Rails.logger.error message
     Rails.logger.flush
   end
@@ -31,41 +31,6 @@ describe "OffSiteRequest" do
     ldap_person.stub(:phone) { "123-456-7890" }
     ldap_person
   }
-
-=begin
-  before(:each) do
-
-    #attrs = {
-    #  :hostname => "host.berkeley.edu",
-    #  :hostname_in_use => true,
-    #  :arachne_or_socrates => true,
-    #  :sponsoring_department => "EECS",
-    #  :campus_official_id => 1,
-    #  :off_site_service => "stop.berkeley.edu",
-    #  :for_department_sponsor => true,
-    #  :name_of_group => nil,
-    #  :relationship_of_group => nil,
-    #  :confirmed_service_qualifications => true,
-    #  :cns_trk_number => "1234",
-    #  :off_site_ip => "123.123.123.123",
-    #  :meets_ctc_criteria => true
-    #}
-
-    attrs = {
-      :arachne_or_socrates => true,
-      :sponsoring_department => "EECS",
-      :campus_official_id => 1,
-      :off_site_service => "stop.berkeley.edu",
-      :cns_trk_number => "1234",
-      :off_site_ip => "123.123.123.123",
-    }
-
-    minimal_for_validation:
-    osr = OffSiteRequest.new(attrs)
-
-    osr.save!
-  end
-=end
 
   describe "validation" do
 
@@ -222,6 +187,24 @@ describe "OffSiteRequest" do
 
     end
 
+    describe ":status" do
+
+      it "status must not be nil" do
+        osr = valid
+        osr.status = nil
+        osr.valid?
+        osr.errors.should_not be_empty
+      end
+
+      it "status must exist" do
+        osr = valid
+        osr.status_id = -1
+        osr.valid?
+        osr.errors.should_not be_empty
+      end
+
+    end
+
     it "should not require off_site_ip" do
       osr = valid
       osr.off_site_ip = nil
@@ -258,6 +241,27 @@ describe "OffSiteRequest" do
       osr.status = Status::NOT_APPROVED
       osr.destroy.should be_true
       osr.errors.should be_empty
+    end
+
+
+    describe "#validate_campus_official" do
+      it "should have a campus official that is eligible" do
+        osr = valid
+        osr.stub(:campus_official) { valid_user }
+        osr.stub(:campus_official_eligible?) { false }
+        osr.validate_campus_official
+        osr.errors.should_not be_empty
+      end
+    end
+
+    describe "#validate_submitter" do
+      it "should have a submitter that is eligible" do
+        osr = valid
+        osr.stub(:submitter) { valid_user }
+        osr.stub(:submitter_eligible?) { false }
+        osr.validate_submitter
+        osr.errors.should_not be_empty
+      end
     end
 
   end
@@ -344,126 +348,73 @@ describe "OffSiteRequest" do
 
   end
 
-end
+  describe "#submitter_ldap_uid" do
 
-
-__END__
-
-
-
-describe "should require eligible Campus Official" do
-
-  context "with Ineligible Campus Official: 212372 => AFFILIATE-Normal ###" do
-
-    it "errors" do
-      affilate_ldap_uid = 212372 # bogus number guaranteed not to be in db
-      if User.find_by_ldap_uid(affilate_ldap_uid)
-        raise "Test setup error: the ldap_uid #{affilate_ldap_uid} was found in the db"
-      end
-      osr.campus_official_ldap_uid = affilate_ldap_uid
-                                 # Record was created in Users table
-      campus_official = User.find_by_ldap_uid(affilate_ldap_uid)
-      campus_official.should_not be_nil
-      campus_official.ldap_uid.should eql(affilate_ldap_uid)
-                                 # Not valid Campus Official
-      osr.should_not be_valid
-      osr.should have(1).errors_on(:campus_official_id)
+    before do
+      @uid = rand(8888)
     end
-  end
 
+    context "with a local database user" do
 
-  ### Eligible Campus Official 322585 => EMPLOYEE-Staff ###
-  staff_ldap_uid = 322585
-  p = UCB::LDAP::Person.find_by_uid(staff_ldap_uid)
-  # test ids currently always return expired status so we stub valid affiliations
-  p.stub!(:affiliations).and_return(["EMPLOYEE-TYPE-STAFF"])
-  UCB::LDAP::Person.stub!(:find_by_uid).and_return(p)
-  User.find_by_ldap_uid(staff_ldap_uid).should be_nil
-  osr.campus_official_ldap_uid = staff_ldap_uid
-  # Record was created in Users table
-  campus_official = User.find_by_ldap_uid(staff_ldap_uid)
-  campus_official.should_not be_nil
-  campus_official.ldap_uid.should eql(staff_ldap_uid)
-  # Valid Campus Official
-  osr.should be_valid
-  osr.should have(0).errors_on(:campus_official_id)
-end
+      before do
+        user = valid_user
+        user.ldap_uid = @uid
+        User.stub(:find_by_ldap_uid) { user }
+      end
 
+      it "assigns the uid and sets the submitter" do
+        osr = valid
+        osr.submitter_ldap_uid = @uid
+        osr.submitter_ldap_uid.should == @uid
+        osr.submitter.should_not be_nil
+        osr.submitter.should be_a User
+        osr.submitter.should eql User.find_by_ldap_uid(@uid)
+      end
 
-  it "should require eligible Submitter" do
-    ### Ineligible Submitter: 212372 => AFFILIATE-Normal ###
-    affilate_ldap_uid = 212372
-    User.find_by_ldap_uid(affilate_ldap_uid).should be_nil
-    osr.submitter_ldap_uid = affilate_ldap_uid
-    # Record was created in Users table
-    submitter = User.find_by_ldap_uid(affilate_ldap_uid)
-    submitter.should_not be_nil
-    submitter.ldap_uid.should eql(affilate_ldap_uid)
-    # Not valid Campus Official
-    osr.should_not be_valid
-    osr.should have(1).errors_on(:submitter_id)
+    end
 
-    
-    ### Eligible Submitter 322585 => EMPLOYEE-Staff ###
-    staff_ldap_uid = 322585
-    p = UCB::LDAP::Person.find_by_uid(staff_ldap_uid)
-    # test ids currently always return expired status so we stub valid affiliations
-    p.stub!(:affiliations).and_return(["EMPLOYEE-TYPE-STAFF"])
-    UCB::LDAP::Person.stub!(:find_by_uid).and_return(p)
-    User.find_by_ldap_uid(staff_ldap_uid).should be_nil
-    osr.submitter_ldap_uid = staff_ldap_uid
-    # Record was created in Users table
-    submitter = User.find_by_ldap_uid(staff_ldap_uid)
-    submitter.should_not be_nil
-    submitter.ldap_uid.should eql(staff_ldap_uid)
-    # Valid Campus Official    
-    osr.should be_valid
-    osr.should have(0).errors_on(:submitter_id)
-  end
-end
+    context "without a local database user" do
 
+      before do
+        User.stub(:find_by_ldap_uid) { nil }
+      end
 
-describe "An OffSiteRequest" do
-  fixtures :statuses
-  
-  before(:each) do
-    osr = OffSiteRequest.new()
-  end
+      context "with a remote ldap user" do
 
+        before do
+          @uid = ldap_person.uid
+          UCB::LDAP::Person.stub(:find_by_uid) { ldap_person }
+        end
 
+        it "creates a local database user using the remote ldap user" do
+          Rails.logger.debug "creates"
+          osr = valid
+          osr.submitter_ldap_uid = @uid
+          osr.submitter_ldap_uid.should == @uid
+          osr.submitter.should_not be_nil
+          osr.submitter.should be_a User
+          osr.submitter.last_name.should eql ldap_person.last_name
+        end
 
-  it "should create Campus Official when setting campus_official_ldap_uid" do
-    ### Eligible Campus Official 322585 => EMPLOYEE-Staff ###
-    staff_ldap_uid = 322585
-    p = UCB::LDAP::Person.find_by_uid(staff_ldap_uid)
-    # test ids currently always return expired status so we stub valid affiliations
-    p.stub!(:affiliations).and_return(["EMPLOYEE-TYPE-STAFF"])
-    UCB::LDAP::Person.stub!(:find_by_uid).and_return(p)
-    
-    User.find_by_ldap_uid(staff_ldap_uid).should be_nil
-    osr.campus_official_ldap_uid = staff_ldap_uid
+      end
 
-    campus_official = User.find_by_ldap_uid(staff_ldap_uid)
-    campus_official.ldap_uid.should eql(staff_ldap_uid)
-  end
+      context "without a remote ldap user" do
 
-  it "should create Submitter when setting submitter_ldap_uid" do
-    ### Eligible Submitter 322585 => EMPLOYEE-Staff ###
-    staff_ldap_uid = 322585
-    p = UCB::LDAP::Person.find_by_uid(staff_ldap_uid)
-    # test ids currently always return expired status so we stub valid affiliations
-    p.stub!(:affiliations).and_return(["EMPLOYEE-TYPE-STAFF"])
-    UCB::LDAP::Person.stub!(:find_by_uid).and_return(p)
-    
-    User.find_by_ldap_uid(staff_ldap_uid).should be_nil
-    osr.submitter_ldap_uid = staff_ldap_uid
+        before do
+          UCB::LDAP::Person.stub(:find_by_uid) { nil }
+        end
 
-    submitter = User.find_by_ldap_uid(staff_ldap_uid)
-    submitter.ldap_uid.should eql(staff_ldap_uid)
+        it "throw an error" do
+          osr = valid
+          expect { osr.submitter_ldap_uid = @uid }.to raise_error(ArgumentError)
+        end
+      end
+
+    end
+
   end
 
 
 end
-
 
 

@@ -69,7 +69,6 @@ module UCB::LDAP
       # Returns an instance of Person for given _uid_.
       #
       def find_by_uid(uid)
-        raise "#find_by_uid uid:#{uid}"
         uid = uid.to_s
         find_by_uids([uid]).first
       end
@@ -79,7 +78,6 @@ module UCB::LDAP
       # Returns an +Array+ of Person for given _uids_.
       #
       def find_by_uids(uids)
-        raise "#find_by_uids uids:#{uids.map{|x| x.to_s}.join(',')}"
         return [] if uids.size == 0
         filters = uids.map{|uid| Net::LDAP::Filter.eq("uid", uid)}
         search(:filter => self.combine_filters(filters, '|'))

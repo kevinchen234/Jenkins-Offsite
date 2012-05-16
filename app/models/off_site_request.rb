@@ -49,8 +49,9 @@ class OffSiteRequest < ActiveRecord::Base
   :campus_official_id,
   :hostname,
   :sponsoring_department,
-  :off_site_service,
-  :status_id
+  :off_site_service
+
+  validates_existence_of :status
 
   validates_uniqueness_of :hostname, :unless => lambda { |r| r.hostname.blank? }
   validates_format_of :hostname, :with => HOSTNAME_REGEXP, :unless => lambda { |r| r.hostname.blank? },
@@ -66,7 +67,8 @@ class OffSiteRequest < ActiveRecord::Base
   validates_inclusion_of :for_department_sponsor, :in => [true, false], :message => REQ_MSG
   validates_inclusion_of :meets_ctc_criteria, :in => [true, false], :message => REQ_MSG
   validates_format_of :off_site_ip, :with => IP_REGEXP, :unless => lambda { |r| r.off_site_ip.blank? }
-  validate :validate_campus_official, :validate_submitter, :validate_status
+  validate :validate_campus_official, :validate_submitter
+
 
   after_initialize :set_default_status
 
@@ -86,26 +88,14 @@ class OffSiteRequest < ActiveRecord::Base
   end
 
   def validate_campus_official
-    if campus_official
-      p = UCB::LDAP::Person.find_by_uid(campus_official.ldap_uid)
-      if p.nil? || !p.eligible_campus_official?
-        errors.add(:campus_official_id, "does not have required affiliations.")
-      end
+    if campus_official && !campus_official_eligible?
+      errors.add(:campus_official_id, "does not have required affiliations.")
     end
   end
 
   def validate_submitter
-    if submitter
-      p = UCB::LDAP::Person.find_by_uid(submitter.ldap_uid)
-      if p.nil? || !p.eligible_submitter?
-        errors.add(:submitter_id, "does not have required affiliations.")
-      end
-    end
-  end
-
-  def validate_status
-    if !status_id.nil? && !Status.all.map(&:id).include?(status_id)
-      errors.add(:status_id, "is not a valid status.")
+    if submitter && !submitter_eligible?
+      errors.add(:submitter_id, "does not have required affiliations.")
     end
   end
 
@@ -155,13 +145,17 @@ class OffSiteRequest < ActiveRecord::Base
   end
 
   def submitter_ldap_uid=(ldap_uid)
-    @submitter_ldap_uid = ldap_uid
-    submitter = User.find_or_new_by_ldap_uid(ldap_uid)
-    if submitter.try(:new_record?)
-      submitter.enabled = true
-      submitter.save!
-    end
-    self.submitter = submitter
+    user = User.find_or_new_by_ldap_uid(ldap_uid)
+    raise ArgumentError if !user
+    user.enabled = true
+    user.save!
+    @submitter_ldap_uid = ldap_uid.to_i
+    self.submitter = user
+  end
+
+  def submitter_eligible?
+    p = OffSiteRequest.ldap_person_find_by_uid(submitter.ldap_uid)
+    p && p.eligible_submitter?
   end
 
   def campus_official_full_name
@@ -177,12 +171,15 @@ class OffSiteRequest < ActiveRecord::Base
   end
 
   def campus_official_ldap_uid=(ldap_uid)
-    logger.debug "#campus_official_ldap_uid= ldap_uid:#{ldap_uid}"
-    co = User.find_or_new_by_ldap_uid(ldap_uid)
-    raise ArgumentError if !co
-
+    user = User.find_or_new_by_ldap_uid(ldap_uid)
+    raise ArgumentError if !user
     @campus_official_ldap_uid = ldap_uid.to_i
-    self.campus_official = co
+    self.campus_official = user
+  end
+
+  def campus_official_eligible?
+    p = OffSiteRequest.ldap_person_find_by_uid(campus_official.ldap_uid)
+    p && p.eligible_campus_official?
   end
 
   def to_csv
@@ -249,5 +246,10 @@ class OffSiteRequest < ActiveRecord::Base
 
       (sort_order && sort_order.downcase == "desc") ? "#{sort_by} DESC" : sort_by
     end
+
+    def ldap_person_find_by_uid(uid)
+      UCB::LDAP::Person.find_by_uid(uid)
+    end
+
   end
 end
