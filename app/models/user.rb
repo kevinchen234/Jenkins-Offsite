@@ -156,39 +156,33 @@ class User < ActiveRecord::Base
     ### End Class Aliases ####
 
     def find_or_new_by_ldap_uid(ldap_uid)
+      logger.debug "#find_or_new_by_ldap_uid ldap_uid:#{ldap_uid}"
       return nil if ldap_uid.blank?
-
 
       if (user = find_by_ldap_uid(ldap_uid))
         user
       else
-        user = User.new()
-
-        ldap_person = UCB::LDAP::Person.find_by_uid(ldap_uid)
-        if ldap_person.nil?
-          return nil
-        end
-
-        attr_hash = attr_hash_from_ldap_person(ldap_person)
-        attr_hash.each { |key, val| user.send("#{key}=", val) }
-        user
+        new_from_ldap_uid(ldap_uid)
       end
     end
 
     def new_from_ldap_uid(ldap_uid)
-      ldap_person = ldap_uid.nil? ? nil : UCB::LDAP::Person.find_by_uid(ldap_uid)
+      logger.debug "#new_from_ldap_uid ldap_uid:#{ldap_uid}"
+      return nil if ldap_uid.nil?
+      logger.debug "#new_from_ldap_uid calling find_by_uid"
+      ldap_person = UCB::LDAP::Person.find_by_uid(ldap_uid)
+      logger.debug "#new_from_ldap_uid ldap_person:#{ldap_person}"
+      return nil if ldap_person.nil?
       new_from_ldap_person(ldap_person)
     end
 
     def new_from_ldap_person(ldap_person)
-      if ldap_person.nil?
-        self.new()
-      else
-        user = self.new()
-        attr_hash = attr_hash_from_ldap_person(ldap_person)
-        attr_hash.each { |key, val| user.send("#{key}=", val) }
-        user
-      end
+      logger.debug "#new_from_ldap_person ldap_person:#{ldap_person}"
+      return nil if ldap_person.nil?
+      user = self.new()
+      attr_hash = attr_hash_from_ldap_person(ldap_person)
+      attr_hash.each { |key, val| user.send("#{key}=", val) }
+      user
     end
 
     def attributes_hash_for_ldap_person(ldap_person)

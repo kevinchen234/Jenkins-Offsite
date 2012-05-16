@@ -1,5 +1,12 @@
 require 'spec_helper'
 
+class << Rails.logger
+  def flush_error( message )
+    Rails.logger.error message
+    Rails.logger.flush
+  end
+end
+
 describe "OffSiteRequest" do
   fixtures :off_site_requests, :statuses, :roles, :users
 
@@ -13,6 +20,17 @@ describe "OffSiteRequest" do
   }
 
   let(:valid_user) { users(:minimal_for_validation) }
+
+  let(:ldap_person) {
+    ldap_person = UCB::LDAP::Person.new({})
+    ldap_person.stub(:uid) { rand(8888) }
+    ldap_person.stub(:first_name) { "first_name_123" }
+    ldap_person.stub(:last_name) { "last_name_123" }
+    ldap_person.stub(:email) { "person@example.com" }
+    ldap_person.stub(:berkeleyeduunithrdeptname) { "ABCDE" }
+    ldap_person.stub(:phone) { "123-456-7890" }
+    ldap_person
+  }
 
 =begin
   before(:each) do
@@ -262,9 +280,13 @@ describe "OffSiteRequest" do
 
   describe "#campus_official_ldap_uid" do
 
-    context "with ldap_uid that does exist" do
+    before do
+      @uid = rand(8888)
+    end
+
+    context "with a local database user" do
+
       before do
-        @uid = rand(8888)
         user = User.new
         user.ldap_uid = @uid
         User.stub(:find_by_ldap_uid) { user }
@@ -275,24 +297,50 @@ describe "OffSiteRequest" do
         osr.campus_official_ldap_uid = @uid
         osr.campus_official_ldap_uid.should == @uid
         osr.campus_official.should_not be_nil
+        osr.campus_official.should be_a User
         osr.campus_official.should eql User.find_by_ldap_uid(@uid)
       end
 
     end
 
-    context "with ldap_uid that does not exist" do
+    context "without a local database user" do
 
       before do
-        @uid = rand(8888)
-      end
-
-      it "throw an error" do
-        osr = valid
         User.stub(:find_by_ldap_uid) { nil }
-        expect { osr.campus_official_ldap_uid = @uid }.to raise_error(ArgumentError)
       end
-    end
 
+      context "with a remote ldap user" do
+
+        before do
+          @uid = ldap_person.uid
+          UCB::LDAP::Person.stub(:find_by_uid) { ldap_person }
+        end
+
+        it "creates a local database user using the remote ldap user" do
+          Rails.logger.debug "creates"
+          osr = valid
+          osr.campus_official_ldap_uid = @uid
+          osr.campus_official_ldap_uid.should == @uid
+          osr.campus_official.should_not be_nil
+          osr.campus_official.should be_a User
+          osr.campus_official.last_name.should eql ldap_person.last_name
+        end
+
+      end
+
+      context "without a remote ldap user" do
+
+        before do
+          UCB::LDAP::Person.stub(:find_by_uid) { nil }
+        end
+
+        it "throw an error" do
+          osr = valid
+          expect { osr.campus_official_ldap_uid = @uid }.to raise_error(ArgumentError)
+        end
+      end
+
+    end
 
   end
 
