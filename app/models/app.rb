@@ -9,11 +9,11 @@ class App
     template.dom_id(*args)
   end
   
-  def self.itpolicy_email=(email)
-    @itpolicy_email = email
+  def self.it_policy_email=(email)
+    @it_policy_email = email
   end
 
-  def self.itpolicy_email()
-    @itpolicy_email || "itpolicy@berkeley.edu"
+  def self.it_policy_email()
+    @it_policy_email || "itpolicy@berkeley.edu"
   end
 end
