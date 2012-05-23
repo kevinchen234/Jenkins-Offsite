@@ -185,10 +185,12 @@ describe "User" do
 
     context "with nil" do
 
-      it "returns new untainted user" do
+      #TODO: figure out what's happening with this method and nil-- in earlier code,
+      #this would create a fresh user record e.g. User.new. We think it's better to
+      #instead return nil, e.g. to let the controller create a new User if needed.
+      it "returns nil" do
         user = User.new_from_ldap_uid(nil)
-        user.new_record?.should be_true
-        user.ldap_uid.should be_nil
+        user.should be_nil
       end
 
     end
