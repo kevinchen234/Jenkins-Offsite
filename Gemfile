@@ -20,11 +20,7 @@ gem 'formtastic', '= 0.9.7', :require => 'action_pack'  # Rails form builder wit
 gem 'rubycas-client'  # Offsite v2 was '= 2.0.1'; current is 2.3.8.  # Client library for Central Authentication Service protocol.
 gem 'validates_existence', ">= 0.4"
 
-#TODO experimental - the mainline ucb_ldap gem is v 1.4.2 which depends on ruby-net-ldap 0.0.4 which is five years old,
-# and during our initial testing it seems to have problems connecting; Steven and Igor advise it may be that the gem
-# is not compatible with Ruby 1.9x and also may not be threadsafe. So we're trying a local version of the gem,
-# changing the dependency to net-ldap which is current, and putting the gem code in ./vendor/gems/ucb_ldap* for now.
-gem 'ucb_ldap', '~> 2.0.0', :path => File.dirname(__FILE__)  + "/lib/gems/ucb_ldap-2.0.0"  # Convenience classes for interacing with UCB's LDAP directory.
+gem "ucb_ldap", "~> 2.0.0.pre1"
 
 #TODO deprecated - Steven advises we get rid of this; it's an older gem that provided Devise-like security.
 # He recommends we upgrade the security to use OmniAuth and its plugins e.g. CAS; we can then remove ucb_rails_security.

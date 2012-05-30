@@ -1,17 +1,11 @@
 PATH
-  remote: lib/gems/ucb_ldap-2.0.0
-  specs:
-    ucb_ldap (2.0.0)
-      net-ldap
-
-PATH
   remote: lib/gems/ucb_rails_security-3.0.0
   specs:
     ucb_rails_security (3.0.0)
       actionpack (>= 3.0.0)
       rspec (>= 1.1.5)
       rubycas-client (>= 2.0.1)
-      ucb_ldap (>= 2.0.0)
+      ucb_ldap (>= 2.0.0.pre1)
 
 GEM
   remote: https://rubygems.org/
@@ -74,7 +68,7 @@ GEM
       treetop (~> 1.4.8)
     mime-types (1.18)
     multi_json (1.3.5)
-    net-ldap (0.3.1)
+    net-ldap (0.2.2)
     pg (0.13.2)
     polyglot (0.3.3)
     rack (1.4.1)
@@ -132,6 +126,8 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.33)
+    ucb_ldap (2.0.0.pre1)
+      net-ldap (= 0.2.2)
     uglifier (1.2.4)
       execjs (>= 0.3.0)
       multi_json (>= 1.0.2)
@@ -155,7 +151,7 @@ DEPENDENCIES
   rspec-rails
   rubycas-client
   sass-rails (~> 3.2.3)
-  ucb_ldap (~> 2.0.0)!
+  ucb_ldap (~> 2.0.0.pre1)
   ucb_rails_security (~> 3.0.0)!
   uglifier (>= 1.0.3)
   validates_existence (>= 0.4)
