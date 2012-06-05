@@ -1,0 +1,25 @@
+<% set_title("Listing Status") %>
+
+
+<div class="page_content">
+  <%= new_link_to('New Status', new_admin_status_path) %>
+  <br class="spacing"/>
+
+  <table id="status_list">
+    <tr>
+      <th width="1%"></th>
+      <th>Name</th>
+      <th>Enabled?</th>
+    </tr>
+    
+    <tbody class="highlight">
+      <% @statuses.each do |s| %>
+        <tr id="<%= dom_id(s) %>">
+          <td><%= edit_link_to(edit_admin_status_path(s)) %></td>
+          <td><%=h s.name %></td>
+          <td><%=h s.enabled? %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -1,4 +1,37 @@
 OffsiteV3::Application.routes.draw do
+
+  root :to => 'home_page#index'
+  match '/login', to: 'sessions#new', as: 'login'
+  match '/logout', to: 'sessions#destroy', as: 'logout'
+  match '/auth/cas/callback' => 'sessions#create'
+  match '/not_authorized', to: 'application#not_authorized', as: 'not_authorized'
+
+  resources :sessions, only: [:new, :create, :destroy]
+  resources :off_site_requests
+  resource :users, :only => [:new, :create]
+
+  #match '/app_monitor', to: 'app_monitor#index', as: 'check_app'
+  #match '/app_monitor/test_exception', to: 'app_monitor#test_exception', to: 'check_exception'
+
+  match '/ldap_search', to: 'ldap_search#index', as: 'ldap_search'
+  match '/ldap_search/do_search', to: 'ldap_search#do_search', as: 'do_ldap_search'
+
+  match '/admin', to: 'admin/admin#index', as: 'admin_root'
+  match '/admin/login', to: 'admin/admin#index', as: 'admin_login'
+
+
+  namespace :admin do
+    resource :users,
+             :except => "show",
+             :collection => { :search => :get, :do_search => :get },
+             :member => { :login => :get }
+    resource :roles, :except => "roles"
+    resource :ext_circumstances, :except => "show"
+    resource :off_site_requests, :except => "show"
+    resource :statuses, :except => "show"
+  end
+
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

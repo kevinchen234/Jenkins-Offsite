@@ -10,6 +10,7 @@ describe "User" do
   describe "Require attributes" do
 
     it "requires ldap_uid" do
+      puts users
       should_require_attr(users(:minimal_for_attributes), :ldap_uid)
     end
 
@@ -49,7 +50,7 @@ describe "User" do
 
         it "fails with an improperly formatted email" do
           user = User.new
-          user.email = "12345"
+          user.email = "fooexample.com"
           user.should have(1).error_on(:email)
         end
 

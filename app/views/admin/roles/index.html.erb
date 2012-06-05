@@ -1,0 +1,30 @@
+<% set_title("Listing Roles (#{@roles.length})") %>
+
+<div class="page_content">
+  <%= new_link_to('New Role', new_admin_role_path) %>
+  <br class="spacing" />
+
+  <table id="role_list">
+    <tr>
+      <th colspan="1" width="1%"></th>
+      <th colspan="1" width="1%"></th>
+      <th>Name</th>
+      <th>Description</th>
+    </tr>
+
+    <tbody class="highlight">
+      <% @roles.each do |role| %>
+        <tr id="<%= dom_id(role) %>">
+          <td><%= edit_link_to(edit_admin_role_path(role)) %></td>
+          <td><%= delete_link_to(admin_role_path(role)) %></td>
+          <td><%=h role.name %></td>
+          <td><%=h role.description %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <% if @roles.size > 15 %>
+    <%= new_link_to('New Role', new_admin_role_path) %>
+  <% end %>
+</div>

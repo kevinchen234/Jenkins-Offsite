@@ -1,0 +1,11 @@
+<div id="log_in_out_widget">
+  <% if logged_in? %>
+    Logged in as: <strong><%= current_user.full_name %></strong>
+    <br/>
+    <div>
+      <strong><%= link_to "Logout", logout_url(), :confirm => "Click 'OK' to confirm logout" %></strong>
+    </div>
+  <% else %>
+    <strong><%= link_to("Login", admin_off_site_requests_url()) %></strong>
+  <% end %>
+</div>

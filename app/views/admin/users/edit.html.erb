@@ -1,0 +1,10 @@
+<% set_title("Edit User") %>
+
+<%= error_messages_for('user') %>
+
+<div class="page_content">
+  <%= delete_button(admin_user_url(@user)) %>
+  <%= required_field_notice %>
+  <br/>
+  <%= render(:partial => 'form', :locals => {:user => @user}) %>
+</div>

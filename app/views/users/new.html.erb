@@ -1,0 +1,23 @@
+<% set_title("New User") %>
+
+ <%= error_messages_for('user')
+ %>
+
+<div class="page_content">
+  <p style="margin: 0em 0em 0em .5em; font-size: 13px; font-style: italic; font-weight: bold;">Please confirm your information</p>
+
+  <%= semantic_form_for(@user) do |form| %>
+      <% form.inputs do %>
+          <%= form.input(:ldap_uid, :input_html => { :disabled => true }) %>
+          <%= form.input(:first_name) %>
+          <%= form.input(:last_name) %>
+          <%= form.input(:email) %>
+          <%= form.input(:email_confirmation, :required => true) %>
+          <%= form.input(:department) %>
+          <%= form.input(:phone) %>
+          <%= form.buttons do %>
+            <%= form.commit_button("Submit") %>
+          <% end %>
+      <% end %>
+  <% end %>
+</div>

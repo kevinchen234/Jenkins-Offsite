@@ -1,14 +1,27 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>OffsiteV3</title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
-  <%= javascript_include_tag "application" %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
-<%= yield %>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+  <title>Off-Site Hosting</title>
+  <%= stylesheet_link_tag('jquery_fancybox', 'formtastic', 'formtastic_changes', 'application', :media => "all") %>
+  <%= javascript_include_tag :defaults %>
+  <%= javascript_include_tag 'jquery_fancybox' %>
+</head>
+
+<body>
+<h1 id="banner">Off-Site Hosting <%= render :partial => 'layouts/log_in_out_widget' %></h1>
+
+<%= render :partial => 'layouts/navigation' %>
+
+<div id="main">
+  <h2><%= title() %></h2>
+  <div id="message"><%= display_message() %></div>
+
+  <%= yield %>
+</div>
+
+<%= render('layouts/footer') %>
 
 </body>
 </html>

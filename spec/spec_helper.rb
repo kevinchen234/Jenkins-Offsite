@@ -4,6 +4,13 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
 
+require 'webrat'
+require 'webrat/core/matchers'
+
+#require 'capybara/rspec'
+include Webrat::Methods
+include Webrat::Matchers
+
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
@@ -31,6 +38,16 @@ RSpec.configure do |config|
   config.infer_base_class_for_anonymous_controllers = false
 end
 
+Webrat.configure do |config|
+  config.mode = :rails
+  config.open_error_files = true
+  # Selenium mode
+  #   config.mode = :selenium
+  #   config.application_environment = :test
+  #   config.application_address = "localhost"
+  #   config.application_port = "3001"
+end
+
 
 RSpec::Matchers.define :be_valid do
   match do |actual|
@@ -48,4 +65,24 @@ RSpec::Matchers.define :be_valid do
   description do
     "be valid"
   end
+
+  EMPLOYEE_LDAP_UID = "212386"
+
+##
+# Takes an object that responds to :ldap_uid
+# Or, takes the ldap_uid as a String or Integer.
+#
+  def login_user(ldap_obj)
+    if ldap_obj.is_a?(String) || ldap_obj.is_a?(Integer)
+      ldap_uid = ldap_obj
+    else
+      ldap_uid = ldap_obj.ldap_uid
+    end
+
+    OmniAuth.config.test_mode = true
+    OmniAuth.config.add_mock(:cas, { uid: ldap_uid.to_s })
+
+    visit(login_url())
+  end
+
 end

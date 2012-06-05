@@ -1,0 +1,10 @@
+development:
+   cas_url: 'auth-test.berkeley.edu/cas'
+   cas_logout: 'http://auth-test.berkeley.edu/cas/logout'
+   ldap_host: 'ldap-test.berkeley.edu'
+
+
+test:
+   cas_url: 'auth-test.berkeley.edu/cas'
+   cas_logout: 'http://auth-test.berkeley.edu/cas/logout'
+   ldap_host: 'ldap-test.berkeley.edu'

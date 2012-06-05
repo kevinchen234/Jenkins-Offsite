@@ -13,3 +13,6 @@
 /vendor/assets/
 /vendor/bundle/
 /vendor/plugins/
+webrat.log
+Current_Issues.txt
+/config/config.yml

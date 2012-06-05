@@ -33,12 +33,12 @@ jack_request_1:
 
 runner_request_1:
   submitter: runner
-  hostname: runner.berkeley.edu
+  hostname: asdf.berkeley.edu
   hostname_in_use: true
   arachne_or_socrates: true
-  sponsoring_department: Enterprise Application Service - (JKASD)
+  sponsoring_department: "department123"
   campus_official: campus_official
-  off_site_service: slicehost.com
+  off_site_service: "service123"
   for_department_sponsor: true
   name_of_group:
   relationship_of_group:
@@ -53,12 +53,12 @@ runner_request_1:
 
 runner_request_2:
   submitter: runner
-  hostname: poop.berkeley.edu
+  hostname: asdf2.berkeley.edu
   hostname_in_use: true
   arachne_or_socrates: true
-  sponsoring_department: Enterprise Application Service - (JKASD)
+  sponsoring_department: "department456"
   campus_official: campus_official
-  off_site_service: slicehost.com
+  off_site_service: "service456"
   for_department_sponsor: true
   name_of_group:
   relationship_of_group:

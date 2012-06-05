@@ -1,0 +1,49 @@
+
+<% set_title("Listing Users (#{@users.size})") %>
+
+<div class="page_content">
+  <%= new_link_to('New User', new_admin_user_path) %>
+  <div id="user_filter">
+    <% form_tag(admin_users_url, :method => :get) do %>
+      <%= select_tag("filter_by", options_for_select(@filter_by_options, params[:filter_by])) %>
+      <%= submit_tag("Filter") %> | 
+      <%= link_to("Clear", admin_users_url) %>
+    <% end %>
+  </div>
+  <br class="spacing"/>
+
+  <table id="user_list">
+    <tr>
+      <th width="1%"></th>
+      <th width="1%"></th>
+      <th>Ldap Uid</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Department</th>
+      <th>Created At</th>
+      <th>Updated At</th>
+    </tr>
+    
+    <tbody class="highlight">
+      <% @users.each do |u| %>
+        <tr id="<%= dom_id(u) %>">
+          <td><%= edit_link_to(edit_admin_user_path(u)) %></td>
+          <td><%= link_to("Login", login_admin_user_url(u), :class => "edit_button_widget") %></td>
+          <td><%=h u.ldap_uid %></td>
+          <td><%=h u.full_name %></td>
+          <td><%=h u.email %></td>
+          <td><%=h u.department %></td>
+          <td><%=h u.created_at.to_s(:mdy) %></td>
+          <td><%=h u.updated_at.to_s(:mdy) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <% if @users.size > 15 %>
+    <br/>
+    <%= new_link_to('New User', new_admin_user_path) %>
+    <br/>
+    <br/>
+  <% end %>
+</div>

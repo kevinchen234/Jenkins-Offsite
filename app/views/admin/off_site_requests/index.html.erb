@@ -1,0 +1,35 @@
+<% set_title("Listing Off-Site Requests") %>
+
+<div class="page_content">
+  <%= new_link_to('New Request', new_admin_off_site_request_path) %>
+  <%= link_to("Export to Spreadsheet", admin_off_site_requests_path(:format => "csv"), :class => "button_widget") %>
+  <br class="spacing"/>
+
+  <table id="off_site_request_list">
+    <tr>
+      <th width="1%"></th>
+      <th><%= col_sort("CNS Track #", "cns_trk_number", "admin_off_site_requests_url", params) %></th>
+      <th><%= col_sort("Department", "sponsoring_department", "admin_off_site_requests_url", params) %></th>
+      <th><%= col_sort("Hostname", "hostname", "admin_off_site_requests_url", params) %></th>
+      <th><%= col_sort("Submitter", "submitter", "admin_off_site_requests_url", params) %></th>
+      <th><%= col_sort("Status", "status", "admin_off_site_requests_url", params) %></th>
+      <th><%= col_sort("Created At", "created_at", "admin_off_site_requests_url", params) %></th>
+      <th><%= col_sort("Updated At", "updated_at", "admin_off_site_requests_url", params) %></th>
+    </tr>
+
+    <tbody class="highlight">
+      <% @os_reqs.each do |req| %>
+        <tr id="<%= dom_id(req) %>">
+          <td><%= edit_link_to(edit_admin_off_site_request_path(req)) %></td>
+          <td><%=h req.cns_trk_number %></td>
+          <td><%=h req.sponsoring_department %></td>
+          <td><%=h req.hostname %></td>
+          <td><%=h req.submitter.try(:full_name) %></td>
+          <td><%=h req.status.try(:name) %></td>
+          <td><%=h req.created_at.to_s(:mdy) %></td>
+          <td><%=h req.updated_at.to_s(:mdy) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -1,4 +1,3 @@
-
 module RspecIntegrationHelpers
   ##
   # Add wrapper around visit(url) as a work around for this problem
@@ -6,12 +5,25 @@ module RspecIntegrationHelpers
   #
   def visit_path(path)
     visit(path)
-    automate { selenium.wait_for_page_to_load(6) }    
+    automate { selenium.wait_for_page_to_load(6) }
   end
   
-  def login_user(_obj)
-    ldap_uid = _obj.is_a?(User) ? _obj.ldap_uid : _obj
-    visit_path(login_path(:test_auth_ldap_uid => ldap_uid))
+  #def login_user(_obj)
+  #  ldap_uid = _obj.is_a?(User) ? _obj.ldap_uid : _obj
+  #  visit_path(login_path(:test_auth_ldap_uid => ldap_uid))
+  #end
+
+  def login_user(ldap_obj)
+    if ldap_obj.is_a?(String) || ldap_obj.is_a?(Integer)
+      ldap_uid = ldap_obj
+    else
+      ldap_uid = ldap_obj.ldap_uid
+    end
+
+    OmniAuth.config.test_mode = true
+    OmniAuth.config.add_mock(:cas, { uid: ldap_uid.to_s })
+
+    visit_path(login_url)
   end
 
   def logout_current_user

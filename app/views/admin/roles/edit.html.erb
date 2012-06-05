@@ -1,0 +1,9 @@
+<% set_title("Edit Role") %>
+
+<%= error_messages_for('role') %>
+
+<div class="page_content">
+  <%= render :partial => 'form', :locals => {:role => @role, :all_users => @all_users} %>
+</div>
+
+

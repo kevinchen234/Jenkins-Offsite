@@ -1,0 +1,9 @@
+<% set_title("Edit Off-Site Request") %>
+
+<%= error_messages_for('os_req') %>
+
+<div class="page_content gray_border max_width">
+  <%= render(:partial => 'form', :locals => {:os_req => @os_req}) %>
+  <hr/>
+  <%= render('/off_site_requests/campus_official_agreement') %>
+</div>

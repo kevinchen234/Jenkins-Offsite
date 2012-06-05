@@ -31,12 +31,13 @@ roles = Role.create!(
   [{:name => "admin", :description => "Application administrator"},
    {:name => "buyer", :description => "Users with this role will appear in the campus buyers select list"}])
 
+
 # STATUSES
 statuses = Status.create!(
   [{:name => "Not Approved"},
    {:name => "Approved"}]
 )
-
+=begin
 # ADMINS (User)
 runner_attrs = {
   :first_name => "Steven",
@@ -104,3 +105,4 @@ vnadi_attrs = {
 vnadi = User.new
 vnadi.protected_attributes = runner_attrs
 vnadi.save!
+=end

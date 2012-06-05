@@ -1,0 +1,27 @@
+<% set_title("Listing Extenuating Circumstances") %>
+
+
+<div class="page_content">
+  <%= new_link_to('New Circumstance', new_admin_ext_circumstance_path) %>
+  <br class="spacing"/>
+
+  <table id="ext_circumstance_list">
+    <tr>
+      <th width="1%"></th>
+      <th width="1%"></th>
+      <th>Description</th>
+      <th>Enabled?</th>
+    </tr>
+    
+    <tbody class="highlight">
+      <% @circumstances.each do |ec| %>
+        <tr id="<%= dom_id(ec) %>">
+          <td><%= edit_link_to(edit_admin_ext_circumstance_path(ec)) %></td>
+          <td><%= delete_link_to(admin_ext_circumstance_path(ec)) %></td>
+          <td><%=h ec.description %></td>
+          <td><%=h ec.enabled? %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

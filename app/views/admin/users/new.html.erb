@@ -1,0 +1,15 @@
+<% set_title("New User") %>
+
+<script type="text/javascript">
+  $(document).ready(function() { setup_lightbox(); });
+</script>
+
+<%= error_messages_for('user') %>
+
+<div class="page_content">
+  <%= ldap_lookup_link_to('user', :class => "lightbox button_widget") %> 
+  <%= required_field_notice %>
+  <br/>
+
+  <%= render :partial => 'form', :locals => {:user => @user} %>
+</div>

@@ -1,0 +1,8 @@
+<% set_title("Edit Status") %>
+
+<%= error_messages_for('status') %>
+
+<div class="page_content">
+  <%= render(:partial => 'form', :locals => {:status => @status}) %>
+</div>
+

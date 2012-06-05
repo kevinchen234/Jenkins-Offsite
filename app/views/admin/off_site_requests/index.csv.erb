@@ -1,0 +1,4 @@
+<%= OffSiteRequest.csv_header -%>
+<% @os_reqs.each do |r| -%>
+  <%= r.to_csv -%>
+<% end -%>
