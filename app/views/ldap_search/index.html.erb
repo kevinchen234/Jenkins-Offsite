@@ -1,0 +1,54 @@
+<% set_title('Lookup User in LDAP') %>
+
+
+<script type="text/javascript">
+  jQuery(function() {
+    toggle_ldap_select_error();
+  });
+</script>
+
+
+<div id="ldap_select_error" style="display: none;">
+  <p>
+    It is required that Campus Officials publish their email address in the campus LDAP
+    directory.  However, the individual you have selected has not published their email address in
+    directory.  Individuals may update their LDAP directory listing by visiting:
+    <a href="https://calnet.berkeley.edu/directory/update/">LDAP Directory Update</a>
+  </p>
+
+  <p style="align: center;">
+    <%= link_to("Search Again", {}, :id => "search_again", :class => "button_widget") %>
+    <%= link_to("Close", {}, :id => "fancy_close", :class => "button_widget") %>
+  </p>
+</div>
+
+<div id="ldap_search_content">
+  <div class="page_content">
+    <%= semantic_remote_form_for(@ldap_search,
+                                :url => do_ldap_search_path(),
+                                :html => { :method => :get },
+                                :loading => "$('div#loading_img').css('display', 'inline');",
+                                :complete => "$('div#loading_img').css('display', 'none');") do |form| %>
+      <%= form.inputs do %>
+        <%= form.input(:search_by, :label => "Search By", :as => :select,  :collection => @select_options) %>
+        <%= form.input(:search_value, :label => "Search Value") %>
+        <%= form.input(:search_for, :as => :hidden) %>
+        <%= form.buttons do %>
+          <%= form.commit_button("Search") %>
+          <%= link_to("Close", {}, :id => "fancy_close", :class => "button_widget") %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+
+
+  <div style="display: none;" id="loading_img">
+    <img src="/images/loadingAnimation.gif" alt="loading..." style="margin-top: 2em; text-align: center;"/>
+  </div>
+
+  <div id="user_search_results_container">
+    <% if @users %>
+      <%= render(:partial => 'user_search_result', :locals => {:users => @users, :search_for => @ldap_search.search_for}) %>
+    <% end %>
+  </div>
+</div>

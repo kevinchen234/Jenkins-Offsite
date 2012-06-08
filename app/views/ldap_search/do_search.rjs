@@ -1,0 +1,7 @@
+
+page.replace_html("user_search_results_container", 
+                  :partial => "user_search_result", 
+                  :locals => {:users => @users, :search_for => @ldap_search.search_for})
+page.call(@callback)
+
+
