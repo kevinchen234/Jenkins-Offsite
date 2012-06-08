@@ -172,7 +172,7 @@ class OffSiteRequest < ActiveRecord::Base
 
   def campus_official_ldap_uid=(ldap_uid)
     user = User.find_or_new_by_ldap_uid(ldap_uid)
-    raise ArgumentError if !user
+    #raise ArgumentError if !user
     @campus_official_ldap_uid = ldap_uid.to_i
     self.campus_official = user
   end

@@ -26,7 +26,7 @@ module OffSiteRequestIntegrationHelpers
     pre = "off_site_request"
     fill_in("#{pre}_hostname", :with => "unique_hostname.berkeley.edu")
     choose("#{pre}_hostname_in_use_false")
-    select("Enterprise Application Service - (JKASD)", :from => "#{pre}_sponsoring_department")
+    select("test", :from => "#{pre}_sponsoring_department")
     choose("#{pre}_for_department_sponsor_true")
     fill_in("#{pre}_off_site_service", :with => "Super Service")
     fill_in("#{pre}_off_site_ip", :with => "123.123.123.123")

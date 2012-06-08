@@ -105,7 +105,7 @@ module ApplicationHelper
   end
 
   def col_sort(col_name, attr_name, named_route, params)
-    RAILS_DEFAULT_LOGGER.debug("#{params[:sort_by]} => #{attr_name}")
+    Rails.logger.debug("#{params[:sort_by]} => #{attr_name}")
 
     params = params.dup
     if (params[:sort_by] == attr_name) && params[:sort_order]

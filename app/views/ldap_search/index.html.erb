@@ -24,7 +24,7 @@
 
 <div id="ldap_search_content">
   <div class="page_content">
-    <%= semantic_remote_form_for(@ldap_search,
+    <%= semantic_remote_form_for(:ldap_search, #hack for now, switched @ldap_search to :ldap_search since form_for only takes models
                                 :url => do_ldap_search_path(),
                                 :html => { :method => :get },
                                 :loading => "$('div#loading_img').css('display', 'inline');",

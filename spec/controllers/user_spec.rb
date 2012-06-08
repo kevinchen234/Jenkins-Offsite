@@ -1,15 +1,12 @@
 require 'spec_helper'
 
-include RspecIntegrationHelpers
-
-
 describe UsersController do
 
   let(:mock_ldap_person) { UCB::LDAP::Person.new([]) }
   before(:each) do
     user.ldap_uid=78392
     User.stub(:new).and_return(user)
-    mock_ldap_person.stub!(:uid).and_return(user.ldap_uid)
+    mock_ldap_person.stub(:uid).and_return(user.ldap_uid)
     session[:ldap_user] = mock_ldap_person
   end
 
@@ -18,7 +15,7 @@ describe UsersController do
     let(:user) { stub_model(User)}
 
     it "assigns a new user to @user with their uid" do
-      User.stub(:new_from_ldap_uid).and_return(user)
+      User.should_receive(:new_from_ldap_uid).and_return(user)
       get 'new'
       assigns[:user].should eq(user)
       assigns[:user].ldap_uid.should eq(mock_ldap_person.uid)

@@ -36,7 +36,7 @@ runner_request_1:
   hostname: asdf.berkeley.edu
   hostname_in_use: true
   arachne_or_socrates: true
-  sponsoring_department: "department123"
+  sponsoring_department: "test"
   campus_official: campus_official
   off_site_service: "service123"
   for_department_sponsor: true

@@ -27,8 +27,8 @@
       <%= form.input(:confirmed_service_qualifications, :as => :radio, :label => "Confirmed Qualifications?", :input_html => { :disabled => true }, :hint => Hints.confirmed_service_qualifications) %>
       <%= form.input(:ext_circumstances, :label => "Will the system collect, transmit, process or<BR> maintain any of the following types of sensitive <BR>information? (check all that apply)", :as => :check_boxes, :collection => form.object.ext_circumstances, :input_html => { :disabled => true }, :required => true) %>
       <%= form.input(:other_ext_circumstances, :label => "Description", :input_html => { :disabled => true }, :hint => Hints.other_ext_circumstances) %>
-      <%= form.input(:meets_ctc_criteria, :as => :radio, :label => "Meets CTC Criteria?", :input_html => { :disabled => true }, :required => true, :hint => Hints.meets_ctc_criteria) %>
-      <%= form.input(:campus_official_full_name, :as => :string, :label => "Resource Proprietor", :input_html => { :disabled => true }, :required => true, :hint => Hints.campus_official) %>
+      <%= form.input(:meets_ctc_criteria, :as => :radio, :label => "Meets CTC Criteria?", :input_html => { :disabled => true }, :required => true, :hint => Hints.meets_ctc_criteria.html_safe) %>
+      <%= form.input(:campus_official_full_name, :as => :string, :label => "Resource Proprietor", :input_html => { :disabled => true }, :required => true, :hint => Hints.campus_official.html_safe) %>
     <% end %>
   <% end %>
 

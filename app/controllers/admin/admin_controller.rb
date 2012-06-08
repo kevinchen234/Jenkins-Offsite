@@ -1,5 +1,5 @@
 class Admin::AdminController < ApplicationController
-  before_filter :filter_role_admin
+  #before_filter :filter_role_admin
   
   layout 'admin'
 

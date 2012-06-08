@@ -31,9 +31,10 @@
     <%= form.input(:ext_circumstances, :label => "Will the system collect, transmit, process or<BR> maintain any of the following types of sensitive <BR>information? (check all that apply)".html_safe, :as => :check_boxes, :collection => @ext_circumstances_list) %>
     <%= form.input(:other_ext_circumstances, :label => "Description", :hint => Hints.other_ext_circumstances) %>
 
-        <%= form.input(:meets_ctc_criteria, :label => "Needs CTC Review", :required => true, :as => :radio, :collection => yes_no, :hint => Hints.meets_ctc_criteria) %>
+        <%= form.input(:meets_ctc_criteria, :label => "Needs CTC Review", :required => true, :as => :radio, :collection => yes_no, :hint => Hints.meets_ctc_criteria.html_safe) %>
 
-    <%= form.input(:campus_official_full_name, :required => true, :label => "Resource Proprietor", :after_input => ldap_lookup_link_to("campus_official"), :input_html => {:disabled => true}, :hint => Hints.campus_official.html_safe) %>
+    <%= form.input(:campus_official_full_name, :required => true, :label => "Resource Proprietor", :input_html => {:disabled => true}, :hint => Hints.campus_official.html_safe) %>
+        <%= ldap_lookup_link_to("campus_official").html_safe %>
     <%= form.input(:campus_official_ldap_uid, :as => :hidden) %>
 
     <%= form.buttons do %>

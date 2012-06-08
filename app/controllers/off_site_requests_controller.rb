@@ -79,6 +79,9 @@ class OffSiteRequestsController < ApplicationController
 
   def build_department_list
     @department_list = UCB::LDAP::Org.build_department_list
+    if ENV['RAILS_ENV'] == "test"
+      @department_list << "test"
+    end
   end
 
   def build_status_list

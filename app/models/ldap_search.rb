@@ -1,6 +1,7 @@
 class LdapSearch
   include ActiveSupport
-  
+  #extend ActiveModel::Naming
+
   class LSException < StandardError; end
   
   SEARCH_BY_OPTIONS = [:ldap_uid, :last_first_name, :last_name, :first_name, :email].freeze
@@ -16,8 +17,16 @@ class LdapSearch
   end
   
   def find
+    #Not sure if we need to take care of these edge cases
+    #Live site seems to ignore bad requests
+    #Returning nil is the closest I've gotten so far to that
+    if search_for.nil?
+      return
+    end
+
     unless SEARCH_FOR_OPTIONS.include?(search_for.to_sym)
-      raise(LSException, "invalid :search_for option: #{search_for}")
+      #raise(LSException, "invalid :search_for option: #{search_for}")
+      return
     end
     
     return [] unless valid_find_options?
