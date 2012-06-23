@@ -21,14 +21,19 @@ OffsiteV3::Application.routes.draw do
 
 
   namespace :admin do
-    resource :users,
-             :except => "show",
-             :collection => { :search => :get, :do_search => :get },
-             :member => { :login => :get }
-    resource :roles, :except => "roles"
-    resource :ext_circumstances, :except => "show"
-    resource :off_site_requests, :except => "show"
-    resource :statuses, :except => "show"
+    resources :users, :except => :show do
+      collection do
+        get :search
+        get :do_search
+      end
+      member do
+        get :login
+      end
+    end
+    resources :roles, :except => :roles
+    resources :ext_circumstances, :except => :show
+    resources :off_site_requests, :except => :show
+    resources :statuses, :except => :show
   end
 
 
