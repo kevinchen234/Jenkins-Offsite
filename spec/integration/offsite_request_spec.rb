@@ -12,8 +12,8 @@ describe "OffSiteRequest CRUD interface" do
     @runner = User.find(ActiveRecord::Fixtures.identify(:runner))
     login_user(@runner.ldap_uid)
 
-    @runner_req1 = OffSiteRequest.find(ActiveRecord::Fixtures.identify(:runner_request_1))
-    @runner_req2 = OffSiteRequest.find(ActiveRecord::Fixtures.identify(:runner_request_2))
+    @not_approved_req = OffSiteRequest.find(ActiveRecord::Fixtures.identify(:not_approved_request))
+    @approved_req = OffSiteRequest.find(ActiveRecord::Fixtures.identify(:approved_request))
     @ext_one = ExtCircumstance.find(ActiveRecord::Fixtures.identify(:minimal_for_validation))
     simulate { stub_department_list }
   end
@@ -24,12 +24,12 @@ describe "OffSiteRequest CRUD interface" do
   it "should List Off-Site Requests" do
     visit_path(off_site_requests_path)
     assert_contain("Listing Off-Site Requests")
-    assert_have_selector(row_sel(@runner_req1))
+    assert_have_selector(row_sel(@not_approved_req))
 
     # Approved requests have "View" link
-    assert_have_selector(row_sel(@runner_req2), :content => "View")
+    assert_have_selector(row_sel(@approved_req), :content => "View")
     # Not Approved requests have "Edit" link
-    assert_have_selector(row_sel(@runner_req1), :content => "Edit")
+    assert_have_selector(row_sel(@not_approved_req), :content => "Edit")
   end
 
   it "should Create an OffSiteRequest" do
@@ -54,7 +54,7 @@ describe "OffSiteRequest CRUD interface" do
 
   it "should Edit an Off-Site Request" do
     visit_path(off_site_requests_path)
-    click_link_within(row_sel(@runner_req1), "Edit")
+    click_link_within(row_sel(@not_approved_req), "Edit")
     assert_contain("Edit Off-Site Request")
     # Should have delete button
     assert_have_selector("a", :content => "Delete")
@@ -69,28 +69,28 @@ describe "OffSiteRequest CRUD interface" do
     fill_in("#{pre}_hostname", :with => "hostname.berkeley.edu")
     click_button("Submit")
     assert_contain("Edit Off-Site Request")
-    assert_have_selector(".flash_notice", :content => CrudMessage.msg_updated(@runner_req1))
+    assert_have_selector(".flash_notice", :content => CrudMessage.msg_updated(@not_approved_req))
   end
 
   it "should View an Off-Site Request" do
     visit_path(off_site_requests_path)
-    click_link_within(row_sel(@runner_req2), "View")
+    click_link_within(row_sel(@approved_req), "View")
     assert_contain("View Off-Site Request")
     # No delete button for new requests
     assert_have_no_selector("a", :content => "Delete")
-    assert_off_site_request_form_is_readonly(@runner_req2)
+    assert_off_site_request_form_is_readonly(@approved_req)
   end
 
   it "should Delete an Off-Site Request" do
     visit_path(off_site_requests_path)
-    click_link_within(row_sel(@runner_req1), "Edit")
+    click_link_within(row_sel(@not_approved_req), "Edit")
     assert_contain("Edit Off-Site Request")
     click_link("Delete")
     automate { selenium.get_confirmation() }
 
     assert_contain("Listing Off-Site Requests")
-    assert_have_no_selector(row_sel(@runner_req1))
-    assert_have_selector(".flash_notice", :content => CrudMessage.msg_destroyed(@runner_req1))
+    assert_have_no_selector(row_sel(@not_approved_req))
+    assert_have_selector(".flash_notice", :content => CrudMessage.msg_destroyed(@not_approved_req))
   end
 end
 
