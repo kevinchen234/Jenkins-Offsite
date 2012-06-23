@@ -6,16 +6,16 @@
   });
 </script>
 
-<% semantic_form_for([:admin, @os_req]) do |form| %>
-  <% form.buttons do %>
+<%= semantic_form_for([:admin, @os_req]) do |form| %>
+  <%= form.buttons do %>
     <%= form.commit_button("Submit") %>
     <%= link_to("View All", admin_off_site_requests_path, :class => "button_widget") %>
     <%= delete_button(admin_off_site_request_url(@os_req.id)) unless @os_req.new_record? %>
 
-    <%= required_field_notice %>
+    <%= required_field_notice.html_safe %>
   <% end %>
 
-  <% form.inputs("Admin Only Fields", :class => "border") do %>
+  <%= form.inputs("Admin Only Fields", :class => "border") do %>
     <%= form.input(:enforce_validation, :as => :radio) %>
     <%= form.input(:status, :required => true, :as => :select, :collection => @status_list) %>
     <%= form.input(:cns_trk_number, :label => "CNS Tracking #") %>
@@ -23,7 +23,7 @@
     <%= form.input(:comment, :as => :text, :input_html => { :rows => 5 } ) %>
   <% end %>
 
-  <% form.inputs("Standard User Fields", :class => "border") do %>
+  <%= form.inputs("Standard User Fields", :class => "border") do %>
     <%= form.input(:submitter_full_name, :required => true, :label => "Submitter", :after_input => ldap_lookup_link_to("submitter"), :input_html => {:disabled => true}) %>
     <%= form.input(:submitter_ldap_uid, :as => :hidden) %>
     <%= form.input(:hostname, :hint => Hints.hostname) %>
@@ -36,14 +36,14 @@
     <%= form.input(:off_site_ip, :label => "Off-Site IP", :hint => Hints.off_site_ip) %>
     <%= form.input(:off_site_service, :label => "Off-Site Service", :hint => Hints.off_site_service) %>
     <%= form.input(:confirmed_service_qualifications, :required => true, :as => :radio, :collection => yes_no, :hint => Hints.confirmed_service_qualifications) %>
-    <%= form.input(:ext_circumstances, :label => "Will the system collect, transmit, process or<BR> maintain any of the following types of sensitive <BR>information? (check all that apply)", :as => :check_boxes, :collection => @ext_circumstances_list) %>
+    <%= form.input(:ext_circumstances, :label => "Will the system collect, transmit, process or<BR> maintain any of the following types of sensitive <BR>information? (check all that apply)".html_safe, :as => :check_boxes, :collection => @ext_circumstances_list) %>
     <%= form.input(:other_ext_circumstances, :label => "Description", :hint => Hints.other_ext_circumstances) %>
-<!--    <%= form.input(:meets_ctc_criteria, :label => "Needs CTC Review", :required => true, :as => :radio, :collection => yes_no, :hint => Hints.meets_ctc_criteria) %>  -->
-    <%= form.input(:campus_official_full_name, :required => true, :label => "Resource Proprietor", :after_input => ldap_lookup_link_to("campus_official"), :input_html => {:disabled => true}, :hint => Hints.campus_official) %>
+    <%= form.input(:meets_ctc_criteria, :label => "Needs CTC Review", :required => true, :as => :radio, :collection => yes_no, :hint => Hints.meets_ctc_criteria.html_safe) %>
+    <%= form.input(:campus_official_full_name, :required => true, :label => "Resource Proprietor", :after_input => ldap_lookup_link_to("campus_official"), :input_html => {:disabled => true}, :hint => Hints.campus_official.html_safe) %>
     <%= form.input(:campus_official_ldap_uid, :as => :hidden) %>
   <% end %>
 
-  <% form.buttons(:style => "margin-top: 0em;") do %> 
+  <%= form.buttons(:style => "margin-top: 0em;") do %>
     <%= form.commit_button("Submit") %>
     <%= link_to("View All", admin_off_site_requests_path, :class => "button_widget") %>
   <% end %>

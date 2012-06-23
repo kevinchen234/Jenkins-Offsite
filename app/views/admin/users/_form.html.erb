@@ -1,6 +1,6 @@
 
-<% semantic_form_for([:admin, user]) do |form| %>
-  <% form.inputs do %>
+<%= semantic_form_for([:admin, user]) do |form| %>
+  <%= form.inputs do %>
     <%= form.input(:ldap_uid) %>
     <%= form.input(:first_name) %>
     <%= form.input(:last_name) %>
@@ -8,7 +8,7 @@
     <%= form.input(:department) %>
     <%= form.input(:enabled, :as => :radio, :hint => "Indicates if the user has an active account.") %>
     <%= form.input(:roles, :as => :check_boxes) %>
-    <% form.buttons do %>
+    <%= form.buttons do %>
       <%= form.commit_button("Submit") %>
       <%= link_to("View All", admin_users_path, :class => "button_widget") %>
     <% end %>

@@ -1,11 +1,11 @@
 
-<% semantic_form_for([:admin, status]) do |form| %>
-    <% form.inputs do %>
+<%= semantic_form_for([:admin, status]) do |form| %>
+    <%= form.inputs do %>
       <%= form.input(:name) %>
       <%= form.input(:enabled, :as => :radio) %>
     <% end %>
 
-    <% form.buttons do %>
+    <%= form.buttons do %>
       <%= form.commit_button("Submit") %>
       <%= link_to("View All", admin_statuses_path, :class => "button_widget") %>
     <% end %>

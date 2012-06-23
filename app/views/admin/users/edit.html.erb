@@ -4,7 +4,7 @@
 
 <div class="page_content">
   <%= delete_button(admin_user_url(@user)) %>
-  <%= required_field_notice %>
+  <%= required_field_notice.html_safe %>
   <br/>
   <%= render(:partial => 'form', :locals => {:user => @user}) %>
 </div>

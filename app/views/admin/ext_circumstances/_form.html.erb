@@ -1,9 +1,9 @@
 
-<% semantic_form_for([:admin, ext_circumstance]) do |form| %>
-    <% form.inputs do %>
+<%= semantic_form_for([:admin, ext_circumstance]) do |form| %>
+    <%= form.inputs do %>
       <%= form.input(:description) %>
       <%= form.input(:enabled, :as => :radio, :label => "Enabled?", :collection => yes_no) %>
-      <% form.buttons do %>
+      <%= form.buttons do %>
         <%= form.commit_button("Submit") %>
         <%= link_to("View All", admin_ext_circumstances_path, :class => "button_widget") %>
       <% end %>

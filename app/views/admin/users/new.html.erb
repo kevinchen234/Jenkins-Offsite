@@ -8,7 +8,7 @@
 
 <div class="page_content">
   <%= ldap_lookup_link_to('user', :class => "lightbox button_widget") %> 
-  <%= required_field_notice %>
+  <%= required_field_notice.html_safe %>
   <br/>
 
   <%= render :partial => 'form', :locals => {:user => @user} %>
