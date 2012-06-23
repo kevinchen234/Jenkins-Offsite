@@ -22,13 +22,14 @@
   </p>
 </div>
 
+
+
 <div id="ldap_search_content">
   <div class="page_content">
-    <%= semantic_remote_form_for(:ldap_search, #hack for now, switched @ldap_search to :ldap_search since form_for only takes models
+    <%= semantic_form_for(@ldap_search,
                                 :url => do_ldap_search_path(),
                                 :html => { :method => :get },
-                                :loading => "$('div#loading_img').css('display', 'inline');",
-                                :complete => "$('div#loading_img').css('display', 'none');") do |form| %>
+                                :remote => true) do |form| %>
       <%= form.inputs do %>
         <%= form.input(:search_by, :label => "Search By", :as => :select,  :collection => @select_options) %>
         <%= form.input(:search_value, :label => "Search Value") %>

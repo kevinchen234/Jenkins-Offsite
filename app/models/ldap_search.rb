@@ -1,6 +1,13 @@
 class LdapSearch
   include ActiveSupport
-  #extend ActiveModel::Naming
+
+  ##
+  # Hack to get formtastic to work
+  # need methods so it looks like an ActiveRecord model
+  ##
+  include ActiveModel::Validations
+  include ActiveModel::Conversion
+  extend  ActiveModel::Naming
 
   class LSException < StandardError; end
   
@@ -20,13 +27,13 @@ class LdapSearch
     #Not sure if we need to take care of these edge cases
     #Live site seems to ignore bad requests
     #Returning nil is the closest I've gotten so far to that
-    if search_for.nil?
-      return
-    end
+    #if search_for.nil?
+    #  return
+    #end
 
     unless SEARCH_FOR_OPTIONS.include?(search_for.to_sym)
-      #raise(LSException, "invalid :search_for option: #{search_for}")
-      return
+      raise(LSException, "invalid :search_for option: #{search_for}")
+
     end
     
     return [] unless valid_find_options?
@@ -61,6 +68,12 @@ class LdapSearch
   #
   def self.human_name
   end
+
+
+  ##
+  # Hack to get formtastic to work
+  #
+  def persisted?  ;   false  ;    end
 
 
   class << self    

@@ -1,0 +1,148 @@
+/* -------------------------------------------------------------------------------------------------
+
+Load this stylesheet after formtastic.css in your layouts to override the CSS to suit your needs.
+This will allow you to update formtastic.css with new releases without clobbering your own changes.
+
+For example, to make the inline hint paragraphs a little darker in color than the standard #666:
+
+form.formtastic fieldset ol li p.inline-hints { color:#333; }
+
+--------------------------------------------------------------------------------------------------*/
+
+
+form.formtastic {
+    font-size: 14px;
+}
+
+form.formtastic > fieldset > ol {
+    margin-top: 1em;
+}
+
+form.formtastic > fieldset.border {
+    border: 1px solid #666;
+    border-width: 1px 0px 0px 0px;
+    padding: 0em 0em 0em 1em;
+    margin-top: 1.5em;
+}
+
+form.formtastic > fieldset.border > legend {
+    font-size: 1.2em;
+    font-style: italic;
+    font-weight: bold;
+    padding: 0em .2em;
+}
+
+
+/* LABELS
+--------------------------------------------------------------------------------------------------*/
+form.formtastic fieldset > ol > li label { 
+    display:block; width:30%; float:left; padding-top:.2em; white-space: nowrap;  padding-left: 1em;
+    font-family: Tahoma, Arial; text-transform: capitalize; margin-left: 0em;
+}
+form.formtastic fieldset > ol > li > li label { line-height:100%; padding-top:0; }
+form.formtastic fieldset > ol > li > li label input { line-height:100%; vertical-align:middle; margin-top:-0.1em;}
+
+
+/* NESTED FIELDSETS AND LEGENDS (radio, check boxes and date/time inputs use nested fieldsets)
+--------------------------------------------------------------------------------------------------*/
+form.formtastic fieldset > ol > li fieldset { position:relative; }
+form.formtastic fieldset > ol > li fieldset legend { position:relative; width:30%; padding-top:0.1em; }
+form.formtastic fieldset > ol > li fieldset legend span { position:absolute; }
+form.formtastic fieldset > ol > li fieldset legend.label label { position:relative; margin-left: 0em; }
+form.formtastic fieldset > ol > li fieldset ol { float:left; width:68%; margin:0; padding:0 0 0 30%; }
+form.formtastic fieldset > ol > li fieldset ol li { padding:0; border:0; }
+
+
+/* STRING & NUMERIC OVERRIDES
+--------------------------------------------------------------------------------------------------*/
+form.formtastic fieldset > ol > li.string input { width:35%; }
+form.formtastic fieldset > ol > li.password input { width:35%; }
+form.formtastic fieldset > ol > li.numeric input { width:35%; }
+
+
+/* TEXTAREA OVERRIDES
+--------------------------------------------------------------------------------------------------*/
+form.formtastic fieldset > ol > li.text textarea { width: 40%; }
+
+
+/* RADIO OVERRIDES
+--------------------------------------------------------------------------------------------------*/
+form.formtastic fieldset > ol > li.radio { }
+form.formtastic fieldset > ol > li.radio fieldset ol { margin-bottom:.1em; }
+form.formtastic fieldset > ol > li.radio fieldset ol li { margin:0.1em 1em 0.5em 0; display: inline; }
+form.formtastic fieldset > ol > li.radio fieldset ol li label { 
+    float:none; display: inline; text-transform: none; font-family: none;
+}
+form.formtastic fieldset > ol > li.radio fieldset ol li label input { margin-right:0.2em; display: inline; }
+
+
+/* CHECK BOXES (COLLECTION) OVERRIDES
+--------------------------------------------------------------------------------------------------*/
+form.formtastic fieldset > ol > li.check_boxes { }
+form.formtastic fieldset > ol > li.check_boxes fieldset ol { margin-bottom:-0.6em; }
+form.formtastic fieldset > ol > li.check_boxes fieldset ol li { margin:0.1em 0 0.5em 0; }
+form.formtastic fieldset > ol > li.check_boxes fieldset ol li label { float:none; font-family: none; }
+form.formtastic fieldset > ol > li.check_boxes fieldset ol li label input { margin-right:0.2em; }
+
+
+/* INLINE HINTS
+--------------------------------------------------------------------------------------------------*/
+form.formtastic fieldset ol li p.inline-hints { 
+    color:#666; margin:0.5em 0 0 30%; padding: 0em 1em 0em 1em; font-style: italic; font-size: 12px;
+}
+
+
+/* FIELDSETS & LISTS
+--------------------------------------------------------------------------------------------------*/
+
+form.formtastic fieldset.buttons {
+    padding: 0px;
+    margin: 0em;
+    border-width: 0px;
+}
+
+form.formtastic fieldset.buttons li { 
+    float:left;
+}
+
+form.formtastic fieldset.buttons li input { 
+    font-family:"Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
+    margin-left: .5em;
+    font-size: 13px;
+    background-color: #444;
+    color: white;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border: 1px solid black;
+    font-weight: bold;
+    cursor:pointer;
+    padding: 0px 10px 1px 10px;
+    line-height: 110%;
+    height: 24px;
+}
+
+.buttons input[type=submit] {
+    font-size: 13px;
+    padding:-5px 10px 5px 7px; /* Firefox */
+    line-height:17px; /* Safari */
+}
+
+form.formtastic fieldset.buttons li input:hover { 
+    background-color: #000;
+    color: white;
+}
+
+div.gray_border hr {
+    border-width: 0px;
+    border-top: 1px solid #666;
+}
+
+span.required {
+    color: red;
+    font-weight: bold;
+}
+
+form.formtastic span.warn {
+    font-weight: bold;
+    color: #C36D04;
+}

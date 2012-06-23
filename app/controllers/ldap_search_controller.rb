@@ -3,10 +3,10 @@ class LdapSearchController < ApplicationController
   def index
     @select_options = LdapSearch.search_by_options()
     @ldap_search = LdapSearch.new(params[:ldap_search])
-    Rails.logger.debug("Search For: #{@ldap_search.search_for()}")    
+    Rails.logger.debug("Search For: #{@ldap_search.search_for()}")
     respond_to do |format|
-      format.html { render("index") }
-      format.js { render("index", :layout => false) }
+      format.html { render(:layout => false) }
+      format.js { render(:layout => false) }
     end
   end
   
@@ -19,7 +19,7 @@ class LdapSearchController < ApplicationController
     Rails.logger.debug("Callback: #{@callback}")
     respond_to do |format|
       format.html { render("index") }
-      format.js { render("do_search.rjs") }
+      format.js  { render("do_search")}
     end
   end
   

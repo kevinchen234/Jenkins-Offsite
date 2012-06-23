@@ -1,0 +1,16 @@
+
+
+$('#user_search_results_container').html($("<%= escape_javascript(render :partial => 'user_search_result',
+                                      :locals => {:users => @users, :search_for => @ldap_search.search_for}) %>"));
+
+
+//Kind of a hack for now. Not sure how else to call what is
+//stored in @callback
+<% if @callback == "observe_and_update_campus_official" %>
+    observe_and_update_campus_official()
+<% elsif @callback == "observe_and_update_submitter" %>
+    observe_and_update_submitter()
+<% else %>
+    observe_and_update_user()
+<% end %>
+
