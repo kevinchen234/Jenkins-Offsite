@@ -7,7 +7,8 @@ describe UsersController do
     user.ldap_uid=78392
     User.stub(:new).and_return(user)
     mock_ldap_person.stub(:uid).and_return(user.ldap_uid)
-    session[:ldap_user] = mock_ldap_person
+    #session[:ldap_user] = mock_ldap_person
+    controller.stub(:ldap_user).and_return(mock_ldap_person)
   end
 
   describe "GET new" do
@@ -40,7 +41,7 @@ describe UsersController do
     end
 
     #These tests need user to be a mock_model that is a null object so it doesn't
-    #respond to methods so I put them in a seperate context
+    #respond to methods so I put them in a separate context
     context "when going through parts of the action" do
 
       let(:user) { mock_model(User).as_null_object }

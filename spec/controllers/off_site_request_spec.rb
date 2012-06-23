@@ -12,9 +12,8 @@ describe OffSiteRequestsController do
 
   before(:each) do
     mock_ldap_person.stub(:uid).and_return(0101010)
-    session[:ldap_user] = mock_ldap_person
+    controller.stub(:ldap_user).and_return(mock_ldap_person)
     controller.stub(:current_user).and_return(current_user)
-    controller.stub(:load_os_req).and_return(true)
   end
 
   describe "GET index" do
@@ -34,30 +33,33 @@ describe OffSiteRequestsController do
     end
   end
 
-=begin
+
   #Not sure how to handle deleting @os_req when it is loaded in load_os_req before_filter
   describe "DELETE destroy" do
+
+    before(:each) do
+      current_user.stub(:off_site_requests).and_return(mock_req_list)
+      mock_req_list.stub(:find).with("769434382").and_return(mock_os_req)
+    end
+
     it "destroys @os_req" do
       #current_user.stub(:off_site_requests).and_return(OffSiteRequest.all)
       #mock_req_list.stub(:find).with("769434382")
-      assigns[:os_req].should_receive(:destroy).and_return(true)
+      mock_os_req.should_receive(:destroy).and_return(true)
       delete 'destroy', :id => 769434382
     end
 
     it "gives a message in the flash" do
-      assigns[:os_req].stub(:destroy)
-      delete 'destroy'
+      delete 'destroy', :id => 769434382
       flash[:notice].should eq("#{assigns[:os_req].class} successfully deleted.")
     end
 
     it "redirects to the requests url" do
-      assigns[:os_req].stub(:destroy)
-      delete 'destroy'
+      delete 'destroy', :id => 769434382
       response.should redirect_to(off_site_requests_url)
     end
   end
 
-=end
 
   describe "POST create" do
     let(:new_req) { mock_model(OffSiteRequest).as_null_object }

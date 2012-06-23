@@ -339,7 +339,6 @@ describe "OffSiteRequest" do
         end
 
         it "throw an error" do
-          puts @uid
           osr = valid
           expect { osr.campus_official_ldap_uid = @uid }.to raise_error(ArgumentError)
         end

@@ -31,7 +31,7 @@ jack_request_1:
   status: not_approved
   meets_ctc_criteria: true
 
-runner_request_1:
+not_approved_request:
   submitter: runner
   hostname: asdf.berkeley.edu
   hostname_in_use: true
@@ -51,7 +51,7 @@ runner_request_1:
   meets_ctc_criteria: true
   ext_circumstances: ext_one
 
-runner_request_2:
+approved_request:
   submitter: runner
   hostname: asdf2.berkeley.edu
   hostname_in_use: true

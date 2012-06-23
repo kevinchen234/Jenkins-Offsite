@@ -66,7 +66,7 @@ RSpec::Matchers.define :be_valid do
     "be valid"
   end
 
-  EMPLOYEE_LDAP_UID = "212386"
+  #EMPLOYEE_LDAP_UID = "212386"
 
 ##
 # Takes an object that responds to :ldap_uid
