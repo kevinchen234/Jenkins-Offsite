@@ -21,6 +21,7 @@ gem 'i18n'
 gem 'formtastic', '~> 1.2.4u'
 gem 'rubycas-client'  # Offsite v2 was '= 2.0.1'; current is 2.3.8.  # Client library for Central Authentication Service protocol.
 gem 'validates_existence', ">= 0.4"
+gem 'dynamic_form' #added to support error_messages_for
 
 gem "ucb_ldap", "~> 2.0.0.pre1"
 
@@ -46,4 +47,5 @@ group :development, :test do
 end
 group :debugging do
   #gem 'ruby-debug19', :require => 'ruby-debug'  # Command line interface for ruby-debug.
+  gem 'debugger'
 end

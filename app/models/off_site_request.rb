@@ -1,3 +1,4 @@
+require 'csv'
 class OffSiteRequest < ActiveRecord::Base
 
   HUMANIZED_ATTRIBUTES = {
@@ -172,7 +173,7 @@ class OffSiteRequest < ActiveRecord::Base
 
   def campus_official_ldap_uid=(ldap_uid)
     user = User.find_or_new_by_ldap_uid(ldap_uid)
-    #raise ArgumentError if !user
+    raise ArgumentError if !user
     @campus_official_ldap_uid = ldap_uid.to_i
     self.campus_official = user
   end
@@ -184,7 +185,7 @@ class OffSiteRequest < ActiveRecord::Base
 
   def to_csv
     attrs = csv_attributes
-    FasterCSV.generate_line(attrs.keys.sort.inject([]) { |accum, elem| accum << attrs[elem] })
+    CSV.generate_line(attrs.keys.sort.inject([]) { |accum, elem| accum << attrs[elem] })
   end
 
   def csv_attributes
@@ -221,7 +222,7 @@ class OffSiteRequest < ActiveRecord::Base
     end
 
     def csv_header
-      FasterCSV.generate_line(csv_header_cols)
+      CSV.generate_line(csv_header_cols)
     end
 
     def sortable_find_all(params)

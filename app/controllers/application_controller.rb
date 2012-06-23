@@ -22,6 +22,7 @@ class ApplicationController < ActionController::Base
       session[:original_url] = request.env['REQUEST_URI']
       redirect_to(login_url)
     end
+    application_login
   end
 
 
@@ -110,7 +111,7 @@ class ApplicationController < ActionController::Base
   # This happens upon successful CAS authentication.  You can login
   # a particular user to your application by calling this method
   # with the corresponding ldap_uid.
-  def application_login(ldap_uid=ldap_uid) #:doc:
+  def application_login(ldap_uid=session[:ldap_uid]) #:doc:
     #_logger.debug("In application_login")
     #UCB::LDAP::Person.include_test_entries = UCB::Rails::Security::CASAuthentication.allow_test_entries?
     #_logger.debug("\tLDAP test entries will #{UCB::LDAP::Person.include_test_entries? || "NOT"} be included")
@@ -151,14 +152,47 @@ class ApplicationController < ActionController::Base
   end
 
   def ldap_user()
-    if !session[:ldap_user]
-      session[:ldap_user] = UCB::LDAP::Person.find_by_uid(session[:ldap_uid])
-    end
-      session[:ldap_user]
+    session[:ldap_user]
   end
 
   def current_user()
-    User.find_by_uid(ldap_user.uid)
+    if !ldap_user.nil?
+      User.find_by_uid(ldap_user.uid)
+    end
+  end
+
+  # Update User table entry with values from UCB::LDAP::Person instance.
+  # This happens automatically when a user logs in and is found in
+  # the User table.
+  #
+  # Applications can call this to update user table entries with
+  # (presumably more current) LDAP information.  Each column name that
+  # has a corresponding LDAP attribute or alias will be updated.
+  def update_user_table(ldap_user, ar_user) #:doc:
+    #_logger.debug("Updating users attributes to match LDAP.")
+    User.content_columns.each do |col|
+      begin
+        ar_user.send("#{col.name}=", ldap_user.send(col.name.to_sym))
+      rescue NoMethodError
+        # It's okay.  Don't have LDAP attribute for given column.
+      end
+    end
+    ar_user.save
+  end
+
+  # Check if user is in user table.  If found, update columns
+  # with LDAP attributes of same name.
+  def look_for_user_in_user_table(ldap_uid)
+    #_logger.debug("Looking for user in user table.")
+    ar_user = User.find_by_uid(ldap_uid)
+    if ar_user
+      #_logger.debug("Found user.")
+      self.user_table_id = ar_user.id
+      update_user_table(ldap_user, ar_user)
+      return true
+    else
+      #_logger.debug("User NOT found.")
+    end
   end
 
   # Returns the User table instance for the logged in user.
@@ -181,6 +215,11 @@ class ApplicationController < ActionController::Base
   # Returns +id+ column from User table for logged in user.
   def user_table_id() #:doc:
     session[:user_table_id]
+  end
+
+  # Setter for user_table_id.
+  def user_table_id=(user_table_id)
+    session[:user_table_id] = user_table_id
   end
 
   # Returns +true+ if user in user table.  If not logged in, user

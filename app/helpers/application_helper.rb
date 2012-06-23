@@ -127,27 +127,31 @@ module ApplicationHelper
   end
 
   def user_major_tabs
-    #tabs = [
-    #    { :id => :site_home, :label => "Site Home", :url => root_url },
-    #    { :id => :off_site_requests, :label => "Off-Site Requests", :url => off_site_requests_url },
-    #]
+    tabs = [
+        { :id => :site_home, :label => "Site Home", :url => root_url },
+        { :id => :off_site_requests, :label => "Off-Site Requests", :url => off_site_requests_url },
+    ]
 
-    str = "<li class=\"\"><a href=\"#{root_url}\" id=\"#{:site_home}\">Site Home</a></li>"
-    str+= "<li class=\"\"><a href=\"#{off_site_requests_url}\" id=\"#{:off_site_requests}\">Off-Site Requests</a></li>"
+    #str = "<li class=\"\"><a href=\"#{root_url}\" id=\"#{:site_home}\">Site Home</a></li>"
+    #str+= "<li class=\"\"><a href=\"#{off_site_requests_url}\" id=\"#{:off_site_requests}\">Off-Site Requests</a></li>"
 
     # Show admins "Admin" tab
     if in_user_table? && role_names.map(&:to_sym).include?(:admin)
-      #tabs <<  { :id => :admin_home, :label => "Admin", :url => admin_root_url }
-      str+= "<li class=\"\"><a href=\"#{admin_root_url}\" id=\"#{:admin_home}\">Admin</a></li>"
+      tabs <<  { :id => :admin_home, :label => "Admin", :url => admin_root_url }
+      #str+= "<li class=\"\"><a href=\"#{admin_root_url}\" id=\"#{:admin_home}\">Admin</a></li>"
     end
-    #tabs
-    str
+    tabs
+    #str
   end
 
   def user_major_tabs_html
-    #lis = user_major_tabs.map { |item| nav_li(item, @major_tab) }
+    lis = user_major_tabs.map { |item| nav_li(item, @major_tab) }
     #content_tag(:ul, lis.join("\n"))
-    user_major_tabs.html_safe
+    tabs = ""
+    for tab in lis do
+      tabs+=tab
+    end
+    tabs.html_safe
   end
 
 
