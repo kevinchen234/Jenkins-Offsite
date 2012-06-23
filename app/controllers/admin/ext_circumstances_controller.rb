@@ -24,9 +24,12 @@ class Admin::ExtCircumstancesController < Admin::AdminController
   end
 
   def update
-    @ext_circumstance.update_attributes(params[:ext_circumstance])
-    flash[:notice] = msg_updated(@ext_circumstance)
-    redirect_to admin_ext_circumstances_url
+    if @ext_circumstance.update_attributes(params[:ext_circumstance])
+      flash[:notice] = msg_updated(@ext_circumstance)
+      redirect_to admin_ext_circumstances_url
+    else
+      render("edit")
+    end
   end
 
   def destroy

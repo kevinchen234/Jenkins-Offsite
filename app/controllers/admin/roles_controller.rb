@@ -1,5 +1,5 @@
 class Admin::RolesController < Admin::AdminController
-  before_filter :major_tab_roles
+  #before_filter :major_tab_roles
   before_filter :load_users, :except => [:index, :destroy]
   before_filter :load_role, :only => [:edit, :update, :destroy]
   
@@ -49,6 +49,6 @@ class Admin::RolesController < Admin::AdminController
   end
 
   def load_users
-    @all_users = User.find(:all)
+    @all_users = User.all
   end
 end

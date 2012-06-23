@@ -10,7 +10,8 @@ class Admin::UsersController < Admin::AdminController
   end
 
   def new
-    @user = User.new_from_ldap_uid(params[:ldap_uid])
+    #@user = User.new_from_ldap_uid(params[:ldap_uid])  #nothing in params so this will give an error
+    @user = User.new_from_ldap_uid(ldap_user.uid)
   end
 
   def edit
@@ -60,7 +61,7 @@ class Admin::UsersController < Admin::AdminController
   end
   
   def load_roles
-    @all_roles = Role.find(:all)
+    @all_roles = Role.all
   end
   
 end
