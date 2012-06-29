@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   #before_filter :filter_logged_in
   before_filter :ensure_authenticated_user
   before_filter :deny_if_user_exists
-  #before_filter :major_tab_off_site_requests doesn't exist
+  before_filter :major_tab_off_site_requests
 
 
   #### Test spec finished? ####

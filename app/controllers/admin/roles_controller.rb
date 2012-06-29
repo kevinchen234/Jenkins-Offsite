@@ -1,5 +1,5 @@
 class Admin::RolesController < Admin::AdminController
-  #before_filter :major_tab_roles
+  before_filter :major_tab_roles
   before_filter :load_users, :except => [:index, :destroy]
   before_filter :load_role, :only => [:edit, :update, :destroy]
   

@@ -151,6 +151,7 @@ module ApplicationHelper
     for tab in lis do
       tabs+=tab
     end
+    tabs = "<ul>"+tabs+"</ul>"
     tabs.html_safe
   end
 

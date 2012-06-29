@@ -36,7 +36,7 @@ div#fancy_loading div {
     left: 0;
     width: 40px;
     height: 480px;
-    background: transparent url('/images/fancy_progress.png') no-repeat;
+    background: transparent url('../images/fancy_progress.png') no-repeat;
 }
 
 div#fancy_loading_overlay {
@@ -47,7 +47,7 @@ div#fancy_loading_overlay {
 
 div#fancy_loading_icon {
     position: absolute;
-    background: url('/images/fancy_loading.gif') no-repeat;
+    background: url('../images/fancy_progress.png') no-repeat;
     z-index: 35;
     width: 16px;
     height: 16px;
@@ -149,12 +149,12 @@ span.fancy_ico {
 
 span#fancy_left_ico {
     left: -9999px;
-    background: transparent url('/images/fancy_left.png') no-repeat;
+    background: transparent url('../images/fancy_left.png') no-repeat;
 }
 
 span#fancy_right_ico {
     right: -9999px;
-    background: transparent url('/images/fancy_right.png') no-repeat;
+    background: transparent url('../images/fancy_right.png') no-repeat;
 }
 
 

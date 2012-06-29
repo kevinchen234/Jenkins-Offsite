@@ -3,7 +3,7 @@ class OffSiteRequestsController < ApplicationController
   before_filter :ensure_authenticated_user
   before_filter :ensure_user_created
   before_filter :filter_in_user_table
-  #before_filter :major_tab_off_site_requests
+  before_filter :major_tab_off_site_requests
   before_filter :load_os_req, :only => [:edit, :update, :destroy, :show]
   before_filter :build_department_list, :only => [:new, :edit, :update, :create]
   before_filter :build_status_list, :only => [:new, :edit, :update, :create]

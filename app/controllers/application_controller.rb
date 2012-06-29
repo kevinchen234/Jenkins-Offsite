@@ -3,7 +3,7 @@
 
 class ApplicationController < ActionController::Base
   #include UCB::Rails::Security::ControllerMethods
-  #include ExceptionNotification::Notifiable     ExceptionNotification is not being found for some reason
+  #include ExceptionNotification::Notifiable    #ExceptionNotification is not being found for some reason
   #include ExceptionNotification::ConsiderLocal
 
   before_filter :append_headers

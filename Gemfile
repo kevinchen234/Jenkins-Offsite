@@ -34,7 +34,7 @@ gem 'omniauth-cas', '0.0.6'
 
 
 #Application controller includes this gem which doesn't seem to be installed yet, so doing it here now.
-#gem 'exception_notification', :require => 'exception_notifier'
+gem 'exception_notification', :require => 'exception_notifier'
 gem 'webrat', '>=0.7.2.pre', :git => 'http://github.com/kalv/webrat.git'
 #gem 'capybara'
 
