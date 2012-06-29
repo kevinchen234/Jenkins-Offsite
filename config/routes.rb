@@ -10,8 +10,8 @@ OffsiteV3::Application.routes.draw do
   resources :off_site_requests
   resource :users, :only => [:new, :create]
 
-  #match '/app_monitor', to: 'app_monitor#index', as: 'check_app'
-  #match '/app_monitor/test_exception', to: 'app_monitor#test_exception', to: 'check_exception'
+  match '/app_monitor', to: 'app_monitor#index', as: 'check_app'
+  match '/app_monitor/test_exception', to: 'app_monitor#test_exception', as: 'check_exception'
 
   match '/ldap_search', to: 'ldap_search#index', as: 'ldap_search'
   match '/ldap_search/do_search', to: 'ldap_search#do_search', as: 'do_ldap_search'

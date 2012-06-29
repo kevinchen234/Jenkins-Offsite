@@ -1,4 +1,8 @@
 minimal_for_validation:
+  description: This is minimal for validation
+  enabled: true
+
+ext_one:
   description: IST is too expensive
   enabled: true
 

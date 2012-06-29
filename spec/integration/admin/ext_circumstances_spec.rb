@@ -10,7 +10,10 @@ describe "Admin Ext. Circumstances CRUD interface" do
     login_user(@admin.ldap_uid)
 
     @circumstance = ExtCircumstance.find(ActiveRecord::Fixtures.identify(:minimal_for_validation))
+    @dependant_ext = ExtCircumstance.find(ActiveRecord::Fixtures.identify(:ext_one))
   end
+
+  after(:all) { logout_current_user }
 
   it "should list all ext circumstances" do
     visit_path(admin_ext_circumstances_path)
@@ -65,6 +68,14 @@ describe "Admin Ext. Circumstances CRUD interface" do
     assert_contain("Listing Extenuating Circumstances")
     assert_have_no_selector(row_sel(@circumstance))
     assert_have_selector(".flash_notice", :content => "ExtCircumstance successfully deleted.")
+
+    # Can't delete if record has dependents
+    visit_path(admin_ext_circumstances_path)
+    click_link_within(row_sel(@dependant_ext), "Delete")
+    automate { selenium.get_confirmation }
+    assert_contain("Listing Extenuating Circumstances")
+    assert_have_selector(row_sel(@dependant_ext))
+    assert_have_selector(".flash_error")
   end
 
 end

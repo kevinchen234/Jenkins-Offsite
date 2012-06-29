@@ -45,7 +45,7 @@ class Admin::OffSiteRequestsController < Admin::AdminController
     @os_req.protected_attributes = params[:off_site_request]
     
     if !@os_req.enforce_validation?
-      @os_req.save_with_validation(false)
+      @os_req.save(:validate => false)
       flash[:notice] = msg_created(@os_req)
       redirect_to edit_admin_off_site_request_url(@os_req)      
     elsif @os_req.save
@@ -74,7 +74,7 @@ class Admin::OffSiteRequestsController < Admin::AdminController
     @os_req.protected_attributes = params[:off_site_request]
 
     if !@os_req.enforce_validation?
-      @os_req.save_with_validation(false)
+      @os_req.save(:validate => false)
       flash[:notice] = msg_updated(@os_req)
       redirect_to edit_admin_off_site_request_url(@os_req)
     elsif @os_req.save

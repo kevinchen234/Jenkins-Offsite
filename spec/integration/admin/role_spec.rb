@@ -13,6 +13,8 @@ describe "Admin Role CRUD interface" do
     @deletable_role = Role.find(ActiveRecord::Fixtures.identify(:deletable_role))
   end
 
+  after(:all) { logout_current_user }
+
   it "should list all roles and the number" do
     visit_path(admin_roles_path)
     assert_contain("Listing Roles")
@@ -71,6 +73,15 @@ describe "Admin Role CRUD interface" do
     assert_contain("(2)")
     assert_have_no_selector(row_sel(@deletable_role))
     assert_have_selector(".flash_notice", :content => "Role successfully deleted.")
+
+    # Can't delete role that has dependents
+    visit_path(admin_roles_path)
+    @admin_role.users.should_not be_empty
+    click_link_within(row_sel(@admin_role), "Delete")
+    automate { selenium.get_confirmation }
+
+    assert_have_selector(row_sel(@admin_role))
+    assert_have_selector(".flash_error")
   end
 
 end

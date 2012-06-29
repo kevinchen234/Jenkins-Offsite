@@ -12,31 +12,12 @@ minimal_for_validation:
   off_site_service: "service123"
   status: not_approved
 
-jack_request_1:
-  submitter: jack
-  hostname: jack.berkeley.edu
+not_approved_request:
+  submitter: runner
+  hostname: runner.berkeley.edu
   hostname_in_use: true
   arachne_or_socrates: true
   sponsoring_department: ARCH Computing - (DBCOM)
-  campus_official: campus_official
-  off_site_service: slicehost.com
-  for_department_sponsor: true
-  name_of_group:
-  relationship_of_group:
-  confirmed_service_qualifications: true
-  sla_reviewed_by: <%= OffSiteRequest::CAMPUS_BUYER %>
-  campus_buyer: campus_buyer1
-  cns_trk_number: 1
-  off_site_ip: 123.123.123.123
-  status: not_approved
-  meets_ctc_criteria: true
-
-not_approved_request:
-  submitter: runner
-  hostname: asdf.berkeley.edu
-  hostname_in_use: true
-  arachne_or_socrates: true
-  sponsoring_department: "test"
   campus_official: campus_official
   off_site_service: "service123"
   for_department_sponsor: true
@@ -56,7 +37,7 @@ approved_request:
   hostname: asdf2.berkeley.edu
   hostname_in_use: true
   arachne_or_socrates: true
-  sponsoring_department: "department456"
+  sponsoring_department: ARCH Computing - (DBCOM)
   campus_official: campus_official
   off_site_service: "service456"
   for_department_sponsor: true

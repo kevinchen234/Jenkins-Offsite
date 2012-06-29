@@ -23,7 +23,7 @@ user:
 
 runner:
   ldap_uid: 61065
-  first_name: Steve
+  first_name: Steven
   last_name: Hansen
   email: asdf@example.com
   enabled: true

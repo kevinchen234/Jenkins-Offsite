@@ -4,8 +4,6 @@
 class AppMonitorController < ApplicationController
   skip_before_filter(:filter_in_user_table)
 
-  #### No tests yet ####
-
   def index
     AppMonitor.first
     render(:text => "Ok", :status => 200)

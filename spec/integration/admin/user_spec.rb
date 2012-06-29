@@ -6,13 +6,14 @@ describe "Admin User CRUD interface" do
   fixtures :all
 
   before(:all) do
-    @admin = User.find(ActiveRecord::Fixtures.identify(:runner))
-    login_user(@admin.ldap_uid)
-
     @runner = User.find(ActiveRecord::Fixtures.identify(:runner))
+    login_user(@runner.ldap_uid)
+
     @disabled = User.find(ActiveRecord::Fixtures.identify(:disabled))
     @user = User.find(ActiveRecord::Fixtures.identify(:user))
   end
+
+  after(:all) { logout_current_user }
 
   it "should list all users and the number" do
     visit_path(admin_users_path)
@@ -83,11 +84,24 @@ describe "Admin User CRUD interface" do
     assert_contain("(8)")
     assert_have_no_selector(row_sel(@disabled))
     assert_have_selector(".flash_notice", :content => "User successfully deleted.")
+
+    #Make sure we can't delete a user that has a dependency
+    visit_path(admin_users_path)
+    assert_contain("Listing Users")
+    assert_have_selector(row_sel(@runner))
+    click_link_within(row_sel(@runner), "Edit")
+    click_link("Delete")
+    automate { selenium.get_confirmation }
+    assert_contain("Edit User")
+    # User has not been deleted
+    assert_have_selector(".flash_error")
+    visit_path(admin_users_path)
+    assert_have_selector(row_sel(@runner))
   end
 
   it "should be able to log in a user" do
     visit_path(admin_users_path)
-    assert_have_selector("div", :content => "Logged in as: #{@runner.full_name}")
+    assert_have_selector("div", :content => "Logged in as: #{@runner.full_name}") #currently logged in as Steven
     click_link_within(row_sel(@user), "Login")
     assert_contain("Welcome!")
     assert_have_selector("div", :content => "Logged in as: #{@user.full_name}")
@@ -96,4 +110,6 @@ describe "Admin User CRUD interface" do
     visit_path(off_site_requests_path)
     assert_have_selector("div", :content => "Logged in as: #{@user.full_name}")
   end
+
+
 end

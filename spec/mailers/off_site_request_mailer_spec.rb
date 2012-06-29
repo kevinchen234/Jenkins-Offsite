@@ -4,7 +4,7 @@ describe OffSiteRequestMailer do
   fixtures(:off_site_requests, :users)
   
   before(:each) do
-    @req = off_site_requests(:jack_request_1)
+    @req = off_site_requests(:not_approved_request)
   end
 
   it "should send email_to_it_policy for a new request" do

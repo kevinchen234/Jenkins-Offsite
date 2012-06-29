@@ -73,7 +73,7 @@ describe Admin::OffSiteRequestsController do
         os_req.stub(:enforce_validation?).and_return(false)
       end
       it "calls save_with_validations(false)" do
-        os_req.should_receive(:save_with_validation).with(false)
+        os_req.should_receive(:save).with(:validate => false)
         post :create, :off_site_request => attrs
       end
 
@@ -126,7 +126,7 @@ describe Admin::OffSiteRequestsController do
         os_req.stub(:enforce_validation?).and_return(false)
       end
       it "calls save_with_validations(false)" do
-        os_req.should_receive(:save_with_validation).with(false)
+        os_req.should_receive(:save).with(:validate => false)
         put :update, :off_site_request => attrs, :id => @sample_req.id
       end
 

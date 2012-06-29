@@ -3,4 +3,6 @@
 class AppMonitor < ActiveRecord::Base
   #set_table_name is deprecated
   #set_table_name 'app_heartbeats'
+
+  self.table_name = "app_heartbeats"
 end
