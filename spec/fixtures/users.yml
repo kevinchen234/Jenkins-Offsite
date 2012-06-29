@@ -33,6 +33,15 @@ runner:
   created_at: "2000-12-31 12:12:59Z"
   updated_at: "2000-12-31 12:12:59Z"
 
+jack:
+  ldap_uid: 12345
+  first_name: EMP-STAFF
+  last_name: TEST
+  email: test-212388@uclink.berkeley.edu
+  enabled: true
+  department: IST-Infrastructure Services
+  phone: +1 510 643-1234
+
 campus_buyer1:
   ldap_uid: 232588
   first_name: campus_buyer1

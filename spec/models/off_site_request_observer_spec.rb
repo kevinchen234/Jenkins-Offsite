@@ -23,7 +23,7 @@ describe "OffSiteRequestObserver" do
   } }
   let(:osr) {
     osr = OffSiteRequest.new(attrs)
-    osr.campus_official_id = 1
+    osr.campus_official_id = users(:minimal_for_validation).id
     osr.send_email_notification = true
     osr.submitter = valid_user
     osr

@@ -57,7 +57,7 @@ describe "Admin Ext. Circumstances CRUD interface" do
     assert_have_selector(row_sel(@circumstance), :content => "This is a new circumstance description")
   end
 
-  it "should be able to delete a role" do
+  it "should be able to delete a circumstance" do
     visit_path(admin_ext_circumstances_path)
     click_link_within(row_sel(@circumstance), "Delete")
     automate { selenium.get_confirmation() }

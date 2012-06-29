@@ -12,7 +12,7 @@ describe OffSiteRequestMailer do
     msg = OffSiteRequestMailer.email_to_it_policy(@req, new_request)
     msg.body.should match(/request has been created/)
     msg.encoded.should match(/To:.+#{App.it_policy_email}/)
-    msg.encoded.should match(/From:.+admin@offsitehosting.berkeley.edu/)    
+    msg.encoded.should match(/from:.+admin@offsitehosting.berkeley.edu/) #for some reason, from is lower-case
   end
   
   it "should send email_to_it_policy for an updated request" do
@@ -20,7 +20,7 @@ describe OffSiteRequestMailer do
     msg = OffSiteRequestMailer.email_to_it_policy(@req, new_request)
     msg.body.should match(/request has been updated/)
     msg.encoded.should match(/To:.+#{App.it_policy_email}/)
-    msg.encoded.should match(/From:.+admin@offsitehosting.berkeley.edu/)    
+    msg.encoded.should match(/from:.+admin@offsitehosting.berkeley.edu/) #for some reason, from is lower-case
   end
 
   it "should send email_to_campus_official" do

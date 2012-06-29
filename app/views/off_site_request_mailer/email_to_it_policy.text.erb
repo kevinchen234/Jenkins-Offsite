@@ -1,0 +1,11 @@
+
+<% if @new_request %>
+ A new request has been created.
+<% else %>
+ An existing request has been updated.
+<% end %>
+
+<%= h(@off_site_req.submitter.full_name) %> has submitted a request to host (<%= h(@off_site_req.hostname) %>) off-site at (<%= h(@off_site_req.off_site_service) %>).
+
+
+You can review the request at: <%= edit_admin_off_site_request_url(@off_site_req) %>.

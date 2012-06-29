@@ -17,7 +17,7 @@ describe "Admin User CRUD interface" do
   it "should list all users and the number" do
     visit_path(admin_users_path)
     assert_contain("Listing Users")
-    assert_contain("(8)")
+    assert_contain("(9)") #based off the number of users in the fixtures. Change if users in fixtures changed
 
     #check for a couple of users that should be there, and the buttons they should have
     assert_have_selector(row_sel(@runner), :content => "Edit")
@@ -47,7 +47,7 @@ describe "Admin User CRUD interface" do
     assert_have_selector(".flash_notice", :content => "User successfully created.")
 
     click_link("View All")
-    assert_contain("Listing Users (9)")
+    assert_contain("Listing Users (10)")
   end
 
   it "should be able to edit a user" do
@@ -80,7 +80,7 @@ describe "Admin User CRUD interface" do
     automate { selenium.get_confirmation() }
 
     assert_contain("Listing Users")
-    assert_contain("(7)")
+    assert_contain("(8)")
     assert_have_no_selector(row_sel(@disabled))
     assert_have_selector(".flash_notice", :content => "User successfully deleted.")
   end
