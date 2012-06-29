@@ -7,15 +7,6 @@ GIT
       rack (>= 1.0)
       rack-test (>= 0.5.3)
 
-PATH
-  remote: lib/gems/ucb_rails_security-3.0.0
-  specs:
-    ucb_rails_security (3.0.0)
-      actionpack (>= 3.0.0)
-      rspec (>= 1.1.5)
-      rubycas-client (>= 2.0.1)
-      ucb_ldap (>= 2.0.0.pre1)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -185,7 +176,6 @@ DEPENDENCIES
   rubycas-client
   sass-rails (~> 3.2.3)
   ucb_ldap (~> 2.0.0.pre1)
-  ucb_rails_security (~> 3.0.0)!
   uglifier (>= 1.0.3)
   validates_existence (>= 0.4)
   webrat (>= 0.7.2.pre)!

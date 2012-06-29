@@ -18,11 +18,12 @@ class ApplicationController < ActionController::Base
   #### No tests yet ####
 
   def ensure_authenticated_user()
-    if ldap_user.nil?
+    if session[:ldap_uid].nil?
       session[:original_url] = request.env['REQUEST_URI']
       redirect_to(login_url)
+    elsif ldap_user.nil?
+      application_login
     end
-    application_login
   end
 
 
@@ -116,7 +117,7 @@ class ApplicationController < ActionController::Base
     #UCB::LDAP::Person.include_test_entries = UCB::Rails::Security::CASAuthentication.allow_test_entries?
     #_logger.debug("\tLDAP test entries will #{UCB::LDAP::Person.include_test_entries? || "NOT"} be included")
     #_logger.debug("Looking for authenticated user in LDAP: #{ldap_uid}")
-    self.ldap_user = UCB::LDAP::Person.find_by_uid(session[:ldap_uid])
+    self.ldap_user = UCB::LDAP::Person.find_by_uid(ldap_uid)
     if ldap_user().nil?
       #_logger.debug("Unable to find user in LDAP.")
       #redirect_to(not_authorized_url())

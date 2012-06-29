@@ -13,9 +13,9 @@ minimal_for_validation:
 
 user:
   ldap_uid: 758181
-  first_name: user
-  last_name: user
-  email: user@example.com
+  first_name: Nathan
+  last_name: Connor
+  email: ndconnor@berkeley.edu
   enabled: true
   roles: buyer_role
   created_at: "2012-1-1 00:00:00Z"
@@ -23,8 +23,8 @@ user:
 
 runner:
   ldap_uid: 61065
-  first_name: asdfghjkl
-  last_name: qwertyuiop
+  first_name: Steve
+  last_name: Hansen
   email: asdf@example.com
   enabled: true
   department:

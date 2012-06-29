@@ -11,6 +11,7 @@ describe "Admin User CRUD interface" do
 
     @runner = User.find(ActiveRecord::Fixtures.identify(:runner))
     @disabled = User.find(ActiveRecord::Fixtures.identify(:disabled))
+    @user = User.find(ActiveRecord::Fixtures.identify(:user))
   end
 
   it "should list all users and the number" do
@@ -84,5 +85,15 @@ describe "Admin User CRUD interface" do
     assert_have_selector(".flash_notice", :content => "User successfully deleted.")
   end
 
-  it "should be able to log in a user?"
+  it "should be able to log in a user" do
+    visit_path(admin_users_path)
+    assert_have_selector("div", :content => "Logged in as: #{@runner.full_name}")
+    click_link_within(row_sel(@user), "Login")
+    assert_contain("Welcome!")
+    assert_have_selector("div", :content => "Logged in as: #{@user.full_name}")
+
+    #make sure the newly logged in user stays logged in when visiting other pages
+    visit_path(off_site_requests_path)
+    assert_have_selector("div", :content => "Logged in as: #{@user.full_name}")
+  end
 end

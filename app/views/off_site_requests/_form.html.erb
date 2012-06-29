@@ -34,7 +34,7 @@
         <%= form.input(:meets_ctc_criteria, :label => "Needs CTC Review", :required => true, :as => :radio, :collection => yes_no, :hint => Hints.meets_ctc_criteria.html_safe) %>
 
     <%= form.input(:campus_official_full_name, :required => true, :label => "Resource Proprietor", :input_html => {:disabled => true}, :hint => Hints.campus_official.html_safe) %>
-        <%= ldap_lookup_link_to("campus_official").html_safe %>
+        <%= ldap_lookup_link_to("campus_official") %>
     <%= form.input(:campus_official_ldap_uid, :as => :hidden) %>
 
     <%= form.buttons do %>

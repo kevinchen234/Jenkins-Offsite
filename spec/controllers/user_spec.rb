@@ -9,6 +9,7 @@ describe UsersController do
     mock_ldap_person.stub(:uid).and_return(user.ldap_uid)
     #session[:ldap_user] = mock_ldap_person
     controller.stub(:ldap_user).and_return(mock_ldap_person)
+    controller.stub(:ensure_authenticated_user).and_return(true)
   end
 
   describe "GET new" do

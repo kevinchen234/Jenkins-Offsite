@@ -10,6 +10,12 @@ describe Admin::OffSiteRequestsController do
   let(:attrs) { { "created_at" => "2001-12-31 12:12:59Z",
                   "updated_at" => "2001-12-31 12:12:59Z",
                   "hostname" => "asdf.berkeley.edu",
+                  "hostname_in_use" => nil,
+                  "arachne_or_socrates" => nil,
+                  "off_site_ip" => nil,
+                  "ext_circumstance_ids" => nil,
+                  "other_ext_circumstances" => nil,
+                  "campus_official_ldap_uid" => "123",
                   "name_of_group" => "group1234",
                   "relationship_of_group" => "relationship1234",
                   "hostname_in_use" =>false,
@@ -55,7 +61,10 @@ describe Admin::OffSiteRequestsController do
 
   describe "POST create" do
     before(:each) do
-      OffSiteRequest.stub(:new).with(attrs).and_return(os_req)
+      OffSiteRequest.stub(:new).with(Hash[Array(attrs)[0..-2]]).and_return(os_req)
+      #Don't expect the last element in our attrs hash since status is protected and is
+      #assigned separately
+
       #os_req.stub(:protected_attributes=).with(attrs).and_return(os_req)
     end
 

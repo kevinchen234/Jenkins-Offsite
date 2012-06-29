@@ -14,6 +14,7 @@ describe OffSiteRequestsController do
     mock_ldap_person.stub(:uid).and_return(0101010)
     controller.stub(:ldap_user).and_return(mock_ldap_person)
     controller.stub(:current_user).and_return(current_user)
+    controller.stub(:ensure_authenticated_user).and_return(true)
   end
 
   describe "GET index" do

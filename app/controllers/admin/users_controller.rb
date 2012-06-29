@@ -30,8 +30,10 @@ class Admin::UsersController < Admin::AdminController
     params[:user][:role_ids] ||= []
     @user.ldap_uid = params[:user][:ldap_uid]
     @user.role_ids = params[:user][:role_ids]
+    @user.enabled = params[:user][:enabled]
 
-    @user.update_attributes!(params[:user])
+    @user.update_attributes!("first_name"=>params[:user][:first_name], "last_name"=>params[:user][:last_name],
+                             "email"=>params[:user][:email], "department"=>params[:user][:department])
     flash[:notice] = msg_updated(@user)
     redirect_to(edit_admin_user_url(@user))
   rescue ActiveRecord::RecordInvalid

@@ -28,7 +28,7 @@ gem "ucb_ldap", "~> 2.0.0.pre1"
 #TODO deprecated - Steven advises we get rid of this; it's an older gem that provided Devise-like security.
 
 # He recommends we upgrade the security to use OmniAuth and its plugins e.g. CAS; we can then remove ucb_rails_security.
-gem 'ucb_rails_security', '~> 3.0.0', :path => File.dirname(__FILE__) + "/lib/gems/ucb_rails_security-3.0.0"  # Simplifies CAS auth and ldap authz within your rails application.
+#gem 'ucb_rails_security', '~> 3.0.0', :path => File.dirname(__FILE__) + "/lib/gems/ucb_rails_security-3.0.0"  # Simplifies CAS auth and ldap authz within your rails application.
 gem 'omniauth', '1.0.3'
 gem 'omniauth-cas', '0.0.6'
 
