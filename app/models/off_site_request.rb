@@ -146,12 +146,13 @@ class OffSiteRequest < ActiveRecord::Base
   end
 
   def submitter_ldap_uid=(ldap_uid)
-    user = User.find_or_new_by_ldap_uid(ldap_uid)
-    raise ArgumentError if !user
-    user.enabled = true
-    user.save!
     @submitter_ldap_uid = ldap_uid.to_i
-    self.submitter = user
+    submitter = User.find_or_new_by_ldap_uid(ldap_uid)
+    if submitter.try(:new_record?)
+      submitter.enabled = true
+      submitter.save!
+    end
+    self.submitter = submitter
   end
 
   def submitter_eligible?
@@ -172,10 +173,12 @@ class OffSiteRequest < ActiveRecord::Base
   end
 
   def campus_official_ldap_uid=(ldap_uid)
-    user = User.find_or_new_by_ldap_uid(ldap_uid)
-    raise ArgumentError if !user
     @campus_official_ldap_uid = ldap_uid.to_i
-    self.campus_official = user
+    co = User.find_or_new_by_ldap_uid(ldap_uid)
+    if co.try(:new_record?)
+      co.save!
+    end
+    self.campus_official = co
   end
 
   def campus_official_eligible?

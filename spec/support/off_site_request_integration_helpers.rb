@@ -33,9 +33,9 @@ module OffSiteRequestIntegrationHelpers
     choose("#{pre}_confirmed_service_qualifications_true")
     choose("#{pre}_meets_ctc_criteria_true")
 
-    #simulate { set_hidden_field("#{pre}_campus_official_ldap_uid", :to => "61065") }
-    #automate { select_user_from_lightbox("61065", :campus_official) }
-    select_user_from_lightbox("61065", :campus_official)
+    simulate { set_hidden_field("#{pre}_campus_official_ldap_uid", :to => "61065") }
+    automate { select_user_from_lightbox("61065", :campus_official) }
+    #select_user_from_lightbox("61065", :campus_official)
   end
   
   def fill_out_admin_off_site_request_form
@@ -59,11 +59,10 @@ module OffSiteRequestIntegrationHelpers
     end
 
     click_link("Lookup in LDAP")
-    #click_link_within("##{id}", "Lookup in LDAP")
+    #click_link_within("##{id}", "Lookup in LDAP") #button cannot be placed within same element
     select("Ldap Uid")
     fill_in("ldap_search_search_value", :with => "#{ldap_uid}")
     click_button("Search")
-    #click_link("TEST")
     click_link("#{ldap_uid}")
   end
 end

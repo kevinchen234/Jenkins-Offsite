@@ -87,9 +87,15 @@ describe OffSiteRequestsController do
       assigns[:os_req].should eq(new_req)
     end
 
-    it "sets @os_req attributes to the params"
+    it "sets @os_req attributes to the params" do
+      new_req.should_receive(:attributes=).with(attrs)
+      post 'create', :off_site_request => attrs
+    end
 
-    it "sets @os_req send_email_notification to true"
+    it "sets @os_req send_email_notification to true" do
+      new_req.should_receive(:send_email_notification=).with(true)
+      post 'create', :off_site_request => attrs
+    end
 
     context "when it successfully saves" do
       before(:each) do
