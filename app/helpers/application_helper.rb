@@ -15,7 +15,7 @@ module ApplicationHelper
   ######################################################################################
 
   def required_field_notice
-    "<p style=\"text-align: center; font-weight: bold; font-style:italic;\">&quot;<span class=\"required\">*</span>&quot; indicates a required field.</p>"
+    "<p style=\"text-align: center; font-weight: bold; font-style:italic;\">&quot;<span class=\"required\">*</span>&quot; indicates a required field.</p>".html_safe
   end
 
   def ldap_lookup_link_to(type, html_options = {})
@@ -68,7 +68,7 @@ module ApplicationHelper
     str = "<ul class='flash_#{msg_key}'>"
     flash[msg_key].each { |msg| str.concat("<li>#{msg}</li>") }
     str.concat("</ul>")
-    str
+    str.html_safe
   end
 
   def set_title(title)

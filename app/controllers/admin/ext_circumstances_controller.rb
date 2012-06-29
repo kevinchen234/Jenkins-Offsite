@@ -33,10 +33,14 @@ class Admin::ExtCircumstancesController < Admin::AdminController
   end
 
   def destroy
-    if @ext_circumstance.destroy
-      flash[:notice] = msg_destroyed(@ext_circumstance)
-    else
-      flash[:error] = msg_errors(@ext_circumstance).join("<br/>")
+    begin
+      if @ext_circumstance.destroy
+        flash[:notice] = msg_destroyed(@ext_circumstance)
+      else
+        flash[:error] = msg_errors(@ext_circumstance).join("<br/>")
+      end
+    rescue DestroyWithReferencesError
+      flash[:error] = ["Tried to delete an Extenuating Circumstance that is referenced by an Off Site Request."]
     end
     redirect_to admin_ext_circumstances_url
   end

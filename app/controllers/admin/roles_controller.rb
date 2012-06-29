@@ -34,10 +34,14 @@ class Admin::RolesController < Admin::AdminController
   end
 
   def destroy
-    if @role.destroy
-      flash[:notice] = msg_destroyed(@role)
-    else
-      flash[:error] = msg_errors(@role)
+    begin
+      if @role.destroy
+        flash[:notice] = msg_destroyed(@role)
+      else
+        flash[:error] = msg_errors(@role)
+      end
+    rescue DestroyWithReferencesError
+      flash[:error] = ["Tried to delete a Role that is referenced by a User."]
     end
     redirect_to admin_roles_url
   end

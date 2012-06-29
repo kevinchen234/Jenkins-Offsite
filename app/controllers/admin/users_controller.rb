@@ -41,13 +41,19 @@ class Admin::UsersController < Admin::AdminController
   end
   
   def destroy
-    if @user.destroy
-      flash[:notice] = msg_destroyed(@user)
-      redirect_to(admin_users_url)
-    else
-      flash[:error] = msg_errors(@user).join("<br/>")
-      redirect_to(edit_admin_user_url(@user))      
+    begin
+      if @user.destroy
+        flash[:notice] = msg_destroyed(@user)
+        redirect_to(admin_users_url)
+      else
+        flash[:error] = msg_errors(@user).join("<br/>")
+        redirect_to(edit_admin_user_url(@user))
+      end
+    rescue
+      flash[:error] = ["Tried to delete a User that is referenced by an Off Site Request."]
+      redirect_to(edit_admin_user_url(@user))
     end
+
   end
   
   def login
