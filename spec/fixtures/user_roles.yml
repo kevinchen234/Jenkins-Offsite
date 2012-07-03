@@ -1,0 +1,23 @@
+user:
+  user: user
+  role: buyer_role
+  created_at: "2000-12-31 12:12:59Z"
+  updated_at: "2000-12-31 12:12:59Z"
+
+runner:
+  user: runner
+  role: admin_role
+  created_at: "2000-12-31 12:12:59Z"
+  updated_at: "2000-12-31 12:12:59Z"
+
+buyer_1:
+  user: campus_buyer1
+  role: buyer_role
+  created_at: "2000-12-31 12:12:59Z"
+  updated_at: "2000-12-31 12:12:59Z"
+
+buyer_2:
+  user: campus_buyer2
+  role: buyer_role
+  created_at: "2000-12-31 12:12:59Z"
+  updated_at: "2000-12-31 12:12:59Z"

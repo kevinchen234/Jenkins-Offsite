@@ -1,6 +1,7 @@
 class Role < ActiveRecord::Base
-  has_and_belongs_to_many :users, :join_table => "user_roles"
-
+  #has_and_belongs_to_many :users, :join_table => "user_roles"
+  has_many :users, :through => :user_roles
+  has_many :user_roles
   attr_accessible :name, :description
 
   validates_presence_of :name, :description

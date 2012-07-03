@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
-  has_and_belongs_to_many :roles, :join_table => "user_roles"
+  #has_and_belongs_to_many :roles, :join_table => "user_roles"
+  has_many :roles, :through => :user_roles
+  has_many :user_roles
   has_many :off_site_requests, :foreign_key => "submitter_id"
 
   attr_accessible :first_name, :last_name, :email, :email_confirmation, :department, :phone
@@ -42,7 +44,7 @@ class User < ActiveRecord::Base
     # After the upgrade, please remove this entire block.
     unknown_params = params.reject { |key, value| ["enabled", "ldap_uid", "role_ids"].include?(key) }
     if !unknown_params.empty? then
-      raise "Deprecated #{params}. protected_attributes doesn't take accessible attributes'"
+      raise "Deprecated #{params}. protected_attributes= doesn't take accessible attributes'"
     end
     ###
 
@@ -59,7 +61,7 @@ class User < ActiveRecord::Base
     # and raise a warning; this will give us some detection during the upgrade.
     # After the upgrade, please remove this entire block.
     if params[:role_ids] then
-      raise "Deprecated: protected_attributes doesn't take role_ids anymore"
+      raise "Deprecated: protected_attributes= doesn't take role_ids anymore"
     end
     ###
 
