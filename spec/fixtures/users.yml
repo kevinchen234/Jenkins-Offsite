@@ -17,19 +17,19 @@ user:
   last_name: Connor
   email: ndconnor@berkeley.edu
   enabled: true
-  roles: buyer_role
+#  roles: buyer_role
   created_at: "2012-1-1 00:00:00Z"
   updated_at: "2012-1-1 00:00:00Z"
 
 runner:
   ldap_uid: 61065
-  first_name: Steven
+  first_name: Steven     #Need to use real name since tests will compare it to what ldap gets
   last_name: Hansen
   email: asdf@example.com
   enabled: true
   department:
   phone:
-  roles: admin_role
+#  roles: admin_role
   created_at: "2000-12-31 12:12:59Z"
   updated_at: "2000-12-31 12:12:59Z"
 
@@ -50,7 +50,7 @@ campus_buyer1:
   enabled: true
   department: IST-Infrastructure Services
   phone: +1 510 643-1234
-  roles: buyer_role
+#  roles: buyer_role
 
 campus_buyer2:
   ldap_uid: 322583
@@ -60,7 +60,7 @@ campus_buyer2:
   enabled: true
   department: IST-Infrastructure Services
   phone: +1 510 643-1234
-  roles: buyer_role
+#  roles: buyer_role
 
 campus_official:
   ldap_uid: 192937
