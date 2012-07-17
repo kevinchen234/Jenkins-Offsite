@@ -9,7 +9,7 @@
 
 # ExtCircumstances
 ext_circ = ExtCircumstance.create!(
-  [{:description => "Better access to the root folders on offsite server"},
+=begin  [{:description => "Better access to the root folders on offsite server"},
    {:description => "Can update website via blog template – no designer needed"},
    {:description => "Easier to install applications like WordPress blog"},
    {:description => "Easier to manage user accounts"},
@@ -24,7 +24,13 @@ ext_circ = ExtCircumstance.create!(
    {:description => "Technical features"},
    {:description => "Technical features-UC server cannot support (for example, Wordpress)"},
    {:description => "Will not need to purchase a database"},
-   {:description => "Uniquely available services"}])
+   {:description => "Uniquely available services"}]
+=end
+  [{:description=>"Social Security Numbers"},
+    {:description=>"Credit Card Information (including truncated CC#s)"},
+    {:description=>"Personally identifiable information - i.e. date tied to a name or biometric data (excluding data that is required by law to be published and data about the approving resource proprietor)"},
+    {:description=>"Data that would cause negative financial or reputational  impact to the university if accessed by unauthorized persons"},
+    {:description=>"Data that is not intended to be public" }])
 
 # ROLES
 roles = Role.create!(

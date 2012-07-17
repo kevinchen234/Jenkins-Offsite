@@ -53,15 +53,19 @@ module Hints
     end
     
     def other_ext_circumstances
-      "Other extenuating circumstances not listed above."
+      "If you checked any of the sensitive information boxes above, please provide a detailed description of the information and its purpose to help IT Policy evaluate your request.Additional information may be requested.( See the <a href='https://security.berkeley.edu/data-authorization' Target='_NEW'>Data Authorization Process</a> for more information.)"
     end
     
     def campus_official
-      "<span class='warn'>Email will be sent to this person confirming their agreement of the following \"Terms and Conditions\".</span><br/> Name of Berkeley Campus Official agreeing to take responsibility for the <i>Off-Site Hosting Terms and Conditions</i>."
+      "<span class='warn'>Email will be sent to this person confirming their agreement of the following \"Terms and Conditions\".</span><br/> Name of Berkeley Resource Proprietor agreeing to take responsibility for the <i>Off-Site Hosting Terms and Conditions</i>."
     end
     
     def meets_ctc_criteria
       "Will the activity take more than one year to develop, cost more than $100,000, or meet other <a href=\"http://technology.berkeley.edu/cio/fptis/sta/acquisition/index.html\">CTC (Campus Technology Council)</a> review criteria?"
+    end
+
+    def dns_instructions
+      "Provide additional information about DNS, CNAMES, etc."
     end
   end
 end
