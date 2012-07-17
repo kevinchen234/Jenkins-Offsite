@@ -8,24 +8,26 @@ describe "OffSiteRequestObserver" do
   let(:attrs) { {
       :hostname => "host.berkeley.edu",
       :hostname_in_use => true,
-      :arachne_or_socrates => true,
       :sponsoring_department => "EECS",
       :off_site_service => "stop.berkeley.edu",
       :for_department_sponsor => true,
       :name_of_group => nil,
       :relationship_of_group => nil,
       :confirmed_service_qualifications => true,
-      :sla_reviewed_by => OffSiteRequest::CAMPUS_BUYER,
       :campus_buyer_id => valid_user.id,
-      :cns_trk_number => "1234",
       :off_site_ip => "123.123.123.123",
-      :meets_ctc_criteria => true
+      :additional_DNS_instructions => nil
   } }
   let(:osr) {
     osr = OffSiteRequest.new(attrs)
     osr.campus_official_id = users(:minimal_for_validation).id
     osr.send_email_notification = true
     osr.submitter = valid_user
+
+    #now protected attributes
+    osr.sla_reviewed_by = OffSiteRequest::CAMPUS_BUYER
+    osr.cns_trk_number = "1234"
+
     osr
   }
 

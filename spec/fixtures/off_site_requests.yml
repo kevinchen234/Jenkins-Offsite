@@ -7,7 +7,7 @@ minimal_for_validation:
   hostname_in_use: false
   confirmed_service_qualifications: false
   for_department_sponsor: false
-  meets_ctc_criteria: false
+  additional_DNS_instructions: This is a test
   sponsoring_department: "department123"
   off_site_service: "service123"
   status: not_approved
@@ -29,7 +29,7 @@ not_approved_request:
   cns_trk_number: 2
   off_site_ip: 123.123.123.777
   status: not_approved
-  meets_ctc_criteria: true
+  additional_DNS_instructions: This is a test
   ext_circumstances: ext_one
 
 approved_request:
@@ -49,5 +49,5 @@ approved_request:
   cns_trk_number: 3
   off_site_ip: 123.123.123.666
   status: approved
-  meets_ctc_criteria: true
+  additional_DNS_instructions: This is a test
   ext_circumstances: ext_one

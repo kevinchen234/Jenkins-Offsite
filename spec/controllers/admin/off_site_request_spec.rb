@@ -11,7 +11,6 @@ describe Admin::OffSiteRequestsController do
                   "updated_at" => "2001-12-31 12:12:59Z",
                   "hostname" => "asdf.berkeley.edu",
                   "hostname_in_use" => nil,
-                  "arachne_or_socrates" => nil,
                   "off_site_ip" => nil,
                   "ext_circumstance_ids" => nil,
                   "other_ext_circumstances" => nil,
@@ -21,9 +20,9 @@ describe Admin::OffSiteRequestsController do
                   "hostname_in_use" =>false,
                   "confirmed_service_qualifications" => false,
                   "for_department_sponsor" => false,
-                  "meets_ctc_criteria" => false,
                   "sponsoring_department" => "department1234",
                   "off_site_service" => "service1234",
+                  "additional_DNS_instructions" => nil,
                   "status" => Status.first.id.to_s } }
 
 
@@ -61,9 +60,8 @@ describe Admin::OffSiteRequestsController do
 
   describe "POST create" do
     before(:each) do
-      OffSiteRequest.stub(:new).with(Hash[Array(attrs)[0..-2]]).and_return(os_req)
-      #Don't expect the last element in our attrs hash since status is protected and is
-      #assigned separately
+      OffSiteRequest.stub(:new).with(Hash[Array(attrs)[2..-2]]).and_return(os_req)
+      #Don't expect protected attributes in call to new as those are assigned separately
 
       #os_req.stub(:protected_attributes=).with(attrs).and_return(os_req)
     end

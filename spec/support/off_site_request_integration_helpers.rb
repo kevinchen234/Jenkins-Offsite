@@ -9,7 +9,7 @@ module OffSiteRequestIntegrationHelpers
     assert_have_selector("#{form_id(req)} select[id='#{pre}_status_id']#{disabled}")
     assert_have_selector("#{form_id(req)} input[id='#{pre}_hostname']#{disabled}")
     assert_have_selector("#{form_id(req)} input[id='#{pre}_hostname_in_use_true']#{disabled}")    
-    assert_have_selector("#{form_id(req)} input[id='#{pre}_arachne_or_socrates_true']#{disabled}")
+    #assert_have_selector("#{form_id(req)} input[id='#{pre}_arachne_or_socrates_true']#{disabled}")
     assert_have_selector("#{form_id(req)} input[id='#{pre}_sponsoring_department']#{disabled}")
     assert_have_selector("#{form_id(req)} input[id='#{pre}_for_department_sponsor_true']#{disabled}")
     assert_have_selector("#{form_id(req)} input[id='#{pre}_name_of_group']#{disabled}")
@@ -18,7 +18,7 @@ module OffSiteRequestIntegrationHelpers
     assert_have_selector("#{form_id(req)} input[id='#{pre}_off_site_service']#{disabled}")
     assert_have_selector("#{form_id(req)} input[id='#{pre}_confirmed_service_qualifications_true']#{disabled}")
     assert_have_selector("#{form_id(req)} input[id='#{pre}_other_ext_circumstances']#{disabled}")
-    assert_have_selector("#{form_id(req)} input[id='#{pre}_meets_ctc_criteria_true']#{disabled}")
+    #assert_have_selector("#{form_id(req)} input[id='#{pre}_meets_ctc_criteria_true']#{disabled}")
     assert_have_selector("#{form_id(req)} input[id='#{pre}_campus_official_full_name']#{disabled}")
   end
   
@@ -31,11 +31,10 @@ module OffSiteRequestIntegrationHelpers
     fill_in("#{pre}_off_site_service", :with => "Super Service")
     fill_in("#{pre}_off_site_ip", :with => "123.123.123.123")
     choose("#{pre}_confirmed_service_qualifications_true")
-    choose("#{pre}_meets_ctc_criteria_true")
+    #choose("#{pre}_meets_ctc_criteria_true")
 
     simulate { set_hidden_field("#{pre}_campus_official_ldap_uid", :to => "61065") }
     automate { select_user_from_lightbox("61065", :campus_official) }
-    #select_user_from_lightbox("61065", :campus_official)
   end
   
   def fill_out_admin_off_site_request_form

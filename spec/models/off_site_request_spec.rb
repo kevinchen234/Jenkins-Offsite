@@ -119,13 +119,14 @@ describe "OffSiteRequest" do
       osr.should_not be_valid
       osr.should have(1).error_on(:campus_official_id)
     end
-
+=begin
     it "should require meets_ctc_criteria" do
       osr = valid
       osr.meets_ctc_criteria = nil
       osr.should_not be_valid
       osr.should have(1).error_on(:meets_ctc_criteria)
     end
+=end
 
     describe ":name_of_group" do
 
@@ -167,25 +168,25 @@ describe "OffSiteRequest" do
 
     end
 
-    describe ":arachne_or_socrates" do
-
-      it "with hostname_in_use, does require arachne_or_socrates" do
-        osr = valid
-        osr.hostname_in_use = true
-        osr.arachne_or_socrates = nil
-        osr.should_not be_valid
-        osr.should have(1).error_on(:arachne_or_socrates)
-      end
-
-      it "without hostname_in_use, does not require arachne_or_socrates" do
-        osr = valid
-        osr.hostname_in_use = false
-        osr.arachne_or_socrates = nil
-        osr.should be_valid
-        osr.should have(0).error_on(:arachne_or_socrates)
-      end
-
-    end
+    #describe ":arachne_or_socrates" do
+    #
+    #  it "with hostname_in_use, does require arachne_or_socrates" do
+    #    osr = valid
+    #    osr.hostname_in_use = true
+    #    osr.arachne_or_socrates = nil
+    #    osr.should_not be_valid
+    #    osr.should have(1).error_on(:arachne_or_socrates)
+    #  end
+    #
+    #  it "without hostname_in_use, does not require arachne_or_socrates" do
+    #    osr = valid
+    #    osr.hostname_in_use = false
+    #    osr.arachne_or_socrates = nil
+    #    osr.should be_valid
+    #    osr.should have(0).error_on(:arachne_or_socrates)
+    #  end
+    #
+    #end
 
     describe ":status" do
 

@@ -72,7 +72,6 @@ describe OffSiteRequestsController do
                     "hostname_in_use" =>false,
                     "confirmed_service_qualifications" => false,
                     "for_department_sponsor" => false,
-                    "meets_ctc_criteria" => false,
                     "sponsoring_department" => "department1234",
                     "off_site_service" => "service1234",
                     "status" => Status.first.id.to_s } }
