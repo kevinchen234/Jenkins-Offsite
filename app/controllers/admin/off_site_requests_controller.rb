@@ -25,9 +25,9 @@ class Admin::OffSiteRequestsController < Admin::AdminController
   end
   
   def create
+    #Need to make a new request with accessible attributes only, then assign protected attributes separately
     @os_req = OffSiteRequest.new("hostname"=>params[:off_site_request][:hostname],
                                  "hostname_in_use"=>params[:off_site_request][:hostname_in_use],
-                                 "arachne_or_socrates"=>params[:off_site_request][:arachne_or_socrates],
                                  "sponsoring_department"=>params[:off_site_request][:sponsoring_department],
                                  "for_department_sponsor"=>params[:off_site_request][:for_department_sponsor],
                                  "name_of_group"=>params[:off_site_request][:name_of_group],
@@ -37,10 +37,8 @@ class Admin::OffSiteRequestsController < Admin::AdminController
                                  "confirmed_service_qualifications"=>params[:off_site_request][:confirmed_service_qualifications],
                                  "ext_circumstance_ids"=>params[:off_site_request][:ext_circumstance_ids],
                                  "other_ext_circumstances"=>params[:off_site_request][:other_ext_circumstances],
-                                 "meets_ctc_criteria"=>params[:off_site_request][:meets_ctc_criteria],
                                  "campus_official_ldap_uid"=>params[:off_site_request][:campus_official_ldap_uid],
-                                 "created_at"=>params[:off_site_request][:created_at],
-                                 "updated_at"=>params[:off_site_request][:updated_at])
+                                 "additional_DNS_instructions"=>params[:off_site_request][:additional_DNS_instructions])
 
     @os_req.protected_attributes = params[:off_site_request]
     
@@ -59,7 +57,6 @@ class Admin::OffSiteRequestsController < Admin::AdminController
   def update
     @os_req.attributes=({"hostname"=>params[:off_site_request][:hostname],
                          "hostname_in_use"=>params[:off_site_request][:hostname_in_use],
-                         "arachne_or_socrates"=>params[:off_site_request][:arachne_or_socrates],
                          "sponsoring_department"=>params[:off_site_request][:sponsoring_department],
                          "for_department_sponsor"=>params[:off_site_request][:for_department_sponsor],
                          "name_of_group"=>params[:off_site_request][:name_of_group],
@@ -69,8 +66,8 @@ class Admin::OffSiteRequestsController < Admin::AdminController
                          "confirmed_service_qualifications"=>params[:off_site_request][:confirmed_service_qualifications],
                          "ext_circumstance_ids"=>params[:off_site_request][:ext_circumstance_ids],
                          "other_ext_circumstances"=>params[:off_site_request][:other_ext_circumstances],
-                         "meets_ctc_criteria"=>params[:off_site_request][:meets_ctc_criteria],
-                         "campus_official_ldap_uid"=>params[:off_site_request][:campus_official_ldap_uid]})
+                         "campus_official_ldap_uid"=>params[:off_site_request][:campus_official_ldap_uid],
+                         "additional_DNS_instructions"=>params[:off_site_request][:additional_DNS_instructions]})
     @os_req.protected_attributes = params[:off_site_request]
 
     if !@os_req.enforce_validation?

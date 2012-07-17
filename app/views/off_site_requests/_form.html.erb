@@ -19,22 +19,20 @@
     <%= form.input(:status, :input_html => {:disabled => true}, :as => :string) %>
     <%= form.input(:submitter_full_name, :label => "Submitter", :input_html => {:disabled => true}) %>
     <%= form.input(:hostname, :hint => Hints.hostname) %>
-    <%= form.input(:hostname_in_use, :required => true, :as => :radio, :collection => yes_no, :hint => Hints.hostname_in_use) %>
-    <%= form.input(:arachne_or_socrates, :as => :radio, :collection => yes_no, :hint => Hints.arachne_or_socrates) %>
+    <%= form.input(:hostname_in_use, :label => "Host Name in use? ", :required => true, :as => :radio, :collection => yes_no, :hint => Hints.hostname_in_use) %>
     <%= form.input(:sponsoring_department, :collection => @department_list,  :hint => Hints.sponsoring_department) %>
-    <%= form.input(:for_department_sponsor, :required => true, :collection => yes_no_with_explanation, :as => :radio, :hint => Hints.for_department_sponsor) %>
+    <%= form.input(:for_department_sponsor, :label => "For department sponsor? ", :required => true, :collection => yes_no_with_explanation, :as => :radio, :hint => Hints.for_department_sponsor) %>
     <%= form.input(:name_of_group, :required => true, :hint => Hints.name_of_group) %>
     <%= form.input(:relationship_of_group, :required => true, :hint => Hints.relationship_of_group) %>
-    <%= form.input(:off_site_ip, :label => "Off-Site IP", :hint => Hints.off_site_ip) %>
+    <%= form.input(:off_site_ip, :label => "Off-Site IP Address", :hint => Hints.off_site_ip) %>
+    <%= form.input  :additional_DNS_instructions, :label => "Additional DNS Instructions", :hint => Hints.dns_instructions%>
     <%= form.input(:off_site_service, :label => "Off-Site Service", :hint => Hints.off_site_service) %>
-    <%= form.input(:confirmed_service_qualifications, :required => true, :as => :radio, :collection => yes_no, :label => "Confirmed Qualifications?", :hint => Hints.confirmed_service_qualifications) %>
-    <%= form.input(:ext_circumstances, :label => "Will the system collect, transmit, process or<BR> maintain any of the following types of sensitive <BR>information? (check all that apply)".html_safe, :as => :check_boxes, :collection => @ext_circumstances_list) %>
-    <%= form.input(:other_ext_circumstances, :label => "Description", :hint => Hints.other_ext_circumstances) %>
-
-        <%= form.input(:meets_ctc_criteria, :label => "Needs CTC Review", :required => true, :as => :radio, :collection => yes_no, :hint => Hints.meets_ctc_criteria.html_safe) %>
-
-    <%= form.input(:campus_official_full_name, :required => true, :label => "Resource Proprietor", :input_html => {:disabled => true}, :hint => Hints.campus_official.html_safe) %>
-        <%= ldap_lookup_link_to("campus_official") %>
+    <%= form.input(:confirmed_service_qualifications, :label => "Confirmed service qualifications? ", :required => true, :as => :radio, :collection => yes_no, :label => "Confirmed Qualifications?", :hint => Hints.confirmed_service_qualifications) %>
+    <%= "&nbsp;&nbsp;&nbsp;Will the system collect, transmit, process or maintain any of the following types of sensitive information?".html_safe %>
+    <%= form.input(:ext_circumstances, :label => '(check all that apply)', :as => :check_boxes, :collection => @ext_circumstances_list) %>
+    <%= form.input(:other_ext_circumstances, :label => "Description", :hint => Hints.other_ext_circumstances.html_safe) %>
+    <%= form.input(:campus_official_full_name, :required => true, :label => "Confirmed by Resource Proprietor", :after_input => ldap_lookup_link_to("campus_official"), :input_html => {:disabled => true}, :hint => Hints.campus_official.html_safe) %>
+        <%=  ldap_lookup_link_to("campus_official") %>
     <%= form.input(:campus_official_ldap_uid, :as => :hidden) %>
 
     <%= form.buttons do %>

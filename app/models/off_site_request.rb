@@ -6,6 +6,7 @@ class OffSiteRequest < ActiveRecord::Base
   }
 
   IP_REGEXP = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/
+  EMAIL_REGEXP = /^([\w\d].+)+@[\w\d]+(.[\w\d]+)+$/
   HOSTNAME_REGEXP = /\.berkeley\.edu$/
   REQ_MSG = "can't be blank"
 
@@ -16,28 +17,10 @@ class OffSiteRequest < ActiveRecord::Base
 
   attr_accessor :send_email_notification
 
-  attr_accessible \
-   :arachne_or_socrates,
-   :campus_buyer_id,
-   :campus_official_full_name,
-   :campus_official_ldap_uid,
-   :confirmed_service_qualifications,
-   :ext_circumstance_ids,
-   :for_department_sponsor,
-   :hostname,
-   :hostname_in_use,
-   :meets_ctc_criteria,
-   :name_of_group,
-   :off_site_ip,
-   :off_site_service,
-   :other_ext_circumstances,
-   :relationship_of_group,
-   :sponsoring_department
-
-  attr_protected \
-  :campus_official_id,
-  :status_id,
-  :submitter_id
+  attr_accessible :hostname, :hostname_in_use, :off_site_ip, :sponsoring_department,
+                  :off_site_service, :campus_official_full_name, :campus_official_ldap_uid, :name_of_group,
+                  :for_department_sponsor, :relationship_of_group, :confirmed_service_qualifications,
+                  :campus_buyer_id, :meets_ctc_criteria, :ext_circumstance_ids, :other_ext_circumstances, :additional_DNS_instructions
 
   belongs_to :campus_official, :class_name => 'User'
   belongs_to :submitter, :class_name => 'User'
@@ -45,14 +28,8 @@ class OffSiteRequest < ActiveRecord::Base
   belongs_to :status
   has_and_belongs_to_many :ext_circumstances
 
-  validates_presence_of \
-  :submitter_id,
-  :campus_official_id,
-  :hostname,
-  :sponsoring_department,
-  :off_site_service
-
-  validates_existence_of :status
+  validates_presence_of :submitter_id, :campus_official_id, :hostname, :sponsoring_department,
+                        :off_site_service, :status_id
 
   validates_uniqueness_of :hostname, :unless => lambda { |r| r.hostname.blank? }
   validates_format_of :hostname, :with => HOSTNAME_REGEXP, :unless => lambda { |r| r.hostname.blank? },
@@ -62,23 +39,21 @@ class OffSiteRequest < ActiveRecord::Base
   validates_inclusion_of :hostname_in_use, :in => [true, false], :message => REQ_MSG
   validates_inclusion_of :confirmed_by_campus_official, :in => [true, false], :message => REQ_MSG,
                          :if => lambda { |r| r.confirmed_by_campus_official.present? }
-  validates_inclusion_of :arachne_or_socrates, :in => [true, false], :if => lambda { |r| r.hostname_in_use? },
-                         :message => REQ_MSG
   validates_inclusion_of :confirmed_service_qualifications, :in => [true, false], :message => REQ_MSG
   validates_inclusion_of :for_department_sponsor, :in => [true, false], :message => REQ_MSG
-  validates_inclusion_of :meets_ctc_criteria, :in => [true, false], :message => REQ_MSG
   validates_format_of :off_site_ip, :with => IP_REGEXP, :unless => lambda { |r| r.off_site_ip.blank? }
-  validate :validate_campus_official, :validate_submitter
+  validate :validate_campus_official, :validate_submitter, :validate_status
+
+  after_initialize :initialize_status
 
 
-  after_initialize :set_default_status
-
-  #def before_destroy
-  #  if status.approved?
-  #    errors.add_to_base("Really, delete an APPROVED request?!! If you really want to delete it, update its status then delete.")
-  #    false
-  #  end
-  #end
+  #Need this?
+  def before_destroy
+    if status.approved?
+      errors.add_to_base("Really, delete an APPROVED request?!! If you really want to delete it, update its status then delete.")
+      false
+    end
+  end
 
   def destroy
     if status.approved?
@@ -100,9 +75,22 @@ class OffSiteRequest < ActiveRecord::Base
     end
   end
 
-  def set_default_status
+  def validate_status
+    if !status_id.nil? && !Status.all.map(&:id).include?(status_id)
+      errors.add(:status_id, "is not a valid status.")
+    end
+  end
+
+  #Replaced by below code. Keeping until we know we don't need this anymore
+  #def set_default_status
+  #  if read_attribute(:status_id).nil?
+  #    self.status = Status::NOT_APPROVED
+  #  end
+  #end
+
+  def initialize_status
     if read_attribute(:status_id).nil?
-      self.status = Status::NOT_APPROVED
+      self.status_id = Status.find_by_name("Not Approved").id
     end
   end
 

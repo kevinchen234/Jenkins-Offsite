@@ -8,12 +8,9 @@ class OffSiteRequestsController < ApplicationController
   before_filter :build_department_list, :only => [:new, :edit, :update, :create]
   before_filter :build_status_list, :only => [:new, :edit, :update, :create]
   before_filter :build_campus_buyers_list, :only => [:new, :edit, :update, :create]
-  before_filter :build_ext_circumstances_list, :only => [:new, :edit, :update, :create]
+  before_filter :build_ext_circumstances_list, :only => [:new, :edit, :update, :create, :show]
 
   skip_before_filter :verify_authenticity_token, :only => :index
-
-
-  #### No Test spec yet ####
 
   def index
     @os_reqs = current_user.off_site_requests

@@ -13,22 +13,22 @@
     <br id="spacing"/>
 
     <%= form.inputs do %>
-      <%= form.input(:submitter_full_name, :label => "Submitter", :input_html => { :disabled => true }, :required => true) %>
-      <%= form.input(:status, :as => :select, :input_html => { :disabled => true }) %> 
-      <%= form.input(:hostname, :input_html => { :disabled => true }, :required => true, :hint => Hints.hostname) %>
-      <%= form.input(:hostname_in_use, :as => :radio, :input_html => { :disabled => true }, :required => true, :hint => Hints.hostname_in_use) %>
-      <%= form.input(:arachne_or_socrates, :as => :radio, :input_html => { :disabled => true }, :required => true, :hint => Hints.arachne_or_socrates) %>
-      <%= form.input(:sponsoring_department, :input_html => { :disabled => true }, :required => true, :hint => Hints.sponsoring_department) %>
-      <%= form.input(:for_department_sponsor, :as => :radio, :input_html => { :disabled => true }, :required => true, :hint => Hints.for_department_sponsor) %>
-      <%= form.input(:name_of_group, :input_html => { :disabled => true }, :required => true, :hint => Hints.name_of_group) %>
-      <%= form.input(:relationship_of_group, :input_html => { :disabled => true }, :required => true, :hint => Hints.relationship_of_group) %>
-      <%= form.input(:off_site_ip, :label => "Off-Site IP", :input_html => { :disabled => true }, :hint => Hints.off_site_ip) %>
-      <%= form.input(:off_site_service, :label => "Off-Site Service", :input_html => { :disabled => true }, :required => true, :hint => Hints.off_site_service) %>
-      <%= form.input(:confirmed_service_qualifications, :as => :radio, :label => "Confirmed Qualifications?", :input_html => { :disabled => true }, :hint => Hints.confirmed_service_qualifications) %>
-      <%= form.input(:ext_circumstances, :label => "Will the system collect, transmit, process or<BR> maintain any of the following types of sensitive <BR>information? (check all that apply)", :as => :check_boxes, :collection => form.object.ext_circumstances, :input_html => { :disabled => true }, :required => true) %>
-      <%= form.input(:other_ext_circumstances, :label => "Description", :input_html => { :disabled => true }, :hint => Hints.other_ext_circumstances) %>
-      <%= form.input(:meets_ctc_criteria, :as => :radio, :label => "Meets CTC Criteria?", :input_html => { :disabled => true }, :required => true, :hint => Hints.meets_ctc_criteria.html_safe) %>
-      <%= form.input(:campus_official_full_name, :as => :string, :label => "Resource Proprietor", :input_html => { :disabled => true }, :required => true, :hint => Hints.campus_official.html_safe) %>
+          <%= form.input(:submitter_full_name, :label => "Submitter", :input_html => { :disabled => true }, :required => true) %>
+          <%= form.input(:status, :as => :select, :input_html => { :disabled => true }) %>
+          <%= form.input(:hostname, :input_html => { :disabled => true }, :required => true, :hint => Hints.hostname) %>
+          <%= form.input(:hostname_in_use, :label => "Host Name in use? ", :as => :radio, :input_html => { :disabled => true }, :required => true, :hint => Hints.hostname_in_use) %>
+          <%= form.input(:sponsoring_department, :input_html => { :disabled => true }, :required => true, :hint => Hints.sponsoring_department) %>
+          <%= form.input(:for_department_sponsor, :as => :radio, :input_html => { :disabled => true }, :required => true, :hint => Hints.for_department_sponsor) %>
+          <%= form.input(:name_of_group, :input_html => { :disabled => true }, :required => true, :hint => Hints.name_of_group) %>
+          <%= form.input(:relationship_of_group, :input_html => { :disabled => true }, :required => true, :hint => Hints.relationship_of_group) %>
+          <%= form.input(:off_site_ip, :label => "Off-Site IP Address", :input_html => { :disabled => true }, :hint => Hints.off_site_ip) %>
+          <%= form.input  :additional_DNS_instructions, :label => "Additional DNS Instructions", :hint => Hints.dns_instructions %>
+          <%= form.input(:off_site_service, :label => "Off-Site Service", :input_html => { :disabled => true }, :required => true, :hint => Hints.off_site_service) %>
+          <%= form.input(:confirmed_service_qualifications, :as => :radio, :label => "Confirmed Qualifications?", :input_html => { :disabled => true }, :hint => Hints.confirmed_service_qualifications) %>
+          <%= "<P>&nbsp;&nbsp;&nbsp;Will the system collect, transmit, process or maintain any of the following types of sensitive information?</P>".html_safe %>
+          <%= form.input(:ext_circumstances, :label => "(check all that apply)", :as => :check_boxes, :collection => @ext_circumstances_list, :input_html => { :disabled => true }) %>
+          <%= form.input(:other_ext_circumstances, :label => "Description", :input_html => { :disabled => true }, :hint => Hints.other_ext_circumstances.html_safe) %>
+          <%= form.input(:campus_official_full_name, :as => :string, :label => "Confirmed by Resource Proprietor", :input_html => { :disabled => true }, :required => true, :hint => Hints.campus_official.html_safe) %>
     <% end %>
   <% end %>
 
