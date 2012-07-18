@@ -220,6 +220,13 @@ describe "OffSiteRequest" do
       osr.should have(0).error_on(:cns_trk_number)
     end
 
+    it "should not require additional_DNS_instructions" do
+      osr = valid
+      osr.additional_DNS_instructions = nil
+      osr.should be_valid
+      osr.should have(0).error_on(:additional_DNS_instructions)
+    end
+
     it "should enforce correct formatting off_site_ip" do
       osr = valid
       mal_ips = ["123", "123.123", "123.123.123.123.123", "hi"]
